@@ -17,9 +17,9 @@ function HeadNav() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="navbar-nav">
-            <Nav.Link href="/QShome">Home</Nav.Link>
-            <Nav.Link href="/task">Task</Nav.Link>
-            <Nav.Link href="/budget">Budget</Nav.Link>
+            <Nav.Link href="/QShome" className="home">Home</Nav.Link>
+            <Nav.Link href="/task" className="task">Task</Nav.Link>
+            <Nav.Link href="/Budget" className="budget">Budget</Nav.Link>
           </Nav>
          
           <Nav className="ms-auto"> 

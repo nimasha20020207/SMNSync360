@@ -75,5 +75,17 @@
   }
   
   .navbar-nav .nav-link:hover {
-    color: darkgray; 
+    color: rgba(0, 0, 255, 0.884); 
+}
+.navbar-nav .home:hover{
+  background-color: rgba(0, 89, 255, 0.288);
+  border-radius: 10px;
+}
+.navbar-nav .task:hover{
+  background-color: rgba(0, 89, 255, 0.288);
+  border-radius: 10px;
+}
+.navbar-nav .budget:hover{
+  background-color: rgba(0, 89, 255, 0.288);
+  border-radius: 10px;
 }
