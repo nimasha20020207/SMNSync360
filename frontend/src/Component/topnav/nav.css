@@ -1,9 +1,12 @@
 .custom-navbar {
-    height: 70px; /* Adjust this value as needed */
-    display: flex;
-    align-items: center;
-    background-color:#dee0e3d0;
-  }
+  height: 70px; 
+  display: flex;
+  align-items: center;
+  background-color: #fffafa; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.459); 
+  border-radius: 5px;
+
+}
   
   .logo-image {
     width: 150px; /* Adjust as needed */
