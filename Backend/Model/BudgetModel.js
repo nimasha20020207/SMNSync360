@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const BudgetSchema = new Schema({
+    P_ID: {
+        type: String,
+        required: true,
+        trim: true,
+        unique:true 
+    },
     name: {
         type: String,
         required: true,
@@ -11,10 +17,6 @@ const BudgetSchema = new Schema({
         type: Number,
         required: true,
         min: 0
-    },
-    location: {
-        type: String,
-        require:true,
     },
     createdDate: {
         type: Date,
