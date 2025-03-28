@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Topnav from "../topnav/QS/qs";
+import Topnav from "../topnav/FO/fo";
 import Fot from "../bottomnav/foter";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
@@ -10,12 +10,9 @@ import { useParams, useNavigate } from "react-router-dom";
 function UpdateBudget() {
   const [input, setInput] = useState({
     P_ID: "",
-    name: "",
-    location: "",
+    expencedetails:"",
     amount: "",
-    createdDate: "",
-    status: "",
-    description: ""
+    createdDate: ""
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,18 +22,15 @@ function UpdateBudget() {
   useEffect(() => {
     const fetchHandler = async () => {
       try {
-        console.log("Fetching budget with ID:", id);
-        const response = await axios.get(`http://localhost:5000/Budgets/${id}`);
-       // console.log("API Response:", JSON.stringify(response.data, null, 2));
-        const budgetData = response.data.Budgets; 
+        console.log("Fetching expense with ID:", id);
+        const response = await axios.get(`http://localhost:5000/Expenses/${id}`);
+        console.log("API Response:", JSON.stringify(response.data, null, 2));
+        const expensesData = response.data.expenses; 
         setInput({
-            P_ID:budgetData.P_ID ||"",
-            name: budgetData.name || "",
-            location: budgetData.location || "",
-            amount: budgetData.amount || "",
-            createdDate: budgetData.createdDate ? budgetData.createdDate.split("T")[0] : "",
-            status:budgetData.status||"",
-            description:budgetData.description||"",
+            P_ID:expensesData.P_ID,
+            expencedetails:expensesData.expencedetails,
+            amount: expensesData.amount,
+            createdDate: expensesData.createdDate ? expensesData.createdDate.split("T")[0] : ""
         });
         setLoading(false);
       } catch (error) {
@@ -49,14 +43,11 @@ function UpdateBudget() {
   }, [id]);
 
   const sendRequest = async () => {
-    const response = await axios.put(`http://localhost:5000/Budgets/${id}`, {
+    const response = await axios.put(`http://localhost:5000/Expenses/${id}`, {
         P_ID: String(input.P_ID),
-        name: String(input.name),
-        location: String(input.location),
+        expencedetails:String(input.expencedetails),
         amount: Number(input.amount),
-        createdDate: Date(input.createdDate),
-        status: String(input.status),
-        description: String(input.description),
+        createdDate: Date(input.createdDate)
     });
     return response.data;
   };
@@ -72,11 +63,11 @@ function UpdateBudget() {
     e.preventDefault();
     try {
       await sendRequest();
-      alert("Budget updated successfully!");
-      navigate("/Budget");
+      alert("Expense updated successfully!");
+      navigate("/Expenses");
     } catch (error) {
       console.error("Error in submission:", error);
-      alert("Error updating budget: " + error.message);
+      alert("Error updating expenses: " + error.message);
     }
   };
 
@@ -114,32 +105,19 @@ function UpdateBudget() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formGroupName">
-            <Form.Label style={{ fontWeight: "bold" }}>Name</Form.Label>
+          <Form.Group className="mb-3" controlId="formGroupDescription">
+            <Form.Label style={{ fontWeight: "bold" }}>Expenses Description</Form.Label>
             <Form.Control
-              type="text"
+              as="textarea"
+              rows={5}
               onChange={handleChange}
-              placeholder="Enter Name"
-              name="name"
-              value={input.name}
+              name="expencedetails"
+              value={input.expencedetails} 
+              placeholder="Enter Details"
               required
-              readOnly
             />
           </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formGroupLocation">
-            <Form.Label style={{ fontWeight: "bold" }}>Location</Form.Label>
-            <Form.Control
-              type="text"
-              onChange={handleChange}
-              placeholder="Enter Location"
-              name="location"
-              value={input.location}
-              required
-              readOnly
-            />
-          </Form.Group>
-
+          
           <Form.Group className="mb-3" controlId="formGroupAmount">
             <Form.Label style={{ fontWeight: "bold" }}>Amount</Form.Label>
             <Form.Control
@@ -165,30 +143,6 @@ function UpdateBudget() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formGroupLocation">
-            <Form.Label style={{ fontWeight: "bold" }}>Status</Form.Label>
-            <Form.Select
-              onChange={handleChange}
-              name="status"
-              value={input.status}
-              required
-              readOnly
-            >
-              <option value="Pending">Pending..</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formGroupDescription">
-            <Form.Label style={{ fontWeight: "bold" }}>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={5}
-              onChange={handleChange}
-              name="description"
-              value={input.description} 
-              placeholder="Enter Description"
-            />
-          </Form.Group>
           <Button variant="success" type="submit" className="w-100">
             Update
           </Button>
