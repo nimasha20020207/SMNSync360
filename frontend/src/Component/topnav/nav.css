@@ -53,7 +53,7 @@
     font-size: larger;
     display: flex;
     color: #000;
-    margin-left: 200px;
+    margin-left: 0px;
     justify-content: center; /* Center the links */
     align-items: center;
   }

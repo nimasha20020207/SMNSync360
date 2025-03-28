@@ -8,5 +8,6 @@ router.post("/",budgetControle.addBudget);
 router.get("/:id",budgetControle.getById);
 router.put("/:id",budgetControle.UpdateBudget);
 router.delete("/:id",budgetControle.DeleteBudget);
+router.get("/P_ID/:P_ID", budgetControle.getBudgetByP_ID);
 
 module.exports = router;

@@ -100,10 +100,26 @@ const DeleteBudget = async(req,res,next)=>{
     return res.status(200).json({Budgets});
 }
 
+const getBudgetByP_ID = async (req, res, next) => {
+    const P_ID = req.params.P_ID;  // Extract P_ID from URL parameters
+    let Budgets;
+    try {
+        Budgets = await Budget.findOne({ P_ID });  // Query by P_ID
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ message: "Error fetching budget by P_ID" });
+    }
 
+    if (!Budgets) {
+        return res.status(404).json({ message: "Budget not found" });
+    }
+
+    return res.status(200).json({ Budgets });
+};
 
 exports.getAllbudget=getAllbudget;
 exports.addBudget=addBudget;
 exports.getById=getById;
 exports.UpdateBudget=UpdateBudget;
 exports.DeleteBudget=DeleteBudget;
+exports.getBudgetByP_ID=getBudgetByP_ID;

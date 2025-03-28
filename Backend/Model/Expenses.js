@@ -1,19 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const BudgetSchema = new Schema({
+const ExpenseSchema = new Schema({
     P_ID: {
-        type: String,
-        required: true,
-        trim: true,
-        unique:true 
-    },
-    name: {
         type: String,
         required: true,
         trim: true
     },
-    location: {
+    expencedetails: {
         type: String,
         required: true,
         trim: true
@@ -26,19 +20,10 @@ const BudgetSchema = new Schema({
     createdDate: {
         type: Date,
         default: Date.now
-    },
-    status: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    description: {
-        type: String,
-        required: true,
-        trim: true
     }
 })
+
 module.exports = mongoose.model(
-    "BudgetModel",
-    BudgetSchema
+    "Expenses",
+    ExpenseSchema
 )
