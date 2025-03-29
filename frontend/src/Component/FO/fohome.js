@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Topnav from "../topnav/FO/fo";
 import Fot from "../bottomnav/foter";
 import { Container, Row, Col, Card, Form, Dropdown, ProgressBar } from "react-bootstrap";
-import { Line } from "react-chartjs-2"; // Changed from Bar to Line
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js"; // Updated imports
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import axios from "axios";
 
 // Register ChartJS components for Line chart
@@ -11,6 +11,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 function FOHome() {
   const [budgets, setBudgets] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBudgetId, setSelectedBudgetId] = useState(null);
 
@@ -28,19 +29,38 @@ function FOHome() {
     } catch (error) {
       console.error("Error fetching budgets:", error);
       setBudgets([]);
-    } finally {
-      setLoading(false);
     }
   };
 
+  // Fetch expenses from backend
+  const fetchExpenses = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/Expenses");
+      console.log("Expenses API Response:", response.data);
+      const expenseData = response.data.Expenses || response.data || [];
+      const expenseArray = Array.isArray(expenseData) ? expenseData : [];
+      setExpenses(expenseArray);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+      setExpenses([]);
+    }
+  };
+
+  // Fetch data on component mount
   useEffect(() => {
-    fetchBudgets();
+    const fetchData = async () => {
+      await Promise.all([fetchBudgets(), fetchExpenses()]);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
+  // Handle dropdown selection
   const handleBudgetSelect = (eventKey) => {
     setSelectedBudgetId(eventKey);
   };
 
+  // Get selected budget amount (returns number for calculations)
   const getBudgetAmount = () => {
     if (loading) return 0;
     if (budgets.length === 0 || !selectedBudgetId) return 0;
@@ -48,19 +68,114 @@ function FOHome() {
     return selectedBudget ? Number(selectedBudget.amount) : 0;
   };
 
-  // Line chart data
-  const chartData = {
-    labels: ["2025-03-01", "2025-03-05", "2025-03-10", "2025-03-15", "2025-03-20","2025-03-20","2025-03-20","2025-03-20","2025-03-20","2025-03-20"],
-    datasets: [
-      {
-        label: "Expenses",
-        data: [5000, 1200, 800, 1500, 9000,200,6000,8000,10000,500],
-        fill: false, // No fill under the line
-        backgroundColor: "rgba(75, 192, 192, 0.6)", // Point color
-        borderColor: "rgba(75, 192, 192, 1)", // Line color
-        tension: 0.1, // Slight curve for the line
-      },
-    ],
+  // Calculate spent amount for selected P_ID
+  const getSpentAmount = () => {
+    if (loading) return "Loading...";
+    if (expenses.length === 0 || !selectedBudgetId) return "Rs 0";
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    return `Rs ${totalSpent.toLocaleString()}`;
+  };
+
+  // Get spent amount as number for progress bar
+  const getSpentAmountNumber = () => {
+    if (loading) return 0;
+    if (expenses.length === 0 || !selectedBudgetId) return 0;
+    return expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+  };
+
+  // Calculate remaining amount for selected P_ID
+  const getRemainingAmount = () => {
+    if (loading) return "Loading...";
+    if (budgets.length === 0 || !selectedBudgetId) return "Rs 0";
+    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    const remaining = totalBudget - totalSpent;
+    return `Rs ${remaining < 0 ? 0 : remaining.toLocaleString()}`;
+  };
+
+  // Get remaining amount as number for progress bar
+  const getRemainingAmountNumber = () => {
+    if (loading) return 0;
+    if (budgets.length === 0 || !selectedBudgetId) return 0;
+    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    const remaining = totalBudget - totalSpent;
+    return remaining < 0 ? 0 : remaining;
+  };
+
+  // Calculate overdue amount for selected P_ID (excess over budget)
+  const getOverdueAmount = () => {
+    if (loading) return "Loading...";
+    if (budgets.length === 0 || !selectedBudgetId || expenses.length === 0) return "Rs 0";
+    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    const overdue = totalSpent - totalBudget;
+    return overdue > 0 ? `Rs ${overdue.toLocaleString()}` : "Rs 0";
+  };
+
+  // Get overdue amount as number for progress bar
+  const getOverdueAmountNumber = () => {
+    if (loading) return 0;
+    if (budgets.length === 0 || !selectedBudgetId || expenses.length === 0) return 0;
+    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    const overdue = totalSpent - totalBudget;
+    return overdue > 0 ? overdue : 0;
+  };
+
+  // Dynamic chart data based on expenses for selected P_ID
+  const getChartData = () => {
+    if (loading || !selectedBudgetId || expenses.length === 0) {
+      return {
+        labels: ["No Data"],
+        datasets: [
+          {
+            label: "Expenses",
+            data: [0],
+            fill: false,
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            tension: 0.1,
+          },
+        ],
+      };
+    }
+
+    const filteredExpenses = expenses.filter((expense) => expense.P_ID === selectedBudgetId);
+    const labels = filteredExpenses.map((expense) => 
+      new Date(expense.createdDate).toLocaleDateString()
+    );
+    const data = filteredExpenses.map((expense) => Number(expense.amount));
+
+    return {
+      labels: labels.length > 0 ? labels : ["No Expenses"],
+      datasets: [
+        {
+          label: "Expenses",
+          data: data.length > 0 ? data : [0],
+          fill: false,
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          tension: 0.1,
+        },
+      ],
+    };
   };
 
   const chartOptions = {
@@ -75,9 +190,12 @@ function FOHome() {
     },
   };
 
-  const staticBudget = { spent: 45000, remaining: 5500, overdue: 0 };
+  // Calculate max value for progress bars
   const totalBudget = getBudgetAmount();
-  const maxValue = Math.max(totalBudget, staticBudget.spent, staticBudget.remaining, staticBudget.overdue) || 10000;
+  const spent = getSpentAmountNumber();
+  const remaining = getRemainingAmountNumber();
+  const overdue = getOverdueAmountNumber();
+  const maxValue = Math.max(totalBudget, spent, overdue) || 10000;
 
   return (
     <div>
@@ -111,9 +229,9 @@ function FOHome() {
         <Row>
           {/* Left: Budget Bars */}
           <Col md={6}>
-            <h3>Budget Overview</h3>
+            <h3>Budget Overview</h3><br/>
             <div className="mb-3">
-              <h5>Total Budget: Rs {totalBudget.toLocaleString()}</h5>
+              <h6>Total Budget: Rs {totalBudget.toLocaleString()}</h6>
               <ProgressBar
                 variant="primary"
                 now={(totalBudget / maxValue) * 100}
@@ -121,27 +239,27 @@ function FOHome() {
               />
             </div>
             <div className="mb-3">
-              <h5>Spent: Rs {staticBudget.spent}</h5>
+              <h6>Spent: {getSpentAmount()}</h6>
               <ProgressBar
                 variant="success"
-                now={(staticBudget.spent / maxValue) * 100}
-                label={`Rs ${staticBudget.spent}`}
+                now={(spent / maxValue) * 100}
+                label={getSpentAmount()}
               />
             </div>
             <div className="mb-3">
-              <h5>Remaining: Rs {staticBudget.remaining}</h5>
+              <h6>Remaining: {getRemainingAmount()}</h6>
               <ProgressBar
                 variant="warning"
-                now={(staticBudget.remaining / maxValue) * 100}
-                label={`Rs ${staticBudget.remaining}`}
+                now={(remaining / maxValue) * 100}
+                label={getRemainingAmount()}
               />
             </div>
             <div className="mb-3">
-              <h5>Overdue: Rs {staticBudget.overdue}</h5>
+              <h6>Overdue: {getOverdueAmount()}</h6>
               <ProgressBar
                 variant="danger"
-                now={(staticBudget.overdue / maxValue) * 100}
-                label={`Rs ${staticBudget.overdue}`}
+                now={(overdue / maxValue) * 100}
+                label={getOverdueAmount()}
               />
             </div>
           </Col>
@@ -150,7 +268,7 @@ function FOHome() {
           <Col md={6}>
             <h3>Expenses Over Time</h3>
             <div style={{ height: "400px" }}>
-              <Line data={chartData} options={chartOptions} />
+              <Line data={getChartData()} options={chartOptions} />
             </div>
           </Col>
         </Row>

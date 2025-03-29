@@ -70,9 +70,9 @@ function BudgetStatus() {
   };
 
   return (
-    <div>
+    <div style={{ background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)", minHeight:"200vh" }}>
       <Topnav />
-      <Container fluid className="mt-5" style={{ background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)", minHeight: "100vh" }}>
+      <Container fluid className="mt-5">
         <h2 className="mb-5 text-center" style={{ fontFamily: "'Poppins', sans-serif", color: "#2c3e50", fontWeight: "bold" }}>
           Budget Approval Dashboard
         </h2>
@@ -201,7 +201,7 @@ function BudgetStatus() {
           </Row>
         )}
       </Container>
-      <Fot />
+      
 
       {/* Full-Screen Alert */}
       {alert.show && (
@@ -256,6 +256,7 @@ function BudgetStatus() {
           cursor: pointer;
         }
       `}</style>
+      <Fot />
     </div>
   );
 }

@@ -10,42 +10,57 @@ import axios from "axios";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function Home() {
-  // State for budgets, loading, and selected budget ID
   const [budgets, setBudgets] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedBudgetId, setSelectedBudgetId] = useState(null); // Track selected _id
+  const [selectedBudgetId, setSelectedBudgetId] = useState(null);
 
   // Fetch budgets from backend
   const fetchBudgets = async () => {
     try {
       const response = await axios.get("http://localhost:5000/Budgets");
-      console.log("API Response:", response.data); // Debug response
+      console.log("Budgets API Response:", response.data);
       const budgetData = response.data.Budgets || response.data || [];
       const budgetArray = Array.isArray(budgetData) ? budgetData : [];
       setBudgets(budgetArray);
-      // Set default selection to first budget if available
       if (budgetArray.length > 0) {
         setSelectedBudgetId(budgetArray[0].P_ID);
       }
     } catch (error) {
       console.error("Error fetching budgets:", error);
       setBudgets([]);
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Run fetch on component mount
+  // Fetch expenses from backend
+  const fetchExpenses = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/Expenses");
+      console.log("Expenses API Response:", response.data);
+      const expenseData = response.data.Expenses || response.data || [];
+      const expenseArray = Array.isArray(expenseData) ? expenseData : [];
+      setExpenses(expenseArray);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+      setExpenses([]);
+    }
+  };
+
+  // Fetch data on component mount
   useEffect(() => {
-    fetchBudgets();
+    const fetchData = async () => {
+      await Promise.all([fetchBudgets(), fetchExpenses()]);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
   // Handle dropdown selection
   const handleBudgetSelect = (eventKey) => {
-    setSelectedBudgetId(eventKey); // eventKey is the _id from Dropdown.Item
+    setSelectedBudgetId(eventKey);
   };
 
-  // Function to get selected budget amount
+  // Get selected budget amount
   const getBudgetAmount = () => {
     if (loading) return "Loading...";
     if (budgets.length === 0 || !selectedBudgetId) return "Rs 0";
@@ -53,34 +68,90 @@ function Home() {
     return selectedBudget ? `Rs ${Number(selectedBudget.amount).toLocaleString()}` : "Rs 0";
   };
 
-  // Static chart data
-  const chartData = {
-    labels: ["2025-03-01", "2025-03-05", "2025-03-10", "2025-03-15", "2025-03-20"],
-    datasets: [
-      {
-        label: "Expenses",
-        data: [500, 1200, 800, 1500, 900],
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
+  // Calculate spent amount for selected P_ID
+  const getSpentAmount = () => {
+    if (loading) return "Loading...";
+    if (expenses.length === 0 || !selectedBudgetId) return "Rs 0";
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    return `Rs ${totalSpent.toLocaleString()}`;
+  };
+
+  // Calculate remaining amount for selected P_ID
+  const getRemainingAmount = () => {
+    if (loading) return "Loading...";
+    if (budgets.length === 0 || !selectedBudgetId) return "Rs 0";
+    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    const remaining = totalBudget - totalSpent;
+    return `Rs ${remaining < 0 ? 0 : remaining.toLocaleString()}`;
+  };
+
+  // Calculate overdue amount for selected P_ID (excess over budget)
+  const getOverdueAmount = () => {
+    if (loading) return "Loading...";
+    if (budgets.length === 0 || !selectedBudgetId || expenses.length === 0) return "Rs 0";
+    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
+    const totalSpent = expenses
+      .filter((expense) => expense.P_ID === selectedBudgetId)
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+    const overdue = totalSpent - totalBudget;
+    return overdue > 0 ? `Rs ${overdue.toLocaleString()}` : "Rs 0";
+  };
+
+  // Dynamic chart data based on expenses for selected P_ID
+  const getChartData = () => {
+    if (loading || !selectedBudgetId || expenses.length === 0) {
+      return {
+        labels: ["No Data"],
+        datasets: [
+          {
+            label: "Expenses",
+            data: [0],
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      };
+    }
+
+    const filteredExpenses = expenses.filter((expenses) => expenses.P_ID === selectedBudgetId);
+    const labels = filteredExpenses.map((expenses) => 
+      new Date(expenses.createdDate).toLocaleDateString() // Format date as needed
+    );
+    const data = filteredExpenses.map((expenses) => Number(expenses.amount));
+
+    return {
+      labels: labels.length > 0 ? labels : ["No Expenses"],
+      datasets: [
+        {
+          label: "Expenses",
+          data: data.length > 0 ? data : [0],
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+      ],
+    };
   };
 
   const chartOptions = {
     responsive: true,
     plugins: {
       legend: { position: "top" },
-      title: { display: true, text: "Expenses" },
+      title: { display: true, text: "Expenses Over Time" },
     },
     scales: {
       y: { beginAtZero: true, title: { display: true, text: "Expenses (Rs)" } },
       x: { title: { display: true, text: "Date" } },
     },
   };
-
-  // Static data for other cards
-  const staticBudget = { spent: 4500, remaining: 5500, overdue: 0 };
 
   return (
     <div>
@@ -128,7 +199,7 @@ function Home() {
                 <Card bg="success" text="white" style={{ height: "100px" }}>
                   <Card.Body>
                     <Card.Title>Spent</Card.Title>
-                    <Card.Text>Rs {staticBudget.spent}</Card.Text>
+                    <Card.Text>{getSpentAmount()}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
@@ -136,7 +207,7 @@ function Home() {
                 <Card bg="warning" text="dark" style={{ height: "100px" }}>
                   <Card.Body>
                     <Card.Title>Remaining</Card.Title>
-                    <Card.Text>Rs {staticBudget.remaining}</Card.Text>
+                    <Card.Text>{getRemainingAmount()}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
@@ -144,7 +215,7 @@ function Home() {
                 <Card bg="danger" text="white" style={{ height: "100px" }}>
                   <Card.Body>
                     <Card.Title>Overdue</Card.Title>
-                    <Card.Text>Rs {staticBudget.overdue}</Card.Text>
+                    <Card.Text>{getOverdueAmount()}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
@@ -155,7 +226,7 @@ function Home() {
           <Col md={6}>
             <h3>Expenses Over Time</h3>
             <div style={{ height: "400px" }}>
-              <Bar data={chartData} options={chartOptions} />
+              <Bar data={getChartData()} options={chartOptions} />
             </div>
           </Col>
         </Row>
@@ -164,7 +235,7 @@ function Home() {
         <Row className="mt-4">
           <Col>
             <Card>
-            <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+              <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
               <Card.Body>
                 <Card.Text>
                   <strong>03/25/2025:</strong> Budget review meeting scheduled for next week.
