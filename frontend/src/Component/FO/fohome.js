@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from "react";
 import Topnav from "../topnav/FO/fo";
 import Fot from "../bottomnav/foter";
-import { Container, Row, Col, Card, Form, Dropdown } from "react-bootstrap";
-import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import { Container, Row, Col, Card, Form, Dropdown, ProgressBar } from "react-bootstrap";
+import { Line } from "react-chartjs-2"; // Changed from Bar to Line
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js"; // Updated imports
 import axios from "axios";
 
-// Register ChartJS components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// Register ChartJS components for Line chart
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function FOHome() {
-  // State for budgets, loading, and selected budget ID
   const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedBudgetId, setSelectedBudgetId] = useState(null); // Track selected _id
+  const [selectedBudgetId, setSelectedBudgetId] = useState(null);
 
   // Fetch budgets from backend
   const fetchBudgets = async () => {
     try {
       const response = await axios.get("http://localhost:5000/Budgets");
-      console.log("API Response:", response.data); // Debug response
+      console.log("API Response:", response.data);
       const budgetData = response.data.Budgets || response.data || [];
       const budgetArray = Array.isArray(budgetData) ? budgetData : [];
       setBudgets(budgetArray);
-      // Set default selection to first budget if available
       if (budgetArray.length > 0) {
         setSelectedBudgetId(budgetArray[0].P_ID);
       }
@@ -35,34 +33,32 @@ function FOHome() {
     }
   };
 
-  // Run fetch on component mount
   useEffect(() => {
     fetchBudgets();
   }, []);
 
-  // Handle dropdown selection
   const handleBudgetSelect = (eventKey) => {
-    setSelectedBudgetId(eventKey); // eventKey is the _id from Dropdown.Item
+    setSelectedBudgetId(eventKey);
   };
 
-  // Function to get selected budget amount
   const getBudgetAmount = () => {
-    if (loading) return "Loading...";
-    if (budgets.length === 0 || !selectedBudgetId) return "Rs 0";
+    if (loading) return 0;
+    if (budgets.length === 0 || !selectedBudgetId) return 0;
     const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
-    return selectedBudget ? `Rs ${Number(selectedBudget.amount).toLocaleString()}` : "Rs 0";
+    return selectedBudget ? Number(selectedBudget.amount) : 0;
   };
 
-  // Static chart data
+  // Line chart data
   const chartData = {
-    labels: ["2025-03-01", "2025-03-05", "2025-03-10", "2025-03-15", "2025-03-20"],
+    labels: ["2025-03-01", "2025-03-05", "2025-03-10", "2025-03-15", "2025-03-20","2025-03-20","2025-03-20","2025-03-20","2025-03-20","2025-03-20"],
     datasets: [
       {
         label: "Expenses",
-        data: [500, 1200, 800, 1500, 900],
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
+        data: [5000, 1200, 800, 1500, 9000,200,6000,8000,10000,500],
+        fill: false, // No fill under the line
+        backgroundColor: "rgba(75, 192, 192, 0.6)", // Point color
+        borderColor: "rgba(75, 192, 192, 1)", // Line color
+        tension: 0.1, // Slight curve for the line
       },
     ],
   };
@@ -71,7 +67,7 @@ function FOHome() {
     responsive: true,
     plugins: {
       legend: { position: "top" },
-      title: { display: true, text: "Expenses" },
+      title: { display: true, text: "Expenses Over Time" },
     },
     scales: {
       y: { beginAtZero: true, title: { display: true, text: "Expenses (Rs)" } },
@@ -79,8 +75,9 @@ function FOHome() {
     },
   };
 
-  // Static data for other cards
-  const staticBudget = { spent: 4500, remaining: 5500, overdue: 0 };
+  const staticBudget = { spent: 45000, remaining: 5500, overdue: 0 };
+  const totalBudget = getBudgetAmount();
+  const maxValue = Math.max(totalBudget, staticBudget.spent, staticBudget.remaining, staticBudget.overdue) || 10000;
 
   return (
     <div>
@@ -110,52 +107,50 @@ function FOHome() {
           </Col>
         </Row>
 
-        {/* Main Content: Budget Boxes (Left) and Bar Chart (Right) */}
+        {/* Main Content: Budget Bars (Left) and Line Chart (Right) */}
         <Row>
-          {/* Left: Budget Boxes */}
+          {/* Left: Budget Bars */}
           <Col md={6}>
             <h3>Budget Overview</h3>
-            <Row>
-              <Col md={6} className="mb-3">
-                <Card bg="primary" text="white" style={{ height: "100px" }}>
-                  <Card.Body>
-                    <Card.Title>Total Budget</Card.Title>
-                    <Card.Text>{getBudgetAmount()}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Card bg="success" text="white" style={{ height: "100px" }}>
-                  <Card.Body>
-                    <Card.Title>Spent</Card.Title>
-                    <Card.Text>Rs {staticBudget.spent}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Card bg="warning" text="dark" style={{ height: "100px" }}>
-                  <Card.Body>
-                    <Card.Title>Remaining</Card.Title>
-                    <Card.Text>Rs {staticBudget.remaining}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col md={6} className="mb-3">
-                <Card bg="danger" text="white" style={{ height: "100px" }}>
-                  <Card.Body>
-                    <Card.Title>Overdue</Card.Title>
-                    <Card.Text>Rs {staticBudget.overdue}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
+            <div className="mb-3">
+              <h5>Total Budget: Rs {totalBudget.toLocaleString()}</h5>
+              <ProgressBar
+                variant="primary"
+                now={(totalBudget / maxValue) * 100}
+                label={`Rs ${totalBudget.toLocaleString()}`}
+              />
+            </div>
+            <div className="mb-3">
+              <h5>Spent: Rs {staticBudget.spent}</h5>
+              <ProgressBar
+                variant="success"
+                now={(staticBudget.spent / maxValue) * 100}
+                label={`Rs ${staticBudget.spent}`}
+              />
+            </div>
+            <div className="mb-3">
+              <h5>Remaining: Rs {staticBudget.remaining}</h5>
+              <ProgressBar
+                variant="warning"
+                now={(staticBudget.remaining / maxValue) * 100}
+                label={`Rs ${staticBudget.remaining}`}
+              />
+            </div>
+            <div className="mb-3">
+              <h5>Overdue: Rs {staticBudget.overdue}</h5>
+              <ProgressBar
+                variant="danger"
+                now={(staticBudget.overdue / maxValue) * 100}
+                label={`Rs ${staticBudget.overdue}`}
+              />
+            </div>
           </Col>
 
-          {/* Right: Expenses Bar Chart */}
+          {/* Right: Expenses Line Chart */}
           <Col md={6}>
             <h3>Expenses Over Time</h3>
             <div style={{ height: "400px" }}>
-              <Bar data={chartData} options={chartOptions} />
+              <Line data={chartData} options={chartOptions} />
             </div>
           </Col>
         </Row>
@@ -164,7 +159,7 @@ function FOHome() {
         <Row className="mt-4">
           <Col>
             <Card>
-            <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+              <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
               <Card.Body>
                 <Card.Text>
                   <strong>03/25/2025:</strong> Budget review meeting scheduled for next week.
