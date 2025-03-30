@@ -7,17 +7,17 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Topnav from "../topnav/FO/fo";
 import Fot from "../bottomnav/foter";
-import Expens from "./expensesread"
+import Expens from "./expensesread";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaDownload } from "react-icons/fa";
 
 const URL = "http://localhost:5000/Expenses";
 
 const fetchHandler = async () => {
   try {
     const response = await axios.get(URL);
-    console.log("API Response:", response.data); // Debugging to check data
+    console.log("API Response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -25,11 +25,10 @@ const fetchHandler = async () => {
 };
 
 function Expenses() {
-
-  const [expens, setexpens] = useState([]); // Initialize as an empty array
+  const [expenses, setExpenses] = useState([]); // Fixed typo and initialized as array
 
   useEffect(() => {
-    fetchHandler().then((data) => setexpens(data || [])); // Set directly to data
+    fetchHandler().then((data) => setExpenses(data.Expenses || data || []));
   }, []);
 
   return (
@@ -43,28 +42,33 @@ function Expenses() {
                 Expenses
               </Button>
             </Col>
-            <Col xs={9}>
+            <Col xs={6}> {/* Reduced width to fit all elements */}
               <InputGroup>
-                <Form.Control type="text" placeholder="Search Budget..." />
+                <Form.Control type="text" placeholder="Search Expenses..." />
                 <Button variant="primary">
                   <FaSearch />
                 </Button>
               </InputGroup>
             </Col>
+            <Col xs={3} className="d-flex justify-content-end">
+              <Button variant="success" className="px-4 py-2">
+                <FaDownload /> Download
+              </Button>
+            </Col>
           </Row>
           <br />
           <h1 className="mb-4">Expenses Details</h1>
-          </Container>
-          <Container className="mt-4">
-          <Row className="w-20 mt-2">
+        </Container>
+        <Container className="mt-4">
+          <Row className="w-100 mt-2"> {/* Fixed w-20 to w-100 */}
             <Col>
               <Table className="mt-2">
                 <thead className="table-secondary">
                   <tr>
-                    <th style={{ width: "150px"}}>P_ID</th>
-                    <th style={{ width: "300px"}}>Expenses Details</th>
-                    <th style={{ width: "220px"}}>Amount</th>
-                    <th style={{ width: "200px"}}>Date</th>
+                    <th style={{ width: "150px" }}>P_ID</th>
+                    <th style={{ width: "300px" }}>Expenses Details</th>
+                    <th style={{ width: "220px" }}>Amount</th>
+                    <th style={{ width: "200px" }}>Date</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -73,10 +77,10 @@ function Expenses() {
           </Row>
 
           <div>
-            {expens &&
-              expens.map((expenses, i) => (
+            {expenses &&
+              expenses.map((expense, i) => (
                 <div key={i}>
-                  <Expens expenses={expenses} />
+                  <Expens expenses={expense} />
                 </div>
               ))}
           </div>

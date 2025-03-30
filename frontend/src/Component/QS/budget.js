@@ -10,14 +10,14 @@ import Fot from "../bottomnav/foter";
 import axios from "axios";
 import Budgetr from "./budgetread";
 import Table from "react-bootstrap/Table";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaDownload } from "react-icons/fa";
 
 const URL = "http://localhost:5000/Budgets";
 
 const fetchHandler = async () => {
   try {
     const response = await axios.get(URL);
-    console.log("API Response:", response.data); // Debugging to check data
+    console.log("API Response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -25,10 +25,10 @@ const fetchHandler = async () => {
 };
 
 function Budget() {
+  const [budgets, setBudgets] = useState();
 
-  const [budgets, setbudget] = useState();
   useEffect(() => {
-    fetchHandler().then((data) => setbudget(data.Budgets));
+    fetchHandler().then((data) => setBudgets(data.Budgets));
   }, []);
 
   return (
@@ -42,7 +42,7 @@ function Budget() {
                 New Budget
               </Button>
             </Col>
-            <Col xs={9}>
+            <Col xs={5}>
               <InputGroup>
                 <Form.Control type="text" placeholder="Search Budget..." />
                 <Button variant="primary">
@@ -50,23 +50,28 @@ function Budget() {
                 </Button>
               </InputGroup>
             </Col>
+            <Col xs={3} className="d-flex justify-content-end">
+              <Button variant="success" className="px-4 py-2">
+                <FaDownload /> Download
+              </Button>
+            </Col>
           </Row>
           <br />
           <h1 className="mb-4">Budget Details</h1>
-          </Container>
-          <Container className="mt-4">
+        </Container>
+        <Container className="mt-4">
           <Row className="w-200 mt-2">
             <Col>
               <Table className="mt-2">
                 <thead className="table-secondary">
                   <tr>
-                    <th >P_ID</th>
-                    <th >Name</th>
-                    <th >Location</th>
-                    <th >Amount</th>
-                    <th >Date</th>
-                    <th >Status</th>
-                    <th >Description</th>
+                    <th>P_ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Description</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
