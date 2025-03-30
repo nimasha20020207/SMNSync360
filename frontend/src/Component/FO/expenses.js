@@ -25,11 +25,26 @@ const fetchHandler = async () => {
 };
 
 function Expenses() {
-  const [expenses, setExpenses] = useState([]); // Fixed typo and initialized as array
+  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
-    fetchHandler().then((data) => setExpenses(data.Expenses || data || []));
+    fetchHandler().then((data) => setExpenses(data || [])); // Simplified since backend returns flat array
   }, []);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [noResults, setNoResults] = useState(false);
+
+  const handleSearch = () => {
+    fetchHandler().then((data) => {
+      const filterExpens = (data || []).filter((expense) => // Fixed parameter name and data fallback
+        Object.values(expense).some((field) =>
+          field?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+      setExpenses(filterExpens);
+      setNoResults(filterExpens.length === 0);
+    });
+  };
 
   return (
     <div>
@@ -42,10 +57,14 @@ function Expenses() {
                 Expenses
               </Button>
             </Col>
-            <Col xs={6}> {/* Reduced width to fit all elements */}
+            <Col xs={6}>
               <InputGroup>
-                <Form.Control type="text" placeholder="Search Expenses..." />
-                <Button variant="primary">
+                <Form.Control
+                  type="text"
+                  placeholder="Search Expenses..."
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button variant="primary" onClick={handleSearch}>
                   <FaSearch />
                 </Button>
               </InputGroup>
@@ -56,11 +75,18 @@ function Expenses() {
               </Button>
             </Col>
           </Row>
+          {noResults ? (
+            <Row className="w-75 mb-3">
+              <Col className="text-center">
+                <p>No Expenses Found</p>
+              </Col>
+            </Row>
+          ) : null}
           <br />
           <h1 className="mb-4">Expenses Details</h1>
         </Container>
         <Container className="mt-4">
-          <Row className="w-100 mt-2"> {/* Fixed w-20 to w-100 */}
+          <Row className="w-100 mt-2">
             <Col>
               <Table className="mt-2">
                 <thead className="table-secondary">

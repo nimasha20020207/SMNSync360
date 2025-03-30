@@ -28,8 +28,23 @@ function Budget() {
   const [budgets, setBudgets] = useState();
 
   useEffect(() => {
-    fetchHandler().then((data) => setBudgets(data.Budgets));
+    fetchHandler().then((data) => setBudgets(data.Budgets || [])); // Fixed undefined error
   }, []);
+
+  const [searchQuery, setSearchQuery] = useState(""); // Fixed typo: setSeachQueary -> setSearchQuery
+  const [noResults, setNoResults] = useState(false);
+
+  const handleSearch = () => {
+    fetchHandler().then((data) => {
+      const filterBudget = (data.Budgets || []).filter((Budget) => // Fixed undefined error
+        Object.values(Budget).some((field) =>
+          field.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+      setBudgets(filterBudget);
+      setNoResults(filterBudget.length === 0); // Fixed comparison error
+    });
+  };
 
   return (
     <div>
@@ -44,8 +59,12 @@ function Budget() {
             </Col>
             <Col xs={5}>
               <InputGroup>
-                <Form.Control type="text" placeholder="Search Budget..." />
-                <Button variant="primary">
+                <Form.Control
+                  type="text"
+                  placeholder="Search Budget..."
+                  onChange={(e) => setSearchQuery(e.target.value)} // Fixed typo
+                />
+                <Button variant="primary" onClick={handleSearch}>
                   <FaSearch />
                 </Button>
               </InputGroup>
@@ -56,6 +75,13 @@ function Budget() {
               </Button>
             </Col>
           </Row>
+          {noResults ? ( 
+                <Row className="w-75 mb-3">
+                <Col className="text-center">
+                  <p>No Budget Found</p>
+                </Col>
+              </Row>
+              ) : null}
           <br />
           <h1 className="mb-4">Budget Details</h1>
         </Container>
