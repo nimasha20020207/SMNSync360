@@ -21,29 +21,81 @@ const fetchHandler = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    return { Budgets: [] }; // Return empty array on error
   }
 };
 
 function Budget() {
-  const [budgets, setBudgets] = useState();
+  const [budgets, setBudgets] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [noResults, setNoResults] = useState(false);
 
   useEffect(() => {
-    fetchHandler().then((data) => setBudgets(data.Budgets || [])); // Fixed undefined error
+    fetchHandler().then((data) => setBudgets(data.Budgets || []));
   }, []);
-
-  const [searchQuery, setSearchQuery] = useState(""); // Fixed typo: setSeachQueary -> setSearchQuery
-  const [noResults, setNoResults] = useState(false);
 
   const handleSearch = () => {
     fetchHandler().then((data) => {
-      const filterBudget = (data.Budgets || []).filter((Budget) => // Fixed undefined error
-        Object.values(Budget).some((field) =>
+      const filterBudget = (data.Budgets || []).filter((budget) =>
+        Object.values(budget).some((field) =>
           field.toString().toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
       setBudgets(filterBudget);
-      setNoResults(filterBudget.length === 0); // Fixed comparison error
+      setNoResults(filterBudget.length === 0);
     });
+  };
+
+  const handleDownload = async () => {
+    try {
+      // Fetch all budgets
+      const data = await fetchHandler();
+      const budgetsToDownload = data.Budgets || [];
+
+      if (budgetsToDownload.length === 0) {
+        alert("No budgets available to download.");
+        return;
+      }
+
+      // Convert budgets to CSV
+      const headers = ["P_ID", "Name", "Location", "Amount", "Date", "Status", "Description"];
+      const fieldMap = {
+        P_ID: "P_ID", // Make sure this matches the API response field name
+        Name: "name",
+        Location: "location",
+        Amount: "amount",
+        Date: "createdAt", // Ensure this is the correct field name from the API
+        Status: "status",
+        Description: "description",
+      };
+
+      const csvRows = [
+        headers.join(","), // Header row
+        ...budgetsToDownload.map((budget) =>
+          headers
+            .map((header) => {
+              const field = fieldMap[header]; 
+              const value = budget[field] || "";
+              return `"${value.toString().replace(/"/g, '""')}"`; // Escape quotes in CSV
+            })
+            .join(",")
+        ),
+      ];
+
+      const csvString = csvRows.join("\n");
+      const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "budgets.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading budgets:", error);
+      alert("Failed to download budgets. Please try again.");
+    }
   };
 
   return (
@@ -62,7 +114,7 @@ function Budget() {
                 <Form.Control
                   type="text"
                   placeholder="Search Budget..."
-                  onChange={(e) => setSearchQuery(e.target.value)} // Fixed typo
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Button variant="primary" onClick={handleSearch}>
                   <FaSearch />
@@ -70,18 +122,18 @@ function Budget() {
               </InputGroup>
             </Col>
             <Col xs={3} className="d-flex justify-content-end">
-              <Button variant="success" className="px-4 py-2">
+              <Button variant="success" className="px-4 py-2" onClick={handleDownload}>
                 <FaDownload /> Download
               </Button>
             </Col>
           </Row>
-          {noResults ? ( 
-                <Row className="w-75 mb-3">
-                <Col className="text-center">
-                  <p>No Budget Found</p>
-                </Col>
-              </Row>
-              ) : null}
+          {noResults ? (
+            <Row className="w-75 mb-3">
+              <Col className="text-center">
+                <p>No Budget Found</p>
+              </Col>
+            </Row>
+          ) : null}
           <br />
           <h1 className="mb-4">Budget Details</h1>
         </Container>

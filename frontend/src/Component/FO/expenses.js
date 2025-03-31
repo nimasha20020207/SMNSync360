@@ -21,22 +21,22 @@ const fetchHandler = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    return []; // Return empty array on error
   }
 };
 
 function Expenses() {
   const [expenses, setExpenses] = useState([]);
-
-  useEffect(() => {
-    fetchHandler().then((data) => setExpenses(data || [])); // Simplified since backend returns flat array
-  }, []);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [noResults, setNoResults] = useState(false);
 
+  useEffect(() => {
+    fetchHandler().then((data) => setExpenses(data || []));
+  }, []);
+
   const handleSearch = () => {
     fetchHandler().then((data) => {
-      const filterExpens = (data || []).filter((expense) => // Fixed parameter name and data fallback
+      const filterExpens = (data || []).filter((expense) =>
         Object.values(expense).some((field) =>
           field?.toString().toLowerCase().includes(searchQuery.toLowerCase())
         )
@@ -44,6 +44,55 @@ function Expenses() {
       setExpenses(filterExpens);
       setNoResults(filterExpens.length === 0);
     });
+  };
+
+  const handleDownload = async () => {
+    try {
+      // Fetch all expenses
+      const data = await fetchHandler();
+      const expensesToDownload = data || [];
+
+      if (expensesToDownload.length === 0) {
+        alert("No expenses available to download.");
+        return;
+      }
+
+      // Define headers and map to API field names
+      const headers = ["P_ID", "Expenses_Details", "Amount", "Date"];
+      const fieldMap = {
+        P_ID: "P_ID", // Adjust based on your API field name
+        Expenses_Details: "expencedetails", // Adjust based on your API field name
+        Amount: "amount", // This matches, so it works
+        Date: "createdDate", // Adjust based on your API field name
+      };
+
+      const csvRows = [
+        headers.join(","), // Header row
+        ...expensesToDownload.map((expense) =>
+          headers
+            .map((header) => {
+              const field = fieldMap[header];
+              const value = expense[field] || "";
+              return `"${value.toString().replace(/"/g, '""')}"`; // Escape quotes in CSV
+            })
+            .join(",")
+        ),
+      ];
+
+      const csvString = csvRows.join("\n");
+      const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "expenses.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading expenses:", error);
+      alert("Failed to download expenses. Please try again.");
+    }
   };
 
   return (
@@ -70,7 +119,7 @@ function Expenses() {
               </InputGroup>
             </Col>
             <Col xs={3} className="d-flex justify-content-end">
-              <Button variant="success" className="px-4 py-2">
+              <Button variant="success" className="px-4 py-2" onClick={handleDownload}>
                 <FaDownload /> Download
               </Button>
             </Col>
