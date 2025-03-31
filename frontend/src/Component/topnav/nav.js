@@ -1,43 +1,69 @@
+
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
-import logo from "../pictures/logo.png";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Nav from "react-bootstrap/Nav";
-import "../topnav/nav.css";
+import Logo from "../pictures/logo.png";
+import { Link, useNavigate } from "react-router-dom";
+import "./nav.css"; // Ensure this path is correct relative to HeadNav.jsx
 
 function HeadNav() {
-  return (
-    <Navbar className="custom-navbar">
-      <Container>
-        <Navbar.Brand href="/QShome">
-          <img alt="logo" src={logo} className="logo-image" />
-        </Navbar.Brand>
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const userRole = localStorage.getItem("userRole");
+  const username = localStorage.getItem("username") || "User";
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="navbar-nav">
-            <Nav.Link href="/QShome" className="home">Home</Nav.Link>
-            <Nav.Link href="/task" className="task">Task</Nav.Link>
-            <Nav.Link href="/Budget" className="budget">Budget</Nav.Link>
-          </Nav>
-         
-          <Nav className="ms-auto"> 
-            <NavDropdown
-              title={
-                <div className="user-profile">
-                  <span className="username">Username</span> 
-                </div>
-              }
-              id="basic-nav-dropdown"
-            >
-              <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
-              <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("username");
+    alert("Logged out successfully");
+    navigate("/log", { replace: true });
+  };
+
+  return (
+    <nav className="custom-navbar">
+      <div className="nav-container">
+        <Link to="/" className="navbar-brand">
+          <img src={Logo} alt="Logo" className="logo-image" />
+        </Link>
+
+        <div className="navbar-nav">
+          <Link to="/mainhome" className="nav-link">Home</Link>
+          <Link to="/contact" className="nav-link">Contact Us</Link>
+          <Link to="/about" className="nav-link">About Us</Link>
+          <Link to="/service" className="nav-link">Services</Link>
+          
+          {isLoggedIn && (
+            <>
+              {userRole === "admin" && (
+                <Link to="/admindash" className="nav-link">Admin Dashboard</Link>
+              )}
+              {userRole === "projectManager" && (
+                <Link to="/admindash" className="nav-link">Project Manager Dashboard</Link>
+              )}
+              {userRole === "client" && (
+                <Link to="/admindash" className="nav-link">Client Dashboard</Link>
+              )}
+              {userRole === "supplier" && (
+                <Link to="/admindash" className="nav-link">Supplier Dashboard</Link>
+              )}
+            </>
+          )}
+        </div>
+
+        <div className="nav-actions">
+          {isLoggedIn ? (
+            <div className="user-profile">
+              <span className="username">{username}</span>
+              <div className="dropdown-menu">
+                <Link to="/admindash" className="dropdown-item">My Account</Link>
+                <button onClick={handleLogout} className="dropdown-item">Logout</button>
+              </div>
+            </div>
+          ) : (
+            <Link to="/log" className="nav-link login-btn">Log In</Link>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 }
 

@@ -1,0 +1,53 @@
+body {
+    background: #121212;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .form-container {
+    padding: 30px;
+    margin: 25px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    min-height: 400px; /* Adjust this value as needed */
+  }
+  
+  
+  .form-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 20px;
+  }
+  
+  .user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .input-field .MuiOutlinedInput-root {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+  }
+  
+  .input-field .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #00adb5;
+    margin-bottom: 20px; 
+  }
+  
+  .submit-btn {
+    background: #00adb5 !important;
+    color: white !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease-in-out !important;
+  }
+  
+  .submit-btn:hover {
+    background: #007b83 !important;
+  }

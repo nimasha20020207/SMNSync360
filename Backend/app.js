@@ -20,3 +20,49 @@ db
     app.listen(5000);
 })
 .catch((err)=> console.log(err));
+
+// Register function
+require("./Model/Register");
+const User = mongoose.model("Register");
+
+app.post("/register", async (req, res) => {
+    const { name, email, password, role } = req.body; // Add role to request body
+    try {
+        await User.create({
+            name,
+            email,
+            password,
+            role: role || "client", // Default to "client" if role not provided
+        });
+        res.send({ status: "ok" });
+    } catch (err) {
+        res.send({ status: "err" });
+    }
+});
+
+// Login function
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.json({ err: "User not found" });
+        }
+        if (user.password === password) {
+            return res.json({ 
+                status: "ok", 
+                role: user.role // Return the user's role
+            });
+        } else {
+            return res.json({ err: "incorrect password" });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ err: "Server error" });
+    }
+});
+
+// Logout route (unchanged from previous)
+app.get("/logout", (req, res) => {
+    res.json({ status: "ok", message: "Logged out successfully" });
+});
