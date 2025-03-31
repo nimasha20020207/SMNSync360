@@ -8,9 +8,9 @@ import Home from "./Components/Home/Home";
 import AddProjectDetails from "./Components/AddProjectDetails/AddProjectDetails";
 import ScheduleProjectDetails from "./Components/ScheduleProjectDetails/ScheduleProjectDetails";
 import UpdateScheduleProjects from "./Components/UpdateScheduleProjects/UpdateScheduleProjects";
-import AssignTask from "./Components/AssignTask/AssignTask"; // Add this import
-import AssignedTasks from "./Components/AssignedTasks/AssignedTasks"; // Add this import
-import UpdateAssignedTask from "./Components/UpdateAssignedTask/UpdateAssignedTask"; // Add this import
+import AssignTask from "./Components/AssignTask/AssignTask"; 
+import AssignedTasks from "./Components/AssignedTasks/AssignedTasks"; 
+import UpdateAssignedTask from "./Components/UpdateAssignedTask/UpdateAssignedTask"; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render (

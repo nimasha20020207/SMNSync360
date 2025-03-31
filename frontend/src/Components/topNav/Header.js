@@ -5,7 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../pictures/logo.jpg";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
-import "../topNav/Header.css";
+import "./Header.css";
 
 function HeadNav() {
   return (
