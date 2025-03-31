@@ -4,12 +4,14 @@
     text-align: center;
     display: flex;
     justify-content: center;
+    align-items: center; /* Added for better vertical centering */
     height: 110px;
-    padding: 25px 0px;
-    bottom: 0px;
-    top: 20vh;
+    padding: 25px 0;
     width: 100%;
     font-size: 15px;
     font-weight: bold;
-    position: relative;
-  }
+    position: fixed; /* or 'absolute' depending on your needs */
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
