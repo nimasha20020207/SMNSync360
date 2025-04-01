@@ -41,16 +41,6 @@ function AddProjectDetails() {
     sendRequest().then(() => history('/ScheduleProjectDetails'));
   };
 
-  const handleReset = () => {
-    setInputs({
-      Project_Name: "",
-      Project_Location: "",
-      Client_Details: "",
-      Supervisor_Details: "",
-      Start_Date: "",
-      End_Date: "",
-    });
-  };
 
   return (
     <div className="page-container">

@@ -44,16 +44,6 @@ function UpdateScheduleProjects() {
     sendRequest().then(() => history('/ScheduleProjectDetails'));
   };
 
-  const handleClear = () => {
-    setInputs({
-      Project_Name: "",
-      Project_Location: "",
-      Client_Details: "",
-      Supervisor_Details: "",
-      Start_Date: "",
-      End_Date: ""
-    });
-  };
 
   return (
     <div>
