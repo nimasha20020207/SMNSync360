@@ -18,9 +18,10 @@ function HeadNav() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="navbar-nav">
             <Nav.Link href="/" className="home">Home</Nav.Link>
-            <Nav.Link href="/ScheduleProjectDetails" className="home">Add project</Nav.Link>
-            <Nav.Link href="/AssignedTasks" className="home">Assign task</Nav.Link>
-            <Nav.Link href="/Users" className="Users">Add Progress Record</Nav.Link>
+            <Nav.Link href="/ScheduleProjectDetails" className="home">project</Nav.Link>
+            <Nav.Link href="/AssignedTasks" className="home">task</Nav.Link>
+            <Nav.Link href="/Users" className="Users">Progress</Nav.Link>
+            <Nav.Link href="/Users" className="Users">Requiment</Nav.Link>
           </Nav>
          
           <Nav className="ms-auto"> 

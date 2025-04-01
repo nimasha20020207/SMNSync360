@@ -1,6 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from "./Components/Home/Home";
 import AddProjectDetails from "./Components/AddProjectDetails/AddProjectDetails";
 import ScheduleProjectDetails from "./Components/ScheduleProjectDetails/ScheduleProjectDetails";
