@@ -12,6 +12,7 @@ import AssignedTasks from "./Components/AssignedTasks/AssignedTasks"; // Add thi
 import UpdateAssignedTask from "./Components/UpdateAssignedTask/UpdateAssignedTask"; // Add this import
 import Inventory from "./Components/Inventory/inventory";
 import Inventorycreate from "./Components/Inventory/createinventory";
+import Inventoryupdate from "./Components/Inventory/updateinventory";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
 
         <Route path="/addinven" element={<Inventorycreate />} />
         <Route path="/Inventory" element={<Inventory />} />
+        <Route path="/Inventoryup/:_id" element={<Inventoryupdate />} />
         
       </Routes>
     </div>

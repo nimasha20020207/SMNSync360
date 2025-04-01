@@ -1,4 +1,4 @@
-const Inventory = require('../model/inventoryrequest');
+const Inventory = require('../model/inventoryrequest'); // Adjust path as needed
 
 class InventoryController {
   // Get all inventory items
@@ -44,13 +44,13 @@ class InventoryController {
     }
   }
 
-  // Update an inventory item by P_ID
+  // Update an inventory item by _id
   static async updateInventory(req, res) {
     const { _id } = req.params; // Use MongoDB's default _id from the URL
     const { P_Name, Description, Date } = req.body;
 
     try {
-      const item = await Inventory.findById(_id); // Find by _id instead of P_ID
+      const item = await Inventory.findById(_id); // Find by _id
       if (!item) {
         return res.status(404).json({ message: 'Inventory item not found' });
       }
@@ -67,12 +67,12 @@ class InventoryController {
     }
   }
 
-  // Delete an inventory item by P_ID
+  // Delete an inventory item by _id
   static async deleteInventory(req, res) {
     const { _id } = req.params; // Use MongoDB's default _id from the URL
 
     try {
-      const item = await Inventory.findByIdAndDelete(_id); // Delete by _id instead of P_ID
+      const item = await Inventory.findByIdAndDelete(_id); // Delete by _id
       if (!item) {
         return res.status(404).json({ message: 'Inventory item not found' });
       }
@@ -82,6 +82,20 @@ class InventoryController {
     }
   }
 
+  // Get a single inventory item by _id (New Method)
+  static async getInventoryById(req, res) {
+    const { _id } = req.params; // Use MongoDB's default _id from the URL
+
+    try {
+      const item = await Inventory.findById(_id); // Find by _id
+      if (!item) {
+        return res.status(404).json({ message: 'Inventory item not found' });
+      }
+      res.status(200).json({ message: 'Inventory item retrieved successfully', data: item });
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching inventory item', error: error.message });
+    }
+  }
 }
 
 module.exports = InventoryController;
