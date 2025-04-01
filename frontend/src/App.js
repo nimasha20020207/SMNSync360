@@ -10,7 +10,8 @@ import UpdateScheduleProjects from "./Components/UpdateScheduleProjects/UpdateSc
 import AssignTask from "./Components/AssignTask/AssignTask"; // Add this import
 import AssignedTasks from "./Components/AssignedTasks/AssignedTasks"; // Add this import
 import UpdateAssignedTask from "./Components/UpdateAssignedTask/UpdateAssignedTask"; // Add this import
-import Inventory from "./Components/Inventory/inventory"
+import Inventory from "./Components/Inventory/inventory";
+import Inventorycreate from "./Components/Inventory/createinventory";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/AssignedTasks" element={<AssignedTasks />} />
         <Route path="/UpdateAssignedTask/:id" element={<UpdateAssignedTask />} />
 
+        <Route path="/addinven" element={<Inventorycreate />} />
         <Route path="/Inventory" element={<Inventory />} />
         
       </Routes>
