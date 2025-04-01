@@ -16,7 +16,14 @@ function UpdateScheduleProjects() {
     const fetchHandler = async () => {
       await axios.get(`http://localhost:5000/ProjectSchedules/${id}`)
         .then((res) => res.data)
-        .then((data) => setInputs(data.ProjectSchedules));
+        .then((data) => {
+          const projectData = data.ProjectSchedules || data; // Fallback to flat structure
+          setInputs({
+            ...projectData,
+            Start_Date: projectData.Start_Date ? new Date(projectData.Start_Date).toISOString().split('T')[0] : "",
+            End_Date: projectData.End_Date ? new Date(projectData.End_Date).toISOString().split('T')[0] : ""
+          });
+        });
     };
     fetchHandler();
   }, [id]);
@@ -43,7 +50,6 @@ function UpdateScheduleProjects() {
     e.preventDefault();
     sendRequest().then(() => history('/ScheduleProjectDetails'));
   };
-
 
   return (
     <div>
