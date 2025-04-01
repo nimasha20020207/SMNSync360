@@ -103,7 +103,6 @@ function AssignedTasks() {
               <thead className="table-secondary">
                 <tr>
                   <th>Project ID</th>
-                  <th>Task ID</th>
                   <th>PM ID</th>
                   <th>PM Name</th>
                   <th>Supervisor ID</th>
@@ -120,7 +119,6 @@ function AssignedTasks() {
                   filteredTasks.map((task) => (
                     <tr key={task._id}>
                       <td>{task.Project_ID}</td>
-                      <td>{task._id}</td>
                       <td>{task.Project_Manager_ID}</td>
                       <td>{task.PM_Name}</td>
                       <td>{task.Site_Supervisor_ID}</td>
