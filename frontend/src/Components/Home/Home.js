@@ -13,8 +13,8 @@ function Home() {
 
   return (
     <div className="home-container">
+       <Header />
       <div className="home-content">
-        <Header />
         <h1 className="welcome-text">Welcome to Saman Constructions</h1>
         <div className="status-card">
           <h2>Project Status Overview</h2>
