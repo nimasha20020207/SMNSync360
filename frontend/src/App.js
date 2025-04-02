@@ -3,16 +3,16 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import Home from "./Components/Home/Home";
-import AddProjectDetails from "./Components/AddProjectDetails/AddProjectDetails";
-import ScheduleProjectDetails from "./Components/ScheduleProjectDetails/ScheduleProjectDetails";
-import UpdateScheduleProjects from "./Components/UpdateScheduleProjects/UpdateScheduleProjects";
-import AssignTask from "./Components/AssignTask/AssignTask"; // Add this import
-import AssignedTasks from "./Components/AssignedTasks/AssignedTasks"; // Add this import
-import UpdateAssignedTask from "./Components/UpdateAssignedTask/UpdateAssignedTask"; // Add this import
-import Inventory from "./Components/Inventory/inventory";
-import Inventorycreate from "./Components/Inventory/createinventory";
-import Inventoryupdate from "./Components/Inventory/updateinventory";
+import Home from "./Component/Home/Home";
+import AddProjectDetails from "./Component/AddProjectDetails/AddProjectDetails";
+import ScheduleProjectDetails from "./Component/ScheduleProjectDetails/ScheduleProjectDetails";
+import UpdateScheduleProjects from "./Component/UpdateScheduleProjects/UpdateScheduleProjects";
+import AssignTask from "./Component/AssignTask/AssignTask"; // Add this import
+import AssignedTasks from "./Component/AssignedTasks/AssignedTasks"; // Add this import
+import UpdateAssignedTask from "./Component/UpdateAssignedTask/UpdateAssignedTask"; // Add this import
+import Inventory from "./Component/Inventory/inventory";
+import Inventorycreate from "./Component/Inventory/createinventory";
+import Inventoryupdate from "./Component/Inventory/updateinventory";
 
 function App() {
   return (
