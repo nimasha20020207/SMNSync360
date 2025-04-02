@@ -26,7 +26,7 @@
     background-color: var(--light-color);
   }
   
-  .admin-dashboard {
+  .ad-admin-dashboard {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -34,7 +34,7 @@
   }
   
   /* Header Styles (Dark Theme) */
-  .dashboard-header {
+  .ad-dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -46,28 +46,28 @@
     z-index: 100;
   }
   
-  .header-left h1 {
+  .ad-header-left h1 {
     color: var(--light-color);
     font-size: 1.5rem;
     font-weight: 600;
   }
   
-  .header-right {
+  .ad-header-right {
     display: flex;
     align-items: center;
     gap: 1.5rem;
   }
   
-  .notification-badge {
+  .ad-notification-badge {
     position: relative;
     cursor: pointer;
   }
   
-  .notification-icon {
+  .ad-notification-icon {
     color: white;
   }
   
-  .badge {
+  .ad-badge {
     position: absolute;
     top: -5px;
     right: -5px;
@@ -82,7 +82,7 @@
     font-size: 0.7rem;
   }
   
-  .user-profile {
+  .ad-user-profile {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -90,17 +90,17 @@
     cursor: pointer;
   }
   
-  .profile-icon {
+  .ad-profile-icon {
     font-size: 1.5rem;
     color: white;
   }
   
-  .username {
+  .ad-username {
     font-weight: 500;
     color: var(--text-light);
   }
   
-  .dropdown-menu {
+  .ad-dropdown-menu {
     position: absolute;
     top: 100%;
     right: 0;
@@ -112,12 +112,12 @@
     display: none;
   }
   
-  .user-profile:hover .dropdown-menu {
+  .ad-user-profile:hover .dropdown-menu {
     display: block;
   }
   
-  .dropdown-menu a,
-  .dropdown-menu button {
+  .ad-dropdown-menu a,
+  .ad-dropdown-menu button {
     display: block;
     width: 100%;
     padding: 0.5rem 1rem;
@@ -129,19 +129,19 @@
     transition: all 0.2s ease;
   }
   
-  .dropdown-menu a:hover,
-  .dropdown-menu button:hover {
+  .ad-dropdown-menu a:hover,
+  .ad-dropdown-menu button:hover {
     background-color: #4a5e74;
     color: var(--primary-color);
   }
   
   /* Sidebar Styles (Dark Theme) */
-  .dashboard-container {
+  .ad-dashboard-container {
     display: flex;
     flex: 1;
   }
   
-  .sidebar {
+  .ad-sidebar {
     width: var(--sidebar-width);
     background-color: var(--dark-color);
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
@@ -151,27 +151,27 @@
     top: 60px;
   }
   
-  .sidebar-header {
+  .ad-sidebar-header {
     padding: 0 1.5rem 1rem;
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 1rem;
   }
   
-  .sidebar-header h2 {
+  .ad-sidebar-header h2 {
     font-size: 1.1rem;
     color: var(--text-light);
   }
   
-  .sidebar-menu {
+  .ad-sidebar-menu {
     list-style: none;
   }
   
-  .sidebar-menu li {
+  .ad-sidebar-menu li {
     margin-bottom: 0.5rem;
   }
   
-  .sidebar-menu li,
-  .sidebar-menu li a {
+  .ad-sidebar-menu li,
+  .ad-sidebar-menu li a {
     display: flex;
     align-items: center;
     padding: 0.75rem 1.5rem;
@@ -180,38 +180,38 @@
     transition: all 0.2s ease;
   }
   
-  .sidebar-menu li:hover,
-  .sidebar-menu li a:hover {
+  .ad-sidebar-menu li:hover,
+  .ad-sidebar-menu li a:hover {
     background-color: #4a5e74;
     color: var(--primary-color);
   }
   
-  .sidebar-menu li.active {
+  .ad-sidebar-menu li.active {
     background-color: rgba(67, 97, 238, 0.2);
     border-left: 3px solid var(--primary-color);
     color: var(--primary-color);
   }
   
-  .sidebar-menu .icon {
+  .ad-sidebar-menu .icon {
     margin-right: 0.75rem;
     font-size: 1rem;
   }
   
   /* Main Content Styles (Light Theme) */
-  .main-content {
+  .ad-main-content {
     flex: 1;
     padding: 2rem;
     background-color: var(--light-color);
   }
   
-  .stats-section {
+  .ad-stats-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
   }
   
-  .stat-card {
+  .ad-stat-card {
     background: white;
     border-radius: 10px;
     padding: 1.5rem;
@@ -220,19 +220,19 @@
     overflow: hidden;
   }
   
-  .stat-card h3 {
+  .ad-stat-card h3 {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 0.5rem;
   }
   
-  .stat-card p {
+  .ad-stat-card p {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--dark-color);
   }
   
-  .stat-card .stat-icon {
+  .ad-stat-card .stat-icon {
     position: absolute;
     right: 1.5rem;
     top: 1.5rem;
@@ -241,60 +241,60 @@
     color: var(--dark-color);
   }
   
-  .stat-card.blue {
+  .ad-stat-card.blue {
     border-left: 4px solid var(--primary-color);
   }
   
-  .stat-card.green {
+  .ad-stat-card.green {
     border-left: 4px solid var(--success-color);
   }
   
-  .stat-card.orange {
+  .ad-stat-card.orange {
     border-left: 4px solid var(--warning-color);
   }
   
-  .stat-card.red {
+  .ad-stat-card.red {
     border-left: 4px solid var(--danger-color);
   }
   
-  .charts-section {
+  .ad-charts-section {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 1.5rem;
     margin-bottom: 2rem;
   }
   
-  .chart-container {
+  .ad-chart-container {
     background: white;
     border-radius: 10px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
   
-  .chart-container h3 {
+  .ad-chart-container h3 {
     margin-bottom: 1rem;
     color: var(--dark-color);
   }
   
-  .recent-activity {
+  .ad-recent-activity {
     background: white;
     border-radius: 10px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
   
-  .recent-activity h3 {
+  .ad-recent-activity h3 {
     margin-bottom: 1rem;
     color: var(--dark-color);
   }
   
-  .activity-list {
+  .ad-activity-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
   
-  .activity-item {
+  .ad-activity-item {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -303,11 +303,11 @@
     transition: all 0.2s ease;
   }
   
-  .activity-item:hover {
+  .ad-activity-item:hover {
     background-color: #f8f9fa;
   }
   
-  .activity-icon {
+  .ad-activity-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -318,50 +318,50 @@
     color: var(--primary-color);
   }
   
-  .activity-details p {
+  .ad-activity-details p {
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
     color: var(--dark-color);
   }
   
-  .activity-details small {
+  .ad-activity-details small {
     color: #888;
     font-size: 0.75rem;
   }
   
   /* Responsive Styles */
   @media (max-width: 992px) {
-    .sidebar {
+    .ad-sidebar {
       width: 70px;
       overflow: hidden;
     }
     
-    .sidebar-header h2,
-    .sidebar-menu li span {
+    .ad-sidebar-header h2,
+    .ad-sidebar-menu li span {
       display: none;
     }
     
-    .sidebar-menu li {
+    .ad-sidebar-menu li {
       justify-content: center;
       padding: 0.75rem;
     }
     
-    .sidebar-menu .icon {
+    .ad-sidebar-menu .icon {
       margin-right: 0;
       font-size: 1.2rem;
     }
     
-    .charts-section {
+    .ad-charts-section {
       grid-template-columns: 1fr;
     }
   }
   
   @media (max-width: 768px) {
-    .dashboard-container {
+    .ad-dashboard-container {
       flex-direction: column;
     }
     
-    .sidebar {
+    .ad-sidebar {
       width: 100%;
       height: auto;
       position: static;
@@ -369,23 +369,23 @@
       padding: 0;
     }
     
-    .sidebar-header {
+    .ad-sidebar-header {
       display: none;
     }
     
-    .sidebar-menu {
+    .ad-sidebar-menu {
       display: flex;
       overflow-x: auto;
       padding: 0.5rem;
       width: 100%;
     }
     
-    .sidebar-menu li {
+    .ad-sidebar-menu li {
       margin-bottom: 0;
       flex-shrink: 0;
     }
     
-    .stats-section {
+    .ad-stats-section {
       grid-template-columns: 1fr 1fr;
     }
   }

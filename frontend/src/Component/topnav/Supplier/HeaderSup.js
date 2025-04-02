@@ -5,8 +5,20 @@ import logo from "../../pictures/logo.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import "./HeaderSup.css";
+import { useNavigate } from "react-router-dom";
+
 
 function HeadNav() {
+  const navigate = useNavigate();
+    const handleLogout = () => {
+      localStorage.clear();
+      sessionStorage.clear();
+      if (typeof window.cancelRequest === 'function') {
+        window.cancelRequest();
+      }
+      alert("Logged out successfully");
+      navigate("/log", { replace: true });
+    };
   return (
     <Navbar className="custom-navbar">
       <Container>
@@ -33,7 +45,7 @@ function HeadNav() {
               id="basic-nav-dropdown"
             >
               <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
-              <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

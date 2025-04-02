@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import Nav from "../topnav/mainnav/nav";
+import Nav from "../topnav/mainnav/nav"
 import "./service.css";
 
 function Services() {
-  // Animation variants
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -76,6 +76,7 @@ function Services() {
 
   return (
     <div className="services-page">
+      <Nav/>
       {/* Hero Section */}
       <section className="services-hero">
         <div className="hero-overlay"></div>

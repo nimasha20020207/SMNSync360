@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import "./ContactUs.css";
+import Nav from "../../topnav/mainnav/nav"
 
 // Define animation variants for framer-motion
 const fadeInUp = {
@@ -36,6 +37,7 @@ function ContactUs() {
 
   return (
     <div className="contact-us">
+      <Nav/>
       <section className="contact-hero">
         <div className="hero-overlay">
           <h1>Contact Us</h1>

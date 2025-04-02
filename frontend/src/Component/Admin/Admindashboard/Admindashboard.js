@@ -40,20 +40,20 @@ function AdminDashboard() {
   };
 
   return (
-    <div className="admin-dashboard">
-      <header className="dashboard-header">
-        <div className="header-left">
+    <div className="ad-admin-dashboard">
+      <header className="ad-dashboard-header">
+        <div className="ad-header-left">
           <h1>SMN Construction</h1>
         </div>
-        <div className="header-right">
-          <div className="notification-badge">
-            <FaBell className="icon notification-icon" />
-            <span className="badge">3</span>
+        <div className="ad-header-right">
+          <div className="ad-notification-badge">
+            <FaBell className="ad-icon ad-notification-icon" />
+            <span className="ad-badge">3</span>
           </div>
-          <div className="user-profile">
-            <FaUserCircle className="profile-icon" />
-            <span className="username">Admin</span>
-            <div className="dropdown-menu">
+          <div className="ad-user-profile">
+            <FaUserCircle className="ad-profile-icon" />
+            <span className="ad-username">Admin</span>
+            <div className="ad-dropdown-menu">
               <Link to="/profile">My Profile</Link>
               <button onClick={handleLogout}>Logout</button>
             </div>
@@ -61,75 +61,75 @@ function AdminDashboard() {
         </div>
       </header>
 
-      <div className="dashboard-container">
-        <nav className="sidebar">
-          <div className="sidebar-header">
+      <div className="ad-dashboard-container">
+        <nav className="ad-sidebar">
+          <div className="ad-sidebar-header">
             <h2>Admin Menu</h2>
           </div>
-          <ul className="sidebar-menu">
-            <li className="active">
-              <FaTachometerAlt className="icon" />
+          <ul className="ad-sidebar-menu">
+            <li className="ad-active">
+              <FaTachometerAlt className="ad-icon" />
               <span>Dashboard</span>
             </li>
             <li>
               <Link to="/userdetails">
-                <FaUsers className="icon" />
+                <FaUsers className="ad-icon" />
                 <span>Users</span>
               </Link>
             </li>
             <li>
-              <FaUserCircle className="icon" />
+              <FaUserCircle className="ad-icon" />
               <span>Profiles</span>
             </li>
             <li>
-              <FaBell className="icon" />
+              <FaBell className="ad-icon" />
               <span>Notifications</span>
             </li>
             <li>
-              <FaExclamationCircle className="icon" />
+              <FaExclamationCircle className="ad-icon" />
               <span>Issues</span>
             </li>
             <li>
-              <FaHandshake className="icon" />
+              <FaHandshake className="ad-icon" />
               <span>Request</span>
             </li>
             <li>
-              <FaQuestionCircle className="icon" />
+              <FaQuestionCircle className="ad-icon" />
               <span>Help & Center</span>
             </li>
             <li onClick={handleLogout}>
-              <FaSignOutAlt className="icon" />
+              <FaSignOutAlt className="ad-icon" />
               <span>Logout</span>
             </li>
           </ul>
         </nav>
 
-        <main className="main-content">
-          <section className="stats-section">
-            <div className="stat-card blue">
+        <main className="ad-main-content">
+          <section className="ad-stats-section">
+            <div className="ad-stat-card ad-blue">
               <h3>Total Users</h3>
               <p>1,250</p>
-              <FaUserCircle className="stat-icon" />
+              <FaUserCircle className="ad-stat-icon" />
             </div>
-            <div className="stat-card green">
+            <div className="ad-stat-card ad-green">
               <h3>Active Projects</h3>
               <p>24</p>
-              <FaTachometerAlt className="stat-icon" />
+              <FaTachometerAlt className="ad-stat-icon" />
             </div>
-            <div className="stat-card orange">
+            <div className="ad-stat-card ad-orange">
               <h3>Pending Requests</h3>
               <p>12</p>
-              <FaHandshake className="stat-icon" />
+              <FaHandshake className="ad-stat-icon" />
             </div>
-            <div className="stat-card red">
+            <div className="ad-stat-card ad-red">
               <h3>Issues Reported</h3>
               <p>8</p>
-              <FaExclamationCircle className="stat-icon" />
+              <FaExclamationCircle className="ad-stat-icon" />
             </div>
           </section>
 
-          <section className="charts-section">
-            <div className="chart-container">
+          <section className="ad-charts-section">
+            <div className="ad-chart-container">
               <h3>User Role Distribution</h3>
               <PieChart width={300} height={300}>
                 <Pie
@@ -150,7 +150,7 @@ function AdminDashboard() {
               </PieChart>
             </div>
             
-            <div className="chart-container">
+            <div className="ad-chart-container">
               <h3>Users vs Projects</h3>
               <BarChart
                 width={500}
@@ -169,14 +169,14 @@ function AdminDashboard() {
             </div>
           </section>
 
-          <section className="recent-activity">
+          <section className="ad-recent-activity">
             <h3>Recent Activities</h3>
-            <div className="activity-list">
-              <div className="activity-item">
-                <div className="activity-icon">
+            <div className="ad-activity-list">
+              <div className="ad-activity-item">
+                <div className="ad-activity-icon">
                   <FaUserCircle />
                 </div>
-                <div className="activity-details">
+                <div className="ad-activity-details">
                   <p>New user registered - John Doe</p>
                   <small>2 hours ago</small>
                 </div>

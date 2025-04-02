@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-//import Nav from "../topnav/mainnav/nav";
+import Nav from "../topnav/mainnav/nav";
 import "./Home.css";
 import img7 from "../pictures/7.jpg";
 import img8 from "../pictures/8.jpg";
@@ -205,6 +205,7 @@ function Home() {
 
   return (
     <div className="home-page">
+      <Nav/>
       {/* Hero Section with Slideshow */}
       <section className="hero">
         <AnimatePresence>

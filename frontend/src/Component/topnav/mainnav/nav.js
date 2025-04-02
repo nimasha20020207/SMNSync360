@@ -5,21 +5,21 @@ import "./nav1.css";
 
 function HeadNav() {
   return (
-    <nav className="custom-navbar">
-      <div className="nav-container">
+    <nav className="head-custom-navbar">
+      <div className="head-nav-container">
         <Link to="/" className="navbar-brand">
-          <img src={Logo} alt="Logo" className="logo-image" />
+          <img src={Logo} alt="Logo" className="head-logo-image" />
         </Link>
 
-        <div className="navbar-nav">
-          <Link to="/mainhome" className="nav-link">Home</Link>
-          <Link to="/contact" className="nav-link">Contact Us</Link>
-          <Link to="/about" className="nav-link">About Us</Link>
-          <Link to="/service" className="nav-link">Services</Link>
+        <div className="head-navbar-nav">
+          <Link to="/mainhome" className="head-nav-link">Home</Link>
+          <Link to="/contact" className="head-nav-link">Contact Us</Link>
+          <Link to="/about" className="head-nav-link">About US</Link>
+          <Link to="/service" className="head-nav-link">Services</Link>
         </div>
 
-        <div className="nav-actions ms-auto">
-          <Link to="/log" className="nav-link login-btn">Log In</Link>
+        <div className="head-nav-actions">
+          <Link to="/log" className="head-nav-link head-login-btn">Log In</Link>
         </div>
       </div>
     </nav>

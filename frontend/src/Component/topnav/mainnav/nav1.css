@@ -1,13 +1,15 @@
-.custom-navbar {
+.head-custom-navbar {
   height: 70px;
   display: flex;
   align-items: center;
   background-color: #fffafa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.459);
   border-radius: 5px;
+  top: 0;
+  width: 100%;
 }
 
-.nav-container {
+.head-nav-container {
   display: flex;
   width: 100%;
   align-items: center;
@@ -15,14 +17,14 @@
   padding: 0 20px;
 }
 
-.logo-image {
+.head-logo-image {
   width: 150px;
   height: auto;
   max-height: 150px;
   margin-top: 20px;
 }
 
-.navbar-nav {
+.head-navbar-nav {
   display: flex;
   flex-grow: 1;
   justify-content: center;
@@ -30,31 +32,31 @@
   gap: 30px;
 }
 
-.nav-link {
+.head-nav-link {
   font-weight: bold;
   color: #000;
   text-decoration: none;
   padding: 8px 16px;
 }
 
-.nav-actions {
+.head-nav-actions {
   display: flex;
   align-items: center;
 }
 
-.user-profile {
+.head-user-profile {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.username {
+.head-username {
   font-weight: bold;
   color: #000;
   margin-right: 10px;
 }
 
-.dropdown-menu {
+.head-dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
@@ -64,43 +66,36 @@
   display: none;
 }
 
-.user-profile:hover .dropdown-menu {
+.head-user-profile:hover .head-dropdown-menu {
   display: block;
 }
 
-.dropdown-item {
-  color: #000;
-  padding: 8px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.nav-link:hover,
+.head-nav-link:hover,
 .dropdown-item:hover {
   color: rgba(0, 0, 255, 0.884);
   background-color: rgba(0, 89, 255, 0.288);
   border-radius: 10px;
 }
 
-.login-btn {
-  background-color: #28a745;
+.head-login-btn {
+  background-color: #007bff; /* Changed to blue */
   color: white !important;
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
 
-.login-btn:hover {
-  background-color: #218838;
+.head-login-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
   color: white !important;
 }
 
 @media (max-width: 768px) {
-  .navbar-nav {
+  .head-navbar-nav { /* Fixed class name */
     flex-direction: column;
     gap: 10px;
   }
 
-  .nav-container {
+  .head-nav-container { /* Fixed class name */
     flex-direction: column;
     padding: 10px;
   }

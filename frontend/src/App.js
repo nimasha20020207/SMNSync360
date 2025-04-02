@@ -2,7 +2,6 @@
 import React, { useEffect, useCallback } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
-import Nav from "./Component/topnav/mainnav/nav";
 import AddUsr from "./Component/Admin/AddUsr/addusr";
 import Users from "./Component/Admin/User Details/Users";
 import Home from "./Component/Homee/Home";
@@ -14,7 +13,6 @@ import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
 import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
 import Appservices from "./Component/Appservices/service";
-import ProjectManager from "./Component/Admin/ProjectManager/ProjectManager";
 import Clientdashboard from "./Component/Admin/Clientdasboard/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -78,7 +76,6 @@ function App() {
     "/addusr",
     "/userdetails",
     "/userdetails/:id",
-    "/pmdash",
     "/clientdash",
     "/supplierdash",
   ];
@@ -112,7 +109,7 @@ function App() {
 
   return (
   <div className="App">
-      {!(isLoggedIn && isProtectedRoute) && <Nav />}
+     
       <React.Fragment>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -156,10 +153,10 @@ function App() {
           }
         />
         <Route
-          path="/pmdash"
+          path="/pamdash"
           element={
             <PrivateRoute allowedRoles={["projectManager"]}>
-              <ProjectManager/>
+              <Home1/>
             </PrivateRoute>
           }
         />
@@ -171,11 +168,35 @@ function App() {
             </PrivateRoute>
           }
         />
+         <Route
+          path="/qsdash"
+          element={
+            <PrivateRoute allowedRoles={["quantitysurveyor"]}>
+              <QShome/>
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/fodash"
+          element={
+            <PrivateRoute allowedRoles={["financeofficer"]}>
+              <FOhome/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/imdash"
+          element={
+            <PrivateRoute allowedRoles={["inventorymanager"]}>
+              <HomeIM/>
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/supplierdash"
           element={
             <PrivateRoute allowedRoles={["supplier"]}>
-              <div>Supplier Dashboard</div>
+              <Supplier/>
             </PrivateRoute>
           }
         />
@@ -197,8 +218,8 @@ function App() {
           <Route path='/Communicationfo' element={<Focommunicate/>}/>
           
         {/* Existing routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/pmhome" element={<Home />} />
+        <Route path="/" element={<Home1 />} />
+        <Route path="/pmhome" element={<Home1 />} />
         <Route path="/AddProjectDetails" element={<AddProjectDetails />} />
         <Route path="/ScheduleProjectDetails" element={<ScheduleProjectDetails />} />
         <Route path="/ScheduleProjectDetails/:id" element={<UpdateScheduleProjects />} />

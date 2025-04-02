@@ -1,14 +1,26 @@
 import React from "react";
 import "./AboutUs.css";
 import img1 from "../../pictures/clay-elliot-HfMCgqOLTyM-unsplash.jpg";
-import Fot from "../../bottomnav/foter"
+import { motion } from "framer-motion";
+
+import Nav from "../../topnav/mainnav/nav"
 
 function AboutUs() {
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
   return (
     <div className="about-us">
+      <Nav/>
       <section className="about-hero">
         <div className="hero-overlay">
-          <h1>About MSN Constructions</h1>
+          <h1>About SMN Constructions</h1>
           <p>Building the Future, One Project at a Time</p>
         </div>
       </section>
@@ -96,7 +108,80 @@ function AboutUs() {
           </div>
         </div>
       </section>
-      <Fot />
+      <footer>
+        <div className="footer-content">
+          <motion.div className="footer-section" variants={fadeInUp}>
+            <h3>About Us</h3>
+            <p>
+              Building isn’t just a job. At The Construction Company, it is our
+              passion. With every project we undertake, we set out to ensure
+              complete satisfaction.
+            </p>
+          </motion.div>
+          <motion.div className="footer-section" variants={fadeInUp}>
+            <h3>Company Links</h3>
+            <ul>
+              <li>
+                <a href="#history">History</a>
+              </li>
+              <li>
+                <a href="#team">Team & Awards</a>
+              </li>
+              <li>
+                <a href="#community">Community</a>
+              </li>
+              <li>
+                <a href="#news">News & Events</a>
+              </li>
+              <li>
+                <a href="#faq">FAQ</a>
+              </li>
+              <li>
+                <a href="#contact">Contact Us</a>
+              </li>
+            </ul>
+          </motion.div>
+          <motion.div className="footer-section" variants={fadeInUp}>
+            <h3>Contact Info</h3>
+            <p>Address: 1340 Shrewsbury Parkway, Srilanka</p>
+            <p>Phone: +1 717-999-9999</p>
+            <p>Email: SMN@construction.com</p>
+            <div className="social-icons">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://plus.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fab fa-google-plus-g"></i>
+              </a>
+              <a
+                href="https://pinterest.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fab fa-pinterest"></i>
+              </a>
+            </div>
+          </motion.div>
+        </div>
+        <motion.p className="footer-copyright" variants={fadeInUp}>
+          © {new Date().getFullYear()} SMN Constructions. All rights reserved.
+        </motion.p>
+      </footer>
     </div>
   );
 }

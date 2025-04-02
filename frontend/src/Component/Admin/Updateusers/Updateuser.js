@@ -77,8 +77,11 @@ function UpdateUser() {
                                 >
                                     <option value="">Select Role</option>
                                     <option value="admin">Admin</option>
-                                    <option value="user">Regular User</option>
-                                    <option value="manager">Manager</option>
+                                    <option value="sitesupervisor">sitesupervisor</option>
+                                    <option value="projectManager">projectManager</option>
+                                    <option value="quantitysurveyor">projectManager</option>
+                                    <option value="inventorymanager">inventorymanager</option>
+                                    <option value="financeofficer">financeofficer</option>
                                 </select>
                             </div>
                         </div>
