@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { FaEdit, FaExclamationTriangle } from "react-icons/fa"; // Icons for edit and no records
+//import { useNavigate } from "react-router-dom";
+import {  FaExclamationTriangle } from "react-icons/fa"; // Icons for edit and no records
 
 const URL = "http://localhost:5000/ConfirmedOrders"; // API Endpoint
 
 function ReadOrders() {
   const [orders, setOrders] = useState([]);
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
 
   // Fetch Data
   useEffect(() => {

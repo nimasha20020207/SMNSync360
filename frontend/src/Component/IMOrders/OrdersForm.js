@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 function OrdersForm() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   // Material list
   const inventoryItems = [
@@ -51,9 +51,9 @@ function OrdersForm() {
   }
 
   // Navigate to the view placed orders page
-  const handleViewOrders = () => {
-    navigate('/OrderView'); // Adjust route as needed
-  };
+  // const handleViewOrders = () => {
+  //   navigate('/OrderView'); // Adjust route as needed
+  // };
 
   return (
     <div>
