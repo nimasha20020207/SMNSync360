@@ -4,22 +4,25 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../pictures/logo.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
-import "../topnav/nav.css";
+import "./Header.css";
 
 function HeadNav() {
   return (
     <Navbar className="custom-navbar">
       <Container>
-        <Navbar.Brand href="/QShome">
+        <Navbar.Brand href="/">
           <img alt="logo" src={logo} className="logo-image" />
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="navbar-nav">
-            <Nav.Link href="/QShome" className="home">Home</Nav.Link>
-            <Nav.Link href="/task" className="task">Task</Nav.Link>
-            <Nav.Link href="/Budget" className="budget">Budget</Nav.Link>
+            <Nav.Link href="/pmhome" className="home">Home</Nav.Link>
+            <Nav.Link href="/ScheduleProjectDetails" className="home">project</Nav.Link>
+            <Nav.Link href="/AssignedTasks" className="home">task</Nav.Link>
+            <Nav.Link href="/Progress" className="Users">Progress</Nav.Link>
+            <Nav.Link href="/Users" className="Users">Requiment</Nav.Link>
+            <Nav.Link href="/Inventory" className="Users">Inventory</Nav.Link>
           </Nav>
          
           <Nav className="ms-auto"> 

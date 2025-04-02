@@ -1,7 +1,7 @@
 import React from "react";
-import "../bottomnav/foter.css";
+import "./Footer.css";
 
-function foter() {
+function Footer() {
   return (
     <div className="custom-footer">
       <p>
@@ -13,4 +13,4 @@ function foter() {
   );
 }
 
-export default foter;
+export default Footer;
