@@ -93,7 +93,7 @@ function App() {
         <Route path="/viewprogress" element={<ReadPro />} /> 
         <Route path="/update/:id" element={<UPpro />} />
 
-        <Route path='/' element={<HomeIM/>}/>
+        <Route path='/HomeIM' element={<HomeIM/>}/>
         <Route path='/Materials' element={<Materials />}/>
         <Route path='/MaterialView' element={<MaterialView/>}/>
         <Route path='/Orders' element={<Orders/>}/>

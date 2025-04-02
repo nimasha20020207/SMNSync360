@@ -10,7 +10,6 @@ const scheduleRouter = require("./Router/ScheduleRoutes");
 const taskRouter = require("./Router/TaskRoutes");
 const requestinRouter = require("./Router/inventoryrequest");
 const progressRouter = require("./Router/Progressroter")
-const cors = require("cors");
 const router = require("./Router/Budgetroute");
 const router1 = require("./Router/Expensesroute");
 const db = require("./util/db");

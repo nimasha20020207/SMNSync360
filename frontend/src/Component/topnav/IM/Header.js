@@ -17,7 +17,7 @@ function HeadNav() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="navbar-nav">
-            <Nav.Link href="/" className="home">Home</Nav.Link>
+            <Nav.Link href="/HomeIM" className="home">Home</Nav.Link>
             <Nav.Link href="/Item" className="additem">Add Item</Nav.Link>
             <Nav.Link href="/Checkinventory" className="checkInv">Check Inventory</Nav.Link>
             <Nav.Link href="/Orders" className="placeorder">Order</Nav.Link>
