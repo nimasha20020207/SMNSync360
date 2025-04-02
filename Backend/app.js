@@ -1,44 +1,23 @@
+// app.js (Backend)
+console.log("hi");
 const express = require("express");
 const mongoose = require("mongoose");
-//const router = require("./Route/");
-const db = require("./util/db");
+const router = require("./Router/UserRoute");
 const app = express();
-const cors = require('cors')
+const cors = require("cors");
+const User = require("./Model/UserModel");
 
-//middleware
+// Middleware
 app.use(express.json());
 app.use(cors());
-//app.use("/",router);
+app.use("/users", router);
 
-//ajtdQYIXjaiZbNli
-//mongoose.connect("mongodb+srv://janithsdissanayaka:ajtdQYIXjaiZbNli@cluster0.n2zxb.mongodb.net/")
-//mongoose.connect("mongodb://0.0.0.0:27017/CCMS")
-
-db
-.then(() => console.log("connection succ"))
-.then(() =>{
-    app.listen(5000);
-})
-.catch((err)=> console.log(err));
-
-// Register function
-require("./Model/Register");
-const User = mongoose.model("Register");
-
-app.post("/register", async (req, res) => {
-    const { name, email, password, role } = req.body; // Add role to request body
-    try {
-        await User.create({
-            name,
-            email,
-            password,
-            role: role || "client", // Default to "client" if role not provided
-        });
-        res.send({ status: "ok" });
-    } catch (err) {
-        res.send({ status: "err" });
-    }
-});
+mongoose.connect("mongodb+srv://admin12:nje2oNExl9DamvCd@cluster0.q4j6l.mongodb.net/")
+    .then(() => console.log("Connected to MongoDB"))
+    .then(() => {
+        app.listen(5000);
+    })
+    .catch((err) => console.log(err));
 
 // Login function
 app.post("/login", async (req, res) => {
@@ -51,7 +30,7 @@ app.post("/login", async (req, res) => {
         if (user.password === password) {
             return res.json({ 
                 status: "ok", 
-                role: user.role // Return the user's role
+                userrole: user.userrole // Return the user's role
             });
         } else {
             return res.json({ err: "incorrect password" });

@@ -1,5 +1,5 @@
 import React from "react";
-import Nav from "../../topnav/nav";
+import Nav from "../../topnav/mainnav/nav";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ function AddUser(props) {
     return <div>Loading user data...</div>; // Graceful fallback if user is undefined
   } */
 
-  const { _id, name, email, age, address } = props.user;
+  const { _id,userid, name, email, age, address,userrole,password} = props.user;
 
   const history = useNavigate();
   const deleteHandler = async () => {
@@ -25,10 +25,12 @@ function AddUser(props) {
    
       <tr>
       <td>{_id}</td>
+      <td>{userid}</td>
       <td>{name}</td>
       <td>{email}</td>
       <td>{age}</td>
       <td>{address}</td>
+      <td>{userrole}</td>
       <td>
         <Link to={`/userdetails/${_id}`}>
           <button className="btn btn-update">Update</button>

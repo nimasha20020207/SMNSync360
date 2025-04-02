@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Nav from '../topnav/nav'; 
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
@@ -24,13 +23,15 @@ function Login() {
       if (response.status === "ok") {
         alert("Login success");
         localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userRole", response.role);
-
-        switch (response.role) {
+        localStorage.setItem("userRole", response.userrole);
+        localStorage.setItem("username", response.username || "User");
+        
+        const userRole = response.userrole ? response.userrole.toLowerCase() : "";
+        switch (userRole) {
           case "admin":
             navigate("/admindash", { replace: true });
             break;
-          case "projectManager":
+          case "projectmanager":
             navigate("/pmdash", { replace: true });
             break;
           case "client":

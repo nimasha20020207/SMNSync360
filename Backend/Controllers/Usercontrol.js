@@ -20,12 +20,12 @@ const getAllUsers=async(req,res,next)=>{
 
 //data insert
 const addusers= async(req,res,next)=>{
-    const{name,email,age,address}=req.body;
+    const{userid,name,email,age,address,userrole,password}=req.body;
 
     let users;
 
     try{
-        users=new User({name,email,age,address});
+        users=new User({userid,name,email,age,address,userrole,password});
         await users.save();
     }catch(err){
         console.log(err);
@@ -57,13 +57,13 @@ const getById=async(req,res,next)=>{
 //update user details
 const Updateuser=async(req,res,next)=>{
     const id=req.params.id;
-    const{name,email,age,address}=req.body;
+    const{userid,name,email,age,address,userrole,password}=req.body;
 
     let users;
     
     try{
         users=await User.findByIdAndUpdate(id,
-            {name:name,email:email,age:age,address:address});
+            {userid:userid,name:name,email:email,age:age,address:address,userrole:userrole,password:password});
         users=await users.save();
     }catch(err){
         console.log(err);
@@ -88,6 +88,7 @@ const DeleteUser=async(req,res,next)=>{
         return res.status(404).json({message:"unable to delete users"});
     }return res.status(200).json({users});
 }
+
 
 exports.getAllUsers=getAllUsers;
 exports.addusers=addusers;

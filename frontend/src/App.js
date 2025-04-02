@@ -1,9 +1,8 @@
-// App.jsx
+// frontend/src/App.jsx
 import React, { useEffect, useCallback } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
-import Nav from "./Component/topnav/nav"; // Verify this path
-import Fot from "./Component/bottomnav/foter";
+import Nav from "./Component/topnav/mainnav/nav";
 import AddUsr from "./Component/Admin/AddUsr/addusr";
 import Users from "./Component/Admin/User Details/Users";
 import Home from "./Component/Home/Home";
@@ -12,13 +11,30 @@ import Admindashboard from "./Component/Admin/Admindashboard/Admindashboard";
 import ContactUs from "./Component/Admin/ContactUs/ContactUs";
 import Login from "./Component/Login/Login";
 import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
-import Register from "./Component/Admin/Register/Register";
 import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
-import Appservices from "./Component/Appservices/service"
+import Appservices from "./Component/Appservices/service";
+import ProjectManager from "./Component/Admin/ProjectManager/ProjectManager";
+import Clientdashboard from "./Component/Admin/Clientdasboard/client";
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  const protectedRoutes = [
+    "/admindash",
+    "/addusr",
+    "/userdetails",
+    "/userdetails/:id",
+    "/pmdash",
+    "/clientdash",
+    "/supplierdash",
+  ];
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    location.pathname.startsWith(route.split(":")[0])
+  );
 
   const debounce = (func, wait) => {
     let timeout;
@@ -45,11 +61,10 @@ function App() {
 
   return (
     <>
-      <Nav />
+      {!(isLoggedIn && isProtectedRoute) && <Nav />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/mainhome" element={<Home />} />
-        <Route path="/regi" element={<Register />} />
         <Route path="/log" element={<Login />} />
         <Route path="/passRe" element={<PasswordReset />} />
         <Route path="/contact" element={<ContactUs />} />
@@ -58,7 +73,8 @@ function App() {
         <Route
           path="/admindash"
           element={
-            <PrivateRoute allowedRoles={["admin", "projectManager", "client", "supplier"]}>
+            <PrivateRoute
+              allowedRoles={["admin"]}>
               <Admindashboard />
             </PrivateRoute>
           }
@@ -67,7 +83,7 @@ function App() {
           path="/addusr"
           element={
             <PrivateRoute allowedRoles={["admin"]}>
-              <AddUsr />
+              <AddUsr/>
             </PrivateRoute>
           }
         />
@@ -87,8 +103,31 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/pmdash"
+          element={
+            <PrivateRoute allowedRoles={["projectmanager"]}>
+              <ProjectManager/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/clientdash"
+          element={
+            <PrivateRoute allowedRoles={["client"]}>
+              <Clientdashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/supplierdash"
+          element={
+            <PrivateRoute allowedRoles={["supplier"]}>
+              <div>Supplier Dashboard</div>
+            </PrivateRoute>
+          }
+        />
       </Routes>
-     
     </>
   );
 }
