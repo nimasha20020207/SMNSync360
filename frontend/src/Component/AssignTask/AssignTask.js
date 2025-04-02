@@ -183,7 +183,7 @@ function AssignTask() {
               value={inputs.Task_Status}
             >
               <option value="pending">Pending</option>
-              <option value="inprogress">In Progress</option>
+              <option value="in-progress">In Progress</option>
               <option value="completed">Completed</option>
             </Form.Select>
           </Form.Group>

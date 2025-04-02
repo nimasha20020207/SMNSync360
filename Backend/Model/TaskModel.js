@@ -47,7 +47,6 @@ const TaskSchema = new Schema({
     Deadline: {
         type: Date,
         required: [true, "Deadline is required"],
-        min: [Date.now, "Deadline cannot be in the past"]
     },
     Priority_Level: {
         type: String,
