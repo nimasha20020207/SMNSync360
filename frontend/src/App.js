@@ -5,7 +5,7 @@ import "./App.css";
 import Nav from "./Component/topnav/mainnav/nav";
 import AddUsr from "./Component/Admin/AddUsr/addusr";
 import Users from "./Component/Admin/User Details/Users";
-import Home from "./Component/Home/Home";
+import Home from "./Component/Homee/Home";
 import AboutUs from "./Component/Admin/AboutUs/AboutUs";
 import Admindashboard from "./Component/Admin/Admindashboard/Admindashboard";
 import ContactUs from "./Component/Admin/ContactUs/ContactUs";

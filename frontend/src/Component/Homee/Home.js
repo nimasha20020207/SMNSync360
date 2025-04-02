@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Nav from "../topnav/mainnav/nav";
+//import Nav from "../topnav/mainnav/nav";
 import "./Home.css";
 import img7 from "../pictures/7.jpg";
 import img8 from "../pictures/8.jpg";
@@ -266,14 +266,14 @@ function Home() {
                 </div>
                 <div className="content-wrap">
                   <h3 className="dd-title">
-                    <a href="#">Construction Manager</a>
+                    <a href="/">Construction Manager</a>
                   </h3>
                   <p>
                     Nullam ornare odio eu lacus tincidunt malesuada. Sed eu
                     vestibulum elit. Curabitur tortor mi, eleifend ornare.
                   </p>
                   <div className="dd-link">
-                    <a href="#">READ MORE</a>
+                    <a href="/">READ MORE</a>
                   </div>
                 </div>
               </motion.div>
@@ -294,14 +294,14 @@ function Home() {
                 </div>
                 <div className="content-wrap">
                   <h3 className="dd-title">
-                    <a href="#">Safety is Key</a>
+                    <a href="/">Safety is Key</a>
                   </h3>
                   <p>
                     Nullam ornare odio eu lacus tincidunt malesuada. Sed eu
                     vestibulum elit. Curabitur tortor mi, eleifend ornare.
                   </p>
                   <div className="dd-link">
-                    <a href="#">READ MORE</a>
+                    <a href="/">READ MORE</a>
                   </div>
                 </div>
               </motion.div>
@@ -324,14 +324,14 @@ function Home() {
                 </div>
                 <div className="content-wrap">
                   <h3 className="dd-title">
-                    <a href="#">Design and Build</a>
+                    <a href="/">Design and Build</a>
                   </h3>
                   <p>
                     Nullam ornare odio eu lacus tincidunt malesuada. Sed eu
                     vestibulum elit. Curabitur tortor mi, eleifend ornare.
                   </p>
                   <div className="dd-link">
-                    <a href="#">READ MORE</a>
+                    <a href="/">READ MORE</a>
                   </div>
                 </div>
               </motion.div>
@@ -352,14 +352,14 @@ function Home() {
                 </div>
                 <div className="content-wrap">
                   <h3 className="dd-title">
-                    <a href="#">Sustainable Construction</a>
+                    <a href="/">Sustainable Construction</a>
                   </h3>
                   <p>
                     Nullam ornare odio eu lacus tincidunt malesuada. Sed eu
                     vestibulum elit. Curabitur tortor mi, eleifend ornare.
                   </p>
                   <div className="dd-link">
-                    <a href="#">READ MORE</a>
+                    <a href="/">READ MORE</a>
                   </div>
                 </div>
               </motion.div>

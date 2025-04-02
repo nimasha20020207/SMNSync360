@@ -1,24 +1,23 @@
 // app.js (Backend)
-console.log("hi");
 const express = require("express");
 const mongoose = require("mongoose");
 const router = require("./Router/UserRoute");
 const app = express();
 const cors = require("cors");
 const User = require("./Model/UserModel");
+const db = require("./util/db")
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 app.use("/users", router);
 
-mongoose.connect("mongodb+srv://admin12:nje2oNExl9DamvCd@cluster0.q4j6l.mongodb.net/")
-    .then(() => console.log("Connected to MongoDB"))
-    .then(() => {
-        app.listen(5000);
-    })
-    .catch((err) => console.log(err));
-
+db
+.then(() => console.log("connection succ"))
+.then(() =>{
+    app.listen(5000);
+})
+.catch((err)=> console.log(err));
 // Login function
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
