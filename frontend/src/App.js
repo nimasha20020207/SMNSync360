@@ -28,6 +28,9 @@ import UpdateAssignedTask from "./Component/UpdateAssignedTask/UpdateAssignedTas
 import Inventory from "./Component/Inventory/inventory";
 import Inventorycreate from "./Component/Inventory/createinventory";
 import Inventoryupdate from "./Component/Inventory/updateinventory";
+import Progressrea from "./Component/Progress/Users";
+import ReadPro from "./Component/Progress/UserTableView";
+import UPpro from "./Component/Progress/UpdateProgress"
 
 function App() {
   return (
@@ -65,6 +68,10 @@ function App() {
         <Route path="/addinven" element={<Inventorycreate />} />
         <Route path="/Inventory" element={<Inventory />} />
         <Route path="/Inventoryup/:_id" element={<Inventoryupdate />} />
+
+        <Route path="/Progress" element={<Progressrea />} />  
+        <Route path="/viewprogress" element={<ReadPro />} /> 
+        <Route path="/update/:id" element={<UPpro />} />
         </Routes>
       </React.Fragment>
     </div>

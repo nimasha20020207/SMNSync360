@@ -20,7 +20,7 @@ function HeadNav() {
             <Nav.Link href="/pmhome" className="home">Home</Nav.Link>
             <Nav.Link href="/ScheduleProjectDetails" className="home">project</Nav.Link>
             <Nav.Link href="/AssignedTasks" className="home">task</Nav.Link>
-            <Nav.Link href="/Users" className="Users">Progress</Nav.Link>
+            <Nav.Link href="/Progress" className="Users">Progress</Nav.Link>
             <Nav.Link href="/Users" className="Users">Requiment</Nav.Link>
             <Nav.Link href="/Inventory" className="Users">Inventory</Nav.Link>
           </Nav>
