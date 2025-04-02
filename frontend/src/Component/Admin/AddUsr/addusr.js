@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Nav from "../../topnav/mainnav/nav";
+//import Nav from "../../topnav/mainnav/nav";
 import "./addusr.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -40,9 +40,10 @@ function AddUsr() {
     { value: "admin", label: "Admin", prefix: "AD" },
     { value: "client", label: "Client", prefix: "CL" },
     { value: "sitesupervisor", label: "Site Supervisor", prefix: "SS" },
-    { value: "projectmanager", label: "Project Manager", prefix: "PM" },
+    { value: "projectManager", label: "Project Manager", prefix: "PM" },
     { value: "quantitysurveyor", label: "Quantity Surveyor", prefix: "QS" },
     { value: "inventorymanager", label: "Inventory Manager", prefix: "IM" },
+    { value: "financeofficer", label: "Finance officer", prefix: "FO" },
   ];
 
   useEffect(() => {

@@ -31,7 +31,7 @@ function Login() {
           case "admin":
             navigate("/admindash", { replace: true });
             break;
-          case "projectmanager":
+          case "projectManager":
             navigate("/pmdash", { replace: true });
             break;
           case "client":

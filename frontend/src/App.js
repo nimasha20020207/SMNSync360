@@ -106,7 +106,7 @@ function App() {
         <Route
           path="/pmdash"
           element={
-            <PrivateRoute allowedRoles={["projectmanager"]}>
+            <PrivateRoute allowedRoles={["projectManager"]}>
               <ProjectManager/>
             </PrivateRoute>
           }

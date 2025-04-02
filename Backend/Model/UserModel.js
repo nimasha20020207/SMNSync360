@@ -26,7 +26,7 @@ const UserSchema=new Schema({
     userrole:{
         type: String,
         required: true,
-        enum: ["admin", "projectManager", "client", "supplier"], // Restrict to these roles
+        enum: ["admin", "projectManager", "client", "supplier","quantitysurveyor","sitesupervisor","inventorymanager","financeofficer"], // Restrict to these roles
         default: "client", // Default role if none specified
     },
     password:{
