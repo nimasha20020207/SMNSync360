@@ -1,5 +1,5 @@
 import React from "react";
-import "../bottomnav/foter.css";
+import "../foter";
 
 function foter() {
   return (
