@@ -1,6 +1,19 @@
-import React from 'react';
-import {Routes,Route } from 'react-router-dom';
-import './App.css';
+// frontend/src/App.jsx
+import React, { useEffect, useCallback } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import "./App.css";
+import AddUsr from "./Component/Admin/AddUsr/addusr";
+import Users from "./Component/Admin/User Details/Users";
+import Home from "./Component/Homee/Home";
+import AboutUs from "./Component/Admin/AboutUs/AboutUs";
+import Admindashboard from "./Component/Admin/Admindashboard/Admindashboard";
+import ContactUs from "./Component/Admin/ContactUs/ContactUs";
+import Login from "./Component/Login/Login";
+import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
+import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
+import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
+import Appservices from "./Component/Appservices/service";
+import Clientdashboard from "./Component/Admin/Clientdasboard/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import HomeIM from './Component/IMcommon/HomeIM';
@@ -39,7 +52,7 @@ import Budgetstatus from './Component/FO/budgetstatus';
 import Focommunicate from './Component/FO/communicationfo'
 
 
-import Home from "./Component/Home/Home";
+import Home1 from "./Component/Home/Home";
 import AddProjectDetails from "./Component/AddProjectDetails/AddProjectDetails";
 import ScheduleProjectDetails from "./Component/ScheduleProjectDetails/ScheduleProjectDetails";
 import UpdateScheduleProjects from "./Component/UpdateScheduleProjects/UpdateScheduleProjects";
@@ -54,10 +67,141 @@ import ReadPro from "./Component/Progress/UserTableView";
 import UPpro from "./Component/Progress/UpdateProgress"
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  const protectedRoutes = [
+    "/admindash",
+    "/addusr",
+    "/userdetails",
+    "/userdetails/:id",
+    "/clientdash",
+    "/supplierdash",
+  ];
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    location.pathname.startsWith(route.split(":")[0])
+  );
+
+  const debounce = (func, wait) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
+
+  const handlePopstate = useCallback(
+    debounce(() => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      if (!isLoggedIn) {
+        navigate("/log", { replace: true });
+      }
+    }, 300),
+    [navigate]
+  );
+
+  useEffect(() => {
+    window.addEventListener("popstate", handlePopstate);
+    return () => window.removeEventListener("popstate", handlePopstate);
+  }, [handlePopstate]);
+
   return (
-    <div className="App">
+  <div className="App">
+     
       <React.Fragment>
-        <Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/mainhome" element={<Home />} />
+        <Route path="/log" element={<Login />} />
+        <Route path="/passRe" element={<PasswordReset />} />
+        <Route path="/contact" element={<ContactUs />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/service" element={<Appservices />} />
+        <Route
+          path="/admindash"
+          element={
+            <PrivateRoute
+              allowedRoles={["admin"]}>
+              <Admindashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/addusr"
+          element={
+            <PrivateRoute allowedRoles={["admin"]}>
+              <AddUsr/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/userdetails"
+          element={
+            <PrivateRoute allowedRoles={["admin"]}>
+              <Users />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/userdetails/:id"
+          element={
+            <PrivateRoute allowedRoles={["admin"]}>
+              <UpdateUser />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/pamdash"
+          element={
+            <PrivateRoute allowedRoles={["projectManager"]}>
+              <Home1/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/clientdash"
+          element={
+            <PrivateRoute allowedRoles={["client"]}>
+              <Clientdashboard />
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/qsdash"
+          element={
+            <PrivateRoute allowedRoles={["quantitysurveyor"]}>
+              <QShome/>
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/fodash"
+          element={
+            <PrivateRoute allowedRoles={["financeofficer"]}>
+              <FOhome/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/imdash"
+          element={
+            <PrivateRoute allowedRoles={["inventorymanager"]}>
+              <HomeIM/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/supplierdash"
+          element={
+            <PrivateRoute allowedRoles={["supplier"]}>
+              <Supplier/>
+            </PrivateRoute>
+          }
+        />
+    
+      
           <Route path='/FOhome' element={<FOhome/>}/>
           <Route path='/' element={<QShome/>}/>
           <Route path='/QShome' element={<QShome/>}/>
@@ -74,8 +218,8 @@ function App() {
           <Route path='/Communicationfo' element={<Focommunicate/>}/>
           
         {/* Existing routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/pmhome" element={<Home />} />
+        <Route path="/" element={<Home1 />} />
+        <Route path="/pmhome" element={<Home1 />} />
         <Route path="/AddProjectDetails" element={<AddProjectDetails />} />
         <Route path="/ScheduleProjectDetails" element={<ScheduleProjectDetails />} />
         <Route path="/ScheduleProjectDetails/:id" element={<UpdateScheduleProjects />} />
