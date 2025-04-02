@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Header from "../topNav/Header";
-import Footer from "../bottomNav/Footer";
+import Header from "../topnav/Header";
+import Footer from "../bottomnav/foter";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { 
   Container, 

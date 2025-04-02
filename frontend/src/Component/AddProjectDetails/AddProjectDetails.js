@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Header from "../topNav/Header";
-import Footer from "../bottomNav/Footer";
+import Header from "../topnav/Header";
+import Footer from "../bottomnav/foter";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";

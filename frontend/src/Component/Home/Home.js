@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
-import Header from '../topNav/Header';
-import Footer from '../bottomNav/Footer';
+import Header from '../topnav/Header';
+import Footer from '../bottomnav/foter';
 import { Container, Row, Col, Card, Form } from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, Tooltip, Legend, CategoryScale, LinearScale } from 'chart.js';

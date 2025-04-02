@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Header from "../topNav/Header";
-import Footer from "../bottomNav/Footer";
+import Header from "../topnav/Header";
+import Footer from "../bottomnav/foter";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
