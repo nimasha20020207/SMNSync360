@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-//const router = require("./Route/");
+const router = require("./Router/Budgetroute");
+const router1 = require("./Router/Expensesroute");
 const db = require("./util/db");
 const app = express();
 const cors = require('cors')
@@ -8,7 +9,8 @@ const cors = require('cors')
 //middleware
 app.use(express.json());
 app.use(cors());
-//app.use("/",router);
+app.use("/Budgets",router);
+app.use("/Expenses",router1);
 
 //ajtdQYIXjaiZbNli
 //mongoose.connect("mongodb+srv://janithsdissanayaka:ajtdQYIXjaiZbNli@cluster0.n2zxb.mongodb.net/")
