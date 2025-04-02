@@ -52,7 +52,7 @@ function App() {
           
         {/* Existing routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/mainhome" element={<Home />} />
+        <Route path="/pmhome" element={<Home />} />
         <Route path="/AddProjectDetails" element={<AddProjectDetails />} />
         <Route path="/ScheduleProjectDetails" element={<ScheduleProjectDetails />} />
         <Route path="/ScheduleProjectDetails/:id" element={<UpdateScheduleProjects />} />
