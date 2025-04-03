@@ -52,7 +52,7 @@ function Orders() {
                 onMouseOut={(e) => e.target.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)'}
               >
                 <p style={{ color: "#1976d2", fontWeight: 'bold' }}>Cancel or Update an Order?</p>
-                <p style={{ color: "#0288d1", fontSize: '16px' }}>Want to make an advance payment?</p>
+                <p style={{ color: "#0288d1", fontSize: '16px' }}>Want to make a payment?</p>
                 <button
                   style={{
                     backgroundColor: "#0056b3", // Darker blue for the button

@@ -96,7 +96,7 @@ function OrderTable({ orders = [], setOrders }) {
                       cursor: "pointer",
                     }}
                   >
-                    Pay Advance
+                    Make Payment
                   </button>
                 </td>
               </tr>
