@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Table from 'react-bootstrap/esm/Table';
 
 function ScheduleProject(props) {
   const { _id, Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date } = props.ScheduleProject;
