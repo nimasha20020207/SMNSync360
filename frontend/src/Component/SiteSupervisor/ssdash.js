@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./Navbar";
-import Footer from "../bottomNav/Footer";
+import Footer from "../bottomnav/foter";
 import { Container, Card, Button, Row, Col, Spinner } from "react-bootstrap";
 
 function Dashboard() {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar";
-import Footer from "../../bottomNav/Footer";
+import Footer from "../../bottomnav/foter";
 import { Form, Container, Button, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
 
 function Imguploder() {

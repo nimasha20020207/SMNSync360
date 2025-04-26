@@ -66,11 +66,11 @@ import Progressrea from "./Component/Progress/Users";
 import ReadPro from "./Component/Progress/UserTableView";
 import UPpro from "./Component/Progress/UpdateProgress"
 // Site Supervisor Components
-import SiteSupervisorDashboard from "./Components/SiteSupervisor/Dashboard";
-import CreateMonitor from "./Components/SiteSupervisor/MonitorOnSite/CreateMonitor";
-import ViewMonitors from "./Components/SiteSupervisor/MonitorOnSite/ViewMonitors";
-import UpdateMonitor from "./Components/SiteSupervisor/MonitorOnSite/UpdateMonitor";
-import Imguploder from "./Components/SiteSupervisor//Imguploder/Imguploder";
+import SiteSupervisorDashboard from "./Component/SiteSupervisor/ssdash";
+import CreateMonitor from "./Component/SiteSupervisor/MonitorOnSite/CreateMonitor";
+import ViewMonitors from "./Component/SiteSupervisor/MonitorOnSite/ViewMonitors";
+import UpdateMonitor from "./Component/SiteSupervisor/MonitorOnSite/UpdateMonitor";
+import Imguploder from "./Component/SiteSupervisor/Imguploder/Imguploder";
 
 
 function App() {
@@ -216,6 +216,7 @@ function App() {
               <SiteSupervisorDashboard/>
             </PrivateRoute>
           }
+
           />
     
       

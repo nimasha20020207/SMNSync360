@@ -16,7 +16,7 @@ import {
 } from "react-bootstrap";
 import { FaSearch, FaPlus, FaCloudSun, FaCloudRain, FaSun, FaExclamationTriangle } from 'react-icons/fa';
 import Navbar from "../Navbar";
-import Footer from "../../bottomNav/Footer";
+import Footer from "../../bottomnav/foter";
 import { toast } from "react-toastify";
 
 function ViewMonitors() {
@@ -239,24 +239,23 @@ function ViewMonitors() {
                           {record.Workers_Present || 0}
                         </Badge>
                       </td>
-                      <td>
-                        <div className="d-flex flex-wrap gap-2">
-                          <Button 
-                            variant="primary" 
-                            size="sm"
-                            onClick={() => navigate(`/site-supervisor/monitor/update/${record._id}`)}
-                          >
-                            Edit
-                          </Button>
-                          <Button 
-                            variant="danger" 
-                            size="sm"
-                            onClick={() => handleDelete(record._id)}
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      </td>
+                      <td style={{ whiteSpace: "nowrap" }}>  {/* Prevents wrapping */}
+  <Button 
+    variant="success" 
+    size="sm"
+    className="me-2 !important"  // Force the margin
+    onClick={() => navigate(`/site-supervisor/monitor/update/${record._id}`)}
+  >
+    Update
+  </Button>
+  <Button 
+    variant="danger" 
+    size="sm"
+    onClick={() => handleDelete(record._id)}
+  >
+    Delete
+  </Button>
+</td>
                     </tr>
                   ))}
                 </tbody>

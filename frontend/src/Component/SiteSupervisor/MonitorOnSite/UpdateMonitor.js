@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Navbar from "../Navbar";
-import Footer from "../../bottomNav/Footer";
+import Footer from "../../bottomnav/foter";
 import { Form, Button, Container, Card, Row, Col } from 'react-bootstrap';
 
 function UpdateMonitor() {

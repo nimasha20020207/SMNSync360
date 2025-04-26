@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Navbar, Nav } from "react-bootstrap";
-import logo from "../pictures/logo.jpg";
-import "../topNav/Header.css";
+import logo from "../pictures/logo.png";
+import "../topnav/Header.css";
 
 function SiteSupervisorNavbar() {
   return (
