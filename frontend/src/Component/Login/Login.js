@@ -52,6 +52,9 @@ function Login() {
           case "supplier":
             navigate("/supplierdash", { replace: true });
             break;
+          case "sitesupervisor":
+            navigate("/ssdash", { replace: true });
+            break;
           default:
             navigate("/log", { replace: true });
         }

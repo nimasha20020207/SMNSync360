@@ -65,6 +65,13 @@ import Inventoryupdate from "./Component/Inventory/updateinventory";
 import Progressrea from "./Component/Progress/Users";
 import ReadPro from "./Component/Progress/UserTableView";
 import UPpro from "./Component/Progress/UpdateProgress"
+// Site Supervisor Components
+import SiteSupervisorDashboard from "./Components/SiteSupervisor/Dashboard";
+import CreateMonitor from "./Components/SiteSupervisor/MonitorOnSite/CreateMonitor";
+import ViewMonitors from "./Components/SiteSupervisor/MonitorOnSite/ViewMonitors";
+import UpdateMonitor from "./Components/SiteSupervisor/MonitorOnSite/UpdateMonitor";
+import Imguploder from "./Components/SiteSupervisor//Imguploder/Imguploder";
+
 
 function App() {
   const navigate = useNavigate();
@@ -78,6 +85,7 @@ function App() {
     "/userdetails/:id",
     "/clientdash",
     "/supplierdash",
+    "/ssdash"
   ];
 
   const isProtectedRoute = protectedRoutes.some((route) =>
@@ -199,7 +207,16 @@ function App() {
               <Supplier/>
             </PrivateRoute>
           }
+
         />
+        <Route
+          path="/ssdash"
+          element={
+            <PrivateRoute allowedRoles={["sitesupervisor"]}>
+              <SiteSupervisorDashboard/>
+            </PrivateRoute>
+          }
+          />
     
       
           <Route path='/FOhome' element={<FOhome/>}/>
@@ -258,6 +275,14 @@ function App() {
         <Route path='/OrderStatus' element={<OrderStatus/>}/>
 
         <Route path='/Supplier' element={<Supplier/>}/>
+
+        {/* Site Supervisor Routes */}
+        <Route path="/site-supervisor" element={<SiteSupervisorDashboard />} />
+        <Route path="/site-supervisor/monitor/create" element={<CreateMonitor />} />
+        <Route path="/site-supervisor/monitor/view" element={<ViewMonitors />} />
+        <Route path="/site-supervisor/monitor/update/:id" element={<UpdateMonitor />} />
+        <Route path="/site-supervisor/Imguploder/Img" element={<Imguploder />} />
+
         </Routes>
       </React.Fragment>
     </div>
