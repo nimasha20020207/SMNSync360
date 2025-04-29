@@ -17,6 +17,7 @@ const progressRouter = require("./Router/Progressroter")
 const router = require("./Router/Budgetroute");
 const router1 = require("./Router/Expensesroute");
 const routerNotification = require("./Router/NotificationRoute");
+const routerPassword = require("./Router/Passwordroute");
 
 
 
@@ -35,6 +36,7 @@ app.use("/Orders", orderrouter);
 app.use("/Equipments", equipmentrouter);
 app.use("/ConfirmedOrders", confirmrouter);
 app.use("/Notification", routerNotification);
+app.use("/Password", routerPassword);
 //ajtdQYIXjaiZbNli
 //mongoose.connect("mongodb+srv://janithsdissanayaka:ajtdQYIXjaiZbNli@cluster0.n2zxb.mongodb.net/")
 //mongoose.connect("mongodb://0.0.0.0:27017/CCMS")

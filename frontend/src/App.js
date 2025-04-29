@@ -7,14 +7,15 @@ import Users from "./Component/Admin/User Details/Users";
 import Home from "./Component/Homee/Home";
 import AboutUs from "./Component/Admin/AboutUs/AboutUs";
 import Admindashboard from "./Component/Admin/Admindashboard/Admindashboard";
-import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
 import ContactUs from "./Component/Admin/ContactUs/ContactUs";
 import Login from "./Component/Login/Login";
 import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
-import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
 import Notifications from "./Component/Admin/NotificationDetails/Notifications";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
+
+import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
+import UpdatePasswordRequest from "./Component/Admin/UpdatePasswordRequest/UpdatePasswordRequest";
 import HelpCenter from "./Component/Admin/HelpCenter/HelpCenter";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
 import Appservices from "./Component/Appservices/service";
@@ -69,6 +70,7 @@ import Inventoryupdate from "./Component/Inventory/updateinventory";
 import Progressrea from "./Component/Progress/Users";
 import ReadPro from "./Component/Progress/UserTableView";
 import UPpro from "./Component/Progress/UpdateProgress";
+import Passwords from "./Component/Admin/PasswordResetDetails.js/Passwords";
 
 function App() {
   const navigate = useNavigate();
@@ -118,11 +120,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/mainhome" element={<Home />} />
           <Route path="/log" element={<Login />} />
-          <Route path="/passRe" element={<PasswordReset />} />
+          
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/service" element={<Appservices />} />
           <Route path="/passReset" element={<AddPasswordRequest/>} />
+          <Route path="/passworddetails" element={<Passwords/>} />
+          
+          <Route path="/updatepassword/:id" element={<UpdatePasswordRequest/>} />
           <Route path="/notificationdetails" element={<Notifications/>} />
           <Route path="/addnotification" element={<AddNotification/>} />
           <Route path="/notificationdetails/:id" element={<UpdateNotification/>} />
