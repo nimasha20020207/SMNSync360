@@ -15,6 +15,7 @@ import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
 import Notifications from "./Component/Admin/NotificationDetails/Notifications";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
+import HelpCenter from "./Component/Admin/HelpCenter/HelpCenter";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
 import Appservices from "./Component/Appservices/service";
 import Clientdashboard from "./Component/Admin/Clientdasboard/client";
@@ -125,6 +126,7 @@ function App() {
           <Route path="/notificationdetails" element={<Notifications/>} />
           <Route path="/addnotification" element={<AddNotification/>} />
           <Route path="/notificationdetails/:id" element={<UpdateNotification/>} />
+          <Route path="/helpcenter" element={<HelpCenter/>} />
           <Route
             path="/admindash"
             element={
