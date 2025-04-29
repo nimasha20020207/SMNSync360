@@ -218,7 +218,7 @@ function AddPasswordRequest() {
       <h1 className="add-password-heading">Add Password Reset Request</h1>
       <form className="add-password-form" onSubmit={handleSubmit}>
         <div className="add-password-field">
-          <label className="add-password-label">Password ID:</label>
+          <label className="add-password-label">Request ID:</label>
           <input
             type="text"
             name="passwordid"

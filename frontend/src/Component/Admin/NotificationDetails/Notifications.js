@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import Notification from '../Notification/Notification';
 import './Notifications.css';
+import AdNav from "../NavAdmin/NavAdmin";
 
 const URL = "http://localhost:5000/Notification";
 
@@ -45,10 +46,12 @@ function Notifications() {
   };
 
   return (
+    <div>
+        <AdNav/>
     <div className="notifications-page">
       <div className="notifications-header">
         <h1>Notification Display</h1>
-        <Link to="/addnotification" className="add-user-button">
+        <Link to="/addnotification" className="add-notify-button">
           Add Notification
         </Link>
       </div>
@@ -86,6 +89,9 @@ function Notifications() {
         </table>
       )}
     </div>
+
+    </div>
+    
   );
 }
 

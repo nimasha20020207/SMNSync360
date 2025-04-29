@@ -39,7 +39,7 @@ function PasswordResets(props) {
           onClick={() => props.deletePasswordReset(_id)}
           className="password-resets-action-button delete"
         >
-          Delete
+          Reject
         </button>
         <button
           onClick={() => props.sendEmail(_id)}

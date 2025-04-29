@@ -1,12 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
-import AddUser from '../Add User/AddUser'; // Adjust the path
-import ProfileGridView from '../ProfileGrid/ProfileGridView'; // Adjust the path
+import AddUser from '../Add User/AddUser';
+import ProfileGridView from '../ProfileGrid/ProfileGridView';
 import './Users.css';
 import { FiUserPlus, FiUsers } from 'react-icons/fi';
-
+import AdNav from "../NavAdmin/NavAdmin";
 
 const URL = 'http://localhost:5000/users';
 
@@ -16,7 +15,7 @@ const fetchHandler = async () => {
 
 function Users() {
   const location = useLocation();
-  console.log('Location state:', location.state); // Debug navigation state
+  console.log('Location state:', location.state);
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,7 +23,7 @@ function Users() {
   const [viewMode, setViewMode] = useState(
     location.state?.showGridView ? 'grid' : 'table'
   );
-  console.log('Initial viewMode:', viewMode); // Debug viewMode
+  console.log('Initial viewMode:', viewMode);
 
   const userRoles = [
     { value: '', label: 'All Roles' },
@@ -40,9 +39,9 @@ function Users() {
     const fetchData = async () => {
       try {
         const data = await fetchHandler();
-        console.log('Fetched data:', data); // Debug raw response
+        console.log('Fetched data:', data);
         setUsers(data.users || []);
-        console.log('Set users:', data.users || []); // Debug users state
+        console.log('Set users:', data.users || []);
       } catch (error) {
         console.error('Error fetching users:', error);
         setUsers([]);
@@ -72,88 +71,89 @@ function Users() {
     const matchesRole = selectedRole ? user.userrole === selectedRole : true;
     return matchesSearch && matchesRole;
   });
-  console.log('Users state:', users); // Debug users state
-  console.log('Filtered users:', filteredUsers); // Debug filtered users
+  console.log('Users state:', users);
+  console.log('Filtered users:', filteredUsers);
 
   return (
-    
-    <div className="users-container">
-     
-      <div className="users-header">
-        <div className="users-controls">
-          <input
-            type="text"
-            placeholder="Search by Name or User ID"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="search-input"
-          />
-          <select
-            value={selectedRole}
-            onChange={handleRoleChange}
-            className="role-filter"
-          >
-            {userRoles.map((role) => (
-              <option key={role.value} value={role.value}>
-                {role.label}
-              </option>
-            ))}
-          </select>
+    <div className="users-page-wrapper">
+      <AdNav />
+      <div className="users-container">
+        <div className="users-header">
+          <div className="users-controls">
+            <input
+              type="text"
+              placeholder="Search by Name or User ID"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
+            <select
+              value={selectedRole}
+              onChange={handleRoleChange}
+              className="role-filter"
+            >
+              {userRoles.map((role) => (
+                <option key={role.value} value={role.value}>
+                  {role.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <h1 className="users-title">User Management</h1>
+          <div className="users-buttons">
+            <Link to="/addusr" className="add-user-button">
+              <FiUserPlus className="button-icon" />
+              Add New User
+            </Link>
+            <button
+              className="profile-view-button"
+              onClick={() => setViewMode(viewMode === 'table' ? 'grid' : 'table')}
+            >
+              <FiUsers className="button-icon" />
+              {viewMode === 'table' ? 'Profile View' : 'Table View'}
+            </button>
+          </div>
         </div>
-        <h1 className="users-title">User Management</h1>
-        <div className="users-buttons">
-          <Link to="/addusr" className="add-user-button">
-            <FiUserPlus className="button-icon" />
-            Add New User
-          </Link>
-          <button
-            className="profile-view-button"
-            onClick={() => setViewMode(viewMode === 'table' ? 'grid' : 'table')}
-          >
-            <FiUsers className="button-icon" />
-            {viewMode === 'table' ? 'Profile View' : 'Table View'}
-          </button>
-        </div>
-      </div>
 
-      {isLoading ? (
-        <div className="loading-spinner">Loading users...</div>
-      ) : viewMode === 'table' ? (
-        <div className="users-table-container">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Age</th>
-                <th>Address</th>
-                <th>User Role</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map((user, i) => (
-                  <AddUser
-                    key={i}
-                    user={user}
-                    onUserDelete={handleUserDelete}
-                  />
-                ))
-              ) : (
+        {isLoading ? (
+          <div className="loading-spinner">Loading users...</div>
+        ) : viewMode === 'table' ? (
+          <div className="users-table-container">
+            <table className="users-table">
+              <thead>
                 <tr>
-                  <td colSpan="7" className="no-users">
-                    No users found
-                  </td>
+                  <th>User ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Age</th>
+                  <th>Address</th>
+                  <th>User Role</th>
+                  <th>Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <ProfileGridView users={filteredUsers} />
-      )}
+              </thead>
+              <tbody>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user, i) => (
+                    <AddUser
+                      key={i}
+                      user={user}
+                      onUserDelete={handleUserDelete}
+                    />
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="no-users">
+                      No users found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <ProfileGridView users={filteredUsers} />
+        )}
+      </div>
     </div>
   );
 }

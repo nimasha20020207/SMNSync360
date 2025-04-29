@@ -35,19 +35,19 @@ function AddUser(props) {
   };
 
   return (
-    <tr>
-      <td>{userid}</td>
-      <td>{name}</td>
-      <td>{email}</td>
-      <td>{age}</td>
-      <td>{address}</td>
-      <td>{userrole}</td>
-      <td>
+    <tr className="add-user-table-row">
+      <td className="add-user-table-cell">{userid}</td>
+      <td className="add-user-table-cell">{name}</td>
+      <td className="add-user-table-cell">{email}</td>
+      <td className="add-user-table-cell">{age}</td>
+      <td className="add-user-table-cell">{address}</td>
+      <td className="add-user-table-cell">{userrole}</td>
+      <td className="add-user-table-cell">
         <Link to={`/userdetails/${_id}`}>
-          <button className="btn btn-update">Update</button>
+          <button className="add-user-button add-user-button-update">Update</button>
         </Link>
         <button 
-          className="btn btn-delete" 
+          className="add-user-button add-user-button-delete" 
           onClick={deleteHandler}
           disabled={isDeleting}
         >

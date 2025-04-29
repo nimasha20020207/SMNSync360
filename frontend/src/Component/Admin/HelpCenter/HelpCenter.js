@@ -1,10 +1,13 @@
 
 import React from 'react';
 import './HelpCenter.css'; // Import the external CSS file
+import AdNav from "../NavAdmin/NavAdmin";
 
 function HelpCenter() {
   return (
-    <div className="help-center-container">
+    <div> 
+        <AdNav/>
+        <div className="help-center-container">
       {/* Welcome Section */}
       <section className="help-center-welcome">
         <h1 className="help-center-heading">Help & Support Center</h1>
@@ -86,6 +89,8 @@ function HelpCenter() {
         </div>
       </section>
     </div>
+    </div>
+    
   );
 }
 

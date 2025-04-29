@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import PasswordResets from '../PasswordReset/PasswordResets';
 import './Passwords.css'; // Import the external CSS file
+import AdNav from "../NavAdmin/NavAdmin";
 
 
 const URL = "http://localhost:5000/Password";
@@ -59,45 +60,47 @@ function Passwords() {
   };
 
   return (
-    <div className="passwords-container">
-      
-      <h1 className="passwords-heading">Password Reset Details</h1>
-      {loading ? (
-        <p className="passwords-loading">Loading password reset details...</p>
-      ) : (
-        <>
-          <table className="passwords-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Password ID</th>
-                <th>Email</th>
-                <th>User ID</th>
-                <th>Phone Number</th>
-                <th>Reason</th>
-                <th>Created At</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {passwords.length > 0 ? (
-                passwords.map((passwordReset, i) => (
-                  <PasswordResets
-                    key={i}
-                    passwordReset={passwordReset}
-                    deletePasswordReset={deletePasswordReset}
-                    sendEmail={sendEmail}
-                  />
-                ))
-              ) : (
+    <div className="passwords-page"> {/* Added class here */}
+      <AdNav />
+      <div className="passwords-container">
+        <h1 className="passwords-heading">Password Reset Details</h1>
+        {loading ? (
+          <p className="passwords-loading">Loading password reset details...</p>
+        ) : (
+          <>
+            <table className="passwords-table">
+              <thead>
                 <tr>
-                  <td colSpan="8">No password reset details found</td>
+                  <th>ID</th>
+                  <th>Password ID</th>
+                  <th>Email</th>
+                  <th>User ID</th>
+                  <th>Phone Number</th>
+                  <th>Reason</th>
+                  <th>Created At</th>
+                  <th>Action</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </>
-      )}
+              </thead>
+              <tbody>
+                {passwords.length > 0 ? (
+                  passwords.map((passwordReset, i) => (
+                    <PasswordResets
+                      key={i}
+                      passwordReset={passwordReset}
+                      deletePasswordReset={deletePasswordReset}
+                      sendEmail={sendEmail}
+                    />
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="8">No password reset details found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </>
+        )}
+      </div>
     </div>
   );
 }
