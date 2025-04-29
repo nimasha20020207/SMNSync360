@@ -5,7 +5,7 @@ const router3 = require("./Router/UserRoute");
 const app = express();
 const cors = require("cors");
 const User = require("./Model/UserModel");
-const db = require("./util/db")
+const db = require("./util/db");
 const router2 = require("./Router/MaterialRoute"); // import materials route
 const orderrouter = require("./Router/OrderRoute"); // import order route
 const equipmentrouter = require("./Router/EquipmentRoute"); // import Equipment route
@@ -13,36 +13,60 @@ const confirmrouter = require("./Router/ConfirmOrderRoute"); // import ConfirmOr
 const scheduleRouter = require("./Router/ScheduleRoutes");
 const taskRouter = require("./Router/TaskRoutes");
 const requestinRouter = require("./Router/inventoryrequest");
-const progressRouter = require("./Router/Progressroter")
+const progressRouter = require("./Router/Progressroter");
 const router = require("./Router/Budgetroute");
 const router1 = require("./Router/Expensesroute");
+const monitoringRouter = require("./Router/MonitoringRoutes");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
+// Clear model cache
+delete mongoose.connection.models['Task'];
 
+// Enhanced CORS configuration
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 
-app.use(express.json());
-app.use(cors());
+// Improved JSON parsing middleware
+app.use(express.json({
+    verify: (req, res, buf) => {
+        try {
+            JSON.parse(buf.toString());
+        } catch (e) {
+            throw new Error('Invalid JSON');
+        }
+    },
+    strict: true
+}));
+
+// Routes
 app.use("/users", router3);
-
+app.use("/Monitoring", monitoringRouter);
 app.use("/ProjectSchedules", scheduleRouter);
 app.use("/Tasks", taskRouter);
 app.use("/inventoryreq", requestinRouter);
-app.use("/Budgets",router);
-app.use("/Expenses",router1);
-app.use("/progress",progressRouter);
+app.use("/Budgets", router);
+app.use("/Expenses", router1);
+app.use("/progress", progressRouter);
 app.use("/Materials", router2);
 app.use("/Orders", orderrouter);
 app.use("/Equipments", equipmentrouter);
 app.use("/ConfirmedOrders", confirmrouter);
-//ajtdQYIXjaiZbNli
-//mongoose.connect("mongodb+srv://janithsdissanayaka:ajtdQYIXjaiZbNli@cluster0.n2zxb.mongodb.net/")
-//mongoose.connect("mongodb://0.0.0.0:27017/CCMS")
 
-db
-.then(() => console.log("connection succ"))
-.then(() =>{
-    app.listen(5000);
-})
-.catch((err)=> console.log(err));
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        message: 'Server is running',
+        dbStatus: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    });
+});
+
 // Login function
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
@@ -65,7 +89,179 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// Logout route (unchanged from previous)
+// Logout route
 app.get("/logout", (req, res) => {
     res.json({ status: "ok", message: "Logged out successfully" });
 });
+
+
+
+//////////////////////////////////////////////////////////////////////Img Part
+require("./Model/ImgModel");
+const Img = mongoose.model("ImgModel");
+
+// Configure upload directory
+const uploadDir = path.join(__dirname, "../frontend/src/Components/Imguploder/files");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log("Created upload directory:", uploadDir);
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const filetypes = /jpe?g|png|gif/;
+        const mimetype = filetypes.test(file.mimetype);
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+        cb(new Error('Only image files are allowed!'));
+    }
+});
+
+app.post("/uploadImg", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ status: "error", message: "No file uploaded" });
+        }
+
+        const newImage = await Img.create({ 
+            Image: req.file.filename,
+            path: `/files/${req.file.filename}`,
+            size: req.file.size,
+            mimetype: req.file.mimetype
+        });
+
+        res.json({ 
+            status: "ok",
+            filename: req.file.filename,
+            path: newImage.path
+        });
+    } catch (error) {
+        console.error("Upload error:", error);
+        if (req.file) {
+            fs.unlinkSync(path.join(uploadDir, req.file.filename));
+        }
+        res.status(500).json({ 
+            status: "error",
+            message: error.message || "Upload failed" 
+        });
+    }
+});
+
+// Display Images  
+app.get("/getImage", async (req, res) => {
+    try {
+        const images = await Img.find({}).sort({ createdAt: -1 });
+        res.json({ 
+            status: "ok", 
+            data: images.map(img => ({
+                _id: img._id,
+                Image: img.Image,
+                path: img.path,
+                createdAt: img.createdAt
+            }))
+        });
+    } catch (error) {
+        console.error("Error fetching images:", error);
+        res.status(500).json({ 
+            status: "error",
+            message: "Failed to fetch images" 
+        });
+    }
+});
+
+// Delete Image Endpoint
+app.delete("/deleteImage/:id", async (req, res) => {
+    try {
+        const img = await Img.findById(req.params.id);
+        if (!img) {
+            return res.status(404).json({ 
+                status: "error", 
+                message: "Image not found" 
+            });
+        }
+
+        // Delete file from storage
+        const filePath = path.join(uploadDir, img.Image);
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+        }
+
+        // Delete record from database
+        await Img.findByIdAndDelete(req.params.id);
+
+        res.json({ 
+            status: "ok",
+            message: "Image deleted successfully"
+        });
+    } catch (error) {
+        console.error("Delete error:", error);
+        res.status(500).json({ 
+            status: "error",
+            message: "Failed to delete image" 
+        });
+    }
+});
+
+// Serve static files
+app.use("/files", express.static(uploadDir));
+
+// Enhanced error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+
+    if (err.name === 'UnauthorizedError') {
+        return res.status(401).json({ 
+            success: false,
+            error: "Invalid or missing authentication token" 
+        });
+    }
+
+    res.status(500).json({ 
+        success: false,
+        error: err.message || "Internal server error" 
+    });
+});
+
+// Handle 404
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        error: "Endpoint not found"
+    });
+});
+
+
+// Database connection and server startup
+db
+    .then(() => {
+        console.log("MongoDB connection successful");
+        
+       
+        mongoose.connection.db.collection('tasks').indexes()
+            .then(indexes => console.log("Current indexes:", indexes))
+            .catch(err => console.error("Error checking indexes:", err));
+
+        const PORT = process.env.PORT || 5000;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error("MongoDB connection error:", err);
+        process.exit(1);
+    });
