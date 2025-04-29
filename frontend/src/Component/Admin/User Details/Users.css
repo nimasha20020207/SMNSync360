@@ -1,23 +1,84 @@
-/* Users.css */
+
+/* Existing styles from the provided Users.css */
 .users-container {
-    max-width: 1200px;
+    position: relative;
+    z-index: 1;
+    padding: 15px;
+    width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.users-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(rgba(245, 247, 250, 0.8), rgba(195, 207, 226, 0.1)),
+        url('../../pictures/civilEngineers.jpg') center/cover no-repeat;
+    z-index: -1;
 }
 
 .users-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .users-title {
     color: #2c3e50;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 600;
     margin: 0;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.users-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    font-size: 14px;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.role-filter {
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    font-size: 14px;
+    width: 120px;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.role-filter:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
 .add-user-button {
@@ -25,17 +86,19 @@
     align-items: center;
     background-color: #3498db;
     color: white;
-    padding: 10px 15px;
+    padding: 8px 15px;
     border-radius: 5px;
     text-decoration: none;
+    font-size: 16px;
     font-weight: 500;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .add-user-button:hover {
     background-color: #2980b9;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .button-icon {
@@ -44,40 +107,46 @@
 }
 
 .users-table-container {
-    background: white;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .users-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 16px;
+    background: transparent;
 }
 
 .users-table th {
-    background-color: #34495e;
+    background-color: rgba(52, 73, 94, 0.75);
     color: white;
-    padding: 12px 15px;
+    padding: 10px 12px;
     text-align: left;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .users-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #e0e0e0;
-    color: #333;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: #2c3e50;
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: 500;
 }
 
 .users-table tr:last-child td {
     border-bottom: none;
 }
 
-.users-table tr:hover {
-    background-color: #f5f7fa;
+.users-table tr:hover td {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .action-buttons {
@@ -86,58 +155,243 @@
 }
 
 .btn {
-    padding: 6px 12px;
+    padding: 5px 10px;
+    margin-right: 10px;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     display: inline-flex;
     align-items: center;
     transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    border: none;
 }
 
 .btn-update {
-    background-color: #27ae60;
+    background-color: rgba(39, 174, 96, 0.9);
     color: white;
 }
 
 .btn-update:hover {
-    background-color: #219653;
+    background-color: rgba(33, 150, 83, 0.9);
     transform: translateY(-1px);
 }
 
 .btn-delete {
-    background-color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.9);
     color: white;
 }
 
 .btn-delete:hover {
-    background-color: #c0392b;
+    background-color: rgba(192, 57, 43, 0.9);
     transform: translateY(-1px);
 }
 
 .loading-spinner {
     text-align: center;
-    padding: 40px;
-    color: #7f8c8d;
-    font-size: 16px;
+    padding: 30px;
+    color: #2c3e50;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    margin: 15px 0;
 }
 
 .no-users {
     text-align: center;
-    color: #7f8c8d;
+    color: #2c3e50;
     padding: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 14px;
+    margin: 15px 0;
 }
 
-/* Add some responsive design */
+/* New styles for the Profile button and Grid View */
+.users-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.profile-view-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f39c12;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+}
+
+.profile-view-button:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.users-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-profile-card {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.user-profile-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.user-profile-icon {
+    font-size: 60px;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.user-profile-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.user-profile-role {
+    font-size: 14px;
+    color: #7f8c8d;
+    text-transform: capitalize;
+}
+
+.user-profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-profile-detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-profile-label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #34495e;
+}
+
+.user-profile-value {
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
+    .users-container {
+        padding: 10px;
+    }
+
     .users-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+        gap: 10px;
     }
-    
+
+    .users-controls {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .users-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .search-input,
+    .role-filter {
+        width: 100%;
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .add-user-button,
+    .profile-view-button {
+        width: 100%;
+        justify-content: center;
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
     .users-table {
         display: block;
         overflow-x: auto;
+        font-size: 14px;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    .users-grid-container {
+        grid-template-columns: 1fr; /* Stack profiles on small screens */
+        padding: 10px;
+    }
+
+    .user-profile-card {
+        padding: 10px;
+    }
+
+    .user-profile-icon {
+        font-size: 50px;
+    }
+
+    .user-profile-name {
+        font-size: 18px;
+    }
+
+    .user-profile-role {
+        font-size: 12px;
+    }
+
+    .user-profile-label,
+    .user-profile-value {
+        font-size: 12px;
     }
 }

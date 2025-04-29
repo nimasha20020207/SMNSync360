@@ -1,30 +1,41 @@
-import React from "react";
-import Nav from "../../topnav/mainnav/nav";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import "./addusr.css";
 
 function AddUser(props) {
-  /*if (!props.user) {
-    return <div>Loading user data...</div>; // Graceful fallback if user is undefined
-  } */
+  const { _id, userid, name, email, age, address, userrole, password } = props.user;
+  const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
 
-  const { _id,userid, name, email, age, address,userrole,password} = props.user;
-
-  const history = useNavigate();
   const deleteHandler = async () => {
-    await axios
-      .delete(`http://localhost:5000/users/${_id}`)
-      .then((res) => res.data)
-      .then(() => history("/"))
-      .then(() => history("/userdetails"));
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      setIsDeleting(true);
+      try {
+        const response = await axios.delete(`http://localhost:5000/users/${_id}`);
+        
+        if (response.data.success) {
+          // First update the parent component's state for immediate UI feedback
+          props.onUserDelete && props.onUserDelete(_id);
+          
+          // Then reload the page after a small delay to ensure smooth transition
+          setTimeout(() => {
+            window.location.reload();
+          }, 5); // 500ms delay to show feedback before reload
+        } else {
+          alert(response.data.message || "Failed to delete user");
+        }
+      } catch (error) {
+        console.error("Delete error:", error);
+        alert(error.response?.data?.message || "Error deleting user");
+      } finally {
+        setIsDeleting(false);
+      }
+    }
   };
 
   return (
-   
-      <tr>
-      <td>{_id}</td>
+    <tr>
       <td>{userid}</td>
       <td>{name}</td>
       <td>{email}</td>
@@ -35,12 +46,15 @@ function AddUser(props) {
         <Link to={`/userdetails/${_id}`}>
           <button className="btn btn-update">Update</button>
         </Link>
-        <button className="btn btn-delete" onClick={deleteHandler}>
-          Delete
+        <button 
+          className="btn btn-delete" 
+          onClick={deleteHandler}
+          disabled={isDeleting}
+        >
+          {isDeleting ? "Deleting..." : "Delete"}
         </button>
       </td>
     </tr>
-    
   );
 }
 
