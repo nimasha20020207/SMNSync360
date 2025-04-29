@@ -7,10 +7,14 @@ import Users from "./Component/Admin/User Details/Users";
 import Home from "./Component/Homee/Home";
 import AboutUs from "./Component/Admin/AboutUs/AboutUs";
 import Admindashboard from "./Component/Admin/Admindashboard/Admindashboard";
+import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
 import ContactUs from "./Component/Admin/ContactUs/ContactUs";
 import Login from "./Component/Login/Login";
 import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
 import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
+import Notifications from "./Component/Admin/NotificationDetails/Notifications";
+import AddNotification from "./Component/Admin/AddNotification/AddNotification";
+import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
 import Appservices from "./Component/Appservices/service";
 import Clientdashboard from "./Component/Admin/Clientdasboard/client";
@@ -117,6 +121,10 @@ function App() {
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/service" element={<Appservices />} />
+          <Route path="/passReset" element={<AddPasswordRequest/>} />
+          <Route path="/notificationdetails" element={<Notifications/>} />
+          <Route path="/addnotification" element={<AddNotification/>} />
+          <Route path="/notificationdetails/:id" element={<UpdateNotification/>} />
           <Route
             path="/admindash"
             element={
