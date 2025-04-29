@@ -14,43 +14,42 @@ import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
 import Appservices from "./Component/Appservices/service";
 import Clientdashboard from "./Component/Admin/Clientdasboard/client";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import HomeIM from './Component/IMcommon/HomeIM';
-import Materials from './Component/IMMaterial/Materials';
-import MaterialView from './Component/IMMaterial/MaterialView';
-import Orders from './Component/IMOrders/Orders';
-import OrderView from './Component/IMOrders/OrderView';
-import Supplier from './Component/IMcommon/Supplier';
-import Equipment from './Component/IMEquipment/Equipment';
-import Item from './Component/IMcommon/Additempage';
-import AllocateMaterial from './Component/IMcommon/AllocateMaterial';
-import EquipmentView from './Component/IMEquipment/EquipmentView';
-import Checkinventory from './Component/IMcommon/Checkinventory';
-import UpdateMaterial from './Component/IMMaterial/UpdateMaterial';
-import UpdateEquipment from './Component/IMEquipment/UpdateEquipment';
-import UpdateOrder from './Component/IMOrders/UpdateOrder';
-import SupplierViewOrder from './Component/IMOrders/SupplierViewOrder';
-import Form from './Component/IMConfirmedOrders/Form';
-import TableView from './Component/IMConfirmedOrders/TableView';
-import UpdateStatus from './Component/IMConfirmedOrders/UpdateStatus';
-import History from './Component/IMConfirmedOrders/History';
-import OrderStatus from './Component/IMOrders/OrderStatus';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import HomeIM from "./Component/IMcommon/HomeIM";
+import Materials from "./Component/IMMaterial/Materials";
+import MaterialView from "./Component/IMMaterial/MaterialView";
+import Orders from "./Component/IMOrders/Orders";
+import OrderView from "./Component/IMOrders/OrderView";
+import Supplier from "./Component/IMcommon/Supplier";
+import Equipment from "./Component/IMEquipment/Equipment";
+import Item from "./Component/IMcommon/Additempage";
+import AllocateMaterial from "./Component/IMcommon/AllocateMaterial";
+import EquipmentView from "./Component/IMEquipment/EquipmentView";
+import Checkinventory from "./Component/IMcommon/Checkinventory";
+import UpdateMaterial from "./Component/IMMaterial/UpdateMaterial";
+import UpdateEquipment from "./Component/IMEquipment/UpdateEquipment";
+import UpdateOrder from "./Component/IMOrders/UpdateOrder";
+import SupplierViewOrder from "./Component/IMOrders/SupplierViewOrder";
+import Form from "./Component/IMConfirmedOrders/Form";
+import TableView from "./Component/IMConfirmedOrders/TableView";
+import UpdateStatus from "./Component/IMConfirmedOrders/UpdateStatus";
+import History from "./Component/IMConfirmedOrders/History";
+import OrderStatus from "./Component/IMOrders/OrderStatus";
 
-import QShome from './Component/QS/home';
-import Budgetread from './Component/QS/budget';
-import QsTask from './Component/QS/task'
-import Newbudget from './Component/QS/createbudget'
-import UpdateBudget from './Component/QS/updatebudget';
-import QsCommunication from './Component/QS/communication';
-import FOhome from './Component/FO/fohome';
-import FoTask from './Component/FO/fotask';
-import Expenses from './Component/FO/expenses';
-import Newexpense from './Component/FO/createxpenses'
-import UpdateExpenses from './Component/FO/updateexpense'
-import Budgetstatus from './Component/FO/budgetstatus';
-import Focommunicate from './Component/FO/communicationfo'
-
+import QShome from "./Component/QS/home";
+import Budgetread from "./Component/QS/budget";
+import QsTask from "./Component/QS/task";
+import Newbudget from "./Component/QS/createbudget";
+import UpdateBudget from "./Component/QS/updatebudget";
+import QsCommunication from "./Component/QS/communication";
+import FOhome from "./Component/FO/fohome";
+import FoTask from "./Component/FO/fotask";
+import Expenses from "./Component/FO/expenses";
+import Newexpense from "./Component/FO/createxpenses";
+import UpdateExpenses from "./Component/FO/updateexpense";
+import Budgetstatus from "./Component/FO/budgetstatus";
+import Focommunicate from "./Component/FO/communicationfo";
 
 import Home1 from "./Component/Home/Home";
 import AddProjectDetails from "./Component/AddProjectDetails/AddProjectDetails";
@@ -71,7 +70,6 @@ import CreateMonitor from "./Component/SiteSupervisor/MonitorOnSite/CreateMonito
 import ViewMonitors from "./Component/SiteSupervisor/MonitorOnSite/ViewMonitors";
 import UpdateMonitor from "./Component/SiteSupervisor/MonitorOnSite/UpdateMonitor";
 import Imguploder from "./Component/SiteSupervisor/Imguploder/Imguploder";
-
 
 function App() {
   const navigate = useNavigate();
@@ -116,8 +114,7 @@ function App() {
   }, [handlePopstate]);
 
   return (
-  <div className="App">
-     
+    <div className="App">
       <React.Fragment>
       <Routes>
         <Route path="/" element={<Home />} />

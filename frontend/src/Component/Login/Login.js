@@ -84,7 +84,7 @@ function Login() {
 
   return (
     <div>
-      <Nav/>
+      <Nav />
       <div className="login-container">
         <div className="login-box">
           <div className="left-side">
