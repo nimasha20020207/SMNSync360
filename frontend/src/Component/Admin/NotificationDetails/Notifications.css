@@ -5,7 +5,7 @@
     max-width: 100%;
     margin: 0 auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('../../pictures/civilEngineers.jpg'); /* Move background image to page */
+    background-image: url('../../pictures/excavator-action.jpg'); /* Move background image to page */
     background-color: rgba(255, 255, 255, 0.5); /* Fallback color with slight transparency */
     background-blend-mode: overlay; /* Blend the image with the background color */
     background-size: cover;
@@ -126,6 +126,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin:10px 20px 0 450px;
     margin-bottom: 20px;
   }
   

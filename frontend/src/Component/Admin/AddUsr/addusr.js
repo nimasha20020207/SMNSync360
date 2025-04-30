@@ -39,7 +39,7 @@ function AddUsr() {
     { value: "admin", label: "Admin", prefix: "AD" },
     { value: "client", label: "Client", prefix: "CL" },
     { value: "sitesupervisor", label: "Site Supervisor", prefix: "SS" },
-    { value: "projectmanager", label: "Project Manager", prefix: "PM" },
+    { value: "projectManager", label: "Project Manager", prefix: "PM" },
     { value: "quantitysurveyor", label: "Quantity Surveyor", prefix: "QS" },
     { value: "inventorymanager", label: "Inventory Manager", prefix: "IM" },
   ];

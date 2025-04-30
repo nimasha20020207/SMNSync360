@@ -316,6 +316,9 @@ function AddPasswordRequest() {
         <button type="submit" className="add-password-button">
           Add Password Reset Request
         </button>
+        <p class="add-password-message">
+        *Kindly check your email inbox (including the spam/junk folder) for further instructions to complete the process. If you do not receive an email within a few minutes, please contact our support team for assistance.
+      </p>
       </form>
     </div>
   );

@@ -63,7 +63,7 @@ function Passwords() {
     <div className="passwords-page"> {/* Added class here */}
       <AdNav />
       <div className="passwords-container">
-        <h1 className="passwords-heading">Password Reset Details</h1>
+        <h1 className="passwords-heading">Password Reset Requests</h1>
         {loading ? (
           <p className="passwords-loading">Loading password reset details...</p>
         ) : (
@@ -71,7 +71,7 @@ function Passwords() {
             <table className="passwords-table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                 
                   <th>Password ID</th>
                   <th>Email</th>
                   <th>User ID</th>

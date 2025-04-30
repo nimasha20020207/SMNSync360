@@ -20,10 +20,22 @@
   color: white;
 }
 
-.add-user-button {
-  padding: 5px 10px;
+.add-user-button-update {
+  padding: 6px 15px;
+  text-decoration: none;
+  margin-right: 10px;
+  color: white;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-user-button-delete {
+  padding: 6px 15px;
   text-decoration: none;
   color: white;
+  font-size: 17px;
   border: none;
   cursor: pointer;
   border-radius: 5px;

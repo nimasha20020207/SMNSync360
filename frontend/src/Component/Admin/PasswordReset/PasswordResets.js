@@ -24,7 +24,7 @@ function PasswordResets(props) {
 
   return (
     <tr className="password-resets-row">
-      <td className="password-resets-cell">{_id?.toString() || 'N/A'}</td>
+      
       <td className="password-resets-cell">{passwordid || 'N/A'}</td>
       <td className="password-resets-cell">{email || 'N/A'}</td>
       <td className="password-resets-cell">{userid || 'N/A'}</td>

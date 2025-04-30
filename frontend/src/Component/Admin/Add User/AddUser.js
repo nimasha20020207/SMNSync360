@@ -44,10 +44,10 @@ function AddUser(props) {
       <td className="add-user-table-cell">{userrole}</td>
       <td className="add-user-table-cell">
         <Link to={`/userdetails/${_id}`}>
-          <button className="add-user-button add-user-button-update">Update</button>
+          <button className="add-user-button-update">Update</button>
         </Link>
         <button 
-          className="add-user-button add-user-button-delete" 
+          className="add-user-button-delete" 
           onClick={deleteHandler}
           disabled={isDeleting}
         >
