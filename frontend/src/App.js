@@ -85,6 +85,7 @@ function App() {
     "/userdetails/:id",
     "/clientdash",
     "/supplierdash",
+    "/sitesupervisor"
   ];
 
   const isProtectedRoute = protectedRoutes.some((route) =>

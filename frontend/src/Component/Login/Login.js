@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
+import Nav from "../topnav/mainnav/nav";
 import img1 from "../pictures/img.jpeg";
 
 function Login() {
@@ -25,20 +26,34 @@ function Login() {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userRole", response.userrole);
         localStorage.setItem("username", response.username || "User");
-        
-        const userRole = response.userrole ? response.userrole.toLowerCase() : "";
+
+        const userRole = response.userrole
+          ? response.userrole.toLowerCase()
+          : "";
         switch (userRole) {
           case "admin":
             navigate("/admindash", { replace: true });
             break;
-          case "projectmanager":
-            navigate("/pmdash", { replace: true });
-            break;
           case "client":
             navigate("/clientdash", { replace: true });
             break;
+          case "quantitysurveyor":
+            navigate("/qsdash", { replace: true });
+            break;
+          case "financeofficer":
+            navigate("/fodash", { replace: true });
+            break;
+          case "inventorymanager":
+            navigate("/imdash", { replace: true });
+            break;
+          case "projectmanager":
+            navigate("/pamdash", { replace: true });
+            break;
           case "supplier":
             navigate("/supplierdash", { replace: true });
+            break;
+          case "sitesupervisor":
+            navigate("/ssdash", { replace: true });
             break;
           default:
             navigate("/log", { replace: true });
@@ -48,7 +63,9 @@ function Login() {
       }
     } catch (err) {
       console.error("Login error:", err);
-      alert("Error: Failed to connect to the server. Please ensure the backend is running.");
+      alert(
+        "Error: Failed to connect to the server. Please ensure the backend is running."
+      );
     }
   };
 
@@ -67,6 +84,7 @@ function Login() {
 
   return (
     <div>
+      <Nav />
       <div className="login-container">
         <div className="login-box">
           <div className="left-side">
@@ -101,7 +119,7 @@ function Login() {
             </form>
             <div className="reset-password">
               Request to reset password.{" "}
-              <Link to="/passReset" className="click-here">
+              <Link to="/passRe" className="click-here">
                 Click here
               </Link>
             </div>
