@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Navbar from "../Navbar";
+import Navbar from "../../topnav/supervisor/ss";
 import Footer from "../../bottomnav/foter";
 import { Form, Container, Button, Row, Col, Card, Spinner } from "react-bootstrap";
 

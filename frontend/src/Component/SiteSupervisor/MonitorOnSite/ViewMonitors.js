@@ -15,7 +15,7 @@ import {
   Pagination
 } from "react-bootstrap";
 import { FaSearch, FaPlus, FaCloudSun, FaCloudRain, FaSun, FaExclamationTriangle } from 'react-icons/fa';
-import Navbar from "../Navbar";
+import Navbar from "../../topnav/supervisor/ss";
 import Footer from "../../bottomnav/foter";
 import { toast } from "react-toastify";
 

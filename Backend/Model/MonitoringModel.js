@@ -6,7 +6,8 @@ const MonitoringSchema = new Schema({
     Project_ID: {
         type: String,
         required: [true, "Project ID is required"],
-        trim: true
+        trim: true,
+        unique: true
     },
     Project_Name: {
         type: String,

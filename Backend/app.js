@@ -101,7 +101,7 @@ require("./Model/ImgModel");
 const Img = mongoose.model("ImgModel");
 
 // Configure upload directory
-const uploadDir = path.join(__dirname, "../frontend/src/Components/Imguploder/files");
+const uploadDir = path.join(__dirname, "./uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
     console.log("Created upload directory:", uploadDir);

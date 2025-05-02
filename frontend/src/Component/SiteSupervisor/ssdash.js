@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "./Navbar";
+import Navbar from "../topnav/supervisor/ss";
 import Footer from "../bottomnav/foter";
 import { Container, Card, Button, Row, Col, Spinner } from "react-bootstrap";
 
@@ -123,36 +123,6 @@ function Dashboard() {
               </Card>
             </Col>
           ))}
-        </Row>
-
-        <Row className="justify-content-center mt-5">
-          <Col md={6}>
-            <Button 
-              variant="primary" 
-              size="lg" 
-              className="w-100 mb-3 py-3 fs-5"
-              onClick={() => navigate("/site-supervisor/monitor/create")}
-            >
-              Create Monitoring Record
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="lg" 
-              className="w-100 mb-3 py-3 fs-5"
-              onClick={() => navigate("/site-supervisor/monitor/view")}
-            >
-              View All Records
-            </Button>
-
-            <Button 
-              variant="primary" 
-              size="lg" 
-              className="w-100 py-3 fs-5"
-              onClick={() => navigate("/site-supervisor/Imguploder/Img")}
-            >
-              View Project Files
-            </Button>
-          </Col>
         </Row>
       </Container>
       <Footer />

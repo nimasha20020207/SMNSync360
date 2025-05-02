@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Configure upload directory path
-const uploadDir = path.join(__dirname, "../../frontend/src/Components/Imguploder/files");
+const uploadDir = path.join(__dirname, "../uploads");
 
 const ImgSchema = new Schema({
     ProjectId: {
