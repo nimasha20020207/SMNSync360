@@ -10,7 +10,15 @@ import Admindashboard from "./Component/Admin/Admindashboard/Admindashboard";
 import ContactUs from "./Component/Admin/ContactUs/ContactUs";
 import Login from "./Component/Login/Login";
 import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
-import PasswordReset from "./Component/Admin/PasswordReset/PasswordReset";
+import Notifications from "./Component/Admin/NotificationDetails/Notifications";
+import PasswordReset from "./Component/Admin/PasswordReset/PasswordResets";
+import AddNotification from "./Component/Admin/AddNotification/AddNotification";
+import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
+
+
+import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
+import UpdatePasswordRequest from "./Component/Admin/UpdatePasswordRequest/UpdatePasswordRequest";
+import HelpCenter from "./Component/Admin/HelpCenter/HelpCenter";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
 import Appservices from "./Component/Appservices/service";
 import Clientdashboard from "./Component/Admin/Clientdasboard/client";
@@ -50,7 +58,6 @@ import Newexpense from "./Component/FO/createxpenses";
 import UpdateExpenses from "./Component/FO/updateexpense";
 import Budgetstatus from "./Component/FO/budgetstatus";
 import Focommunicate from "./Component/FO/communicationfo";
-
 import Home1 from "./Component/Home/Home";
 import AddProjectDetails from "./Component/AddProjectDetails/AddProjectDetails";
 import ScheduleProjectDetails from "./Component/ScheduleProjectDetails/ScheduleProjectDetails";
@@ -63,7 +70,10 @@ import Inventorycreate from "./Component/Inventory/createinventory";
 import Inventoryupdate from "./Component/Inventory/updateinventory";
 import Progressrea from "./Component/Progress/Users";
 import ReadPro from "./Component/Progress/UserTableView";
-import UPpro from "./Component/Progress/UpdateProgress"
+import UPpro from "./Component/Progress/UpdateProgress";
+import Passwords from "./Component/Admin/PasswordResetDetails.js/Passwords";
+import ProfileUser from "./Component/ProfileUser/ProfileUser";
+
 // Site Supervisor Components
 import SiteSupervisorDashboard from "./Component/SiteSupervisor/ssdash";
 import CreateMonitor from "./Component/SiteSupervisor/MonitorOnSite/CreateMonitor";
@@ -85,6 +95,7 @@ function App() {
     "/clientdash",
     "/supplierdash",
     "/ssdash"
+    "/sitesupervisor"
   ];
 
   const isProtectedRoute = protectedRoutes.some((route) =>
@@ -117,96 +128,104 @@ function App() {
   return (
     <div className="App">
       <React.Fragment>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/mainhome" element={<Home />} />
-        <Route path="/log" element={<Login />} />
-        <Route path="/passRe" element={<PasswordReset />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/service" element={<Appservices />} />
-        <Route
-          path="/admindash"
-          element={
-            <PrivateRoute
-              allowedRoles={["admin"]}>
-              <Admindashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/addusr"
-          element={
-            <PrivateRoute allowedRoles={["admin"]}>
-              <AddUsr/>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/userdetails"
-          element={
-            <PrivateRoute allowedRoles={["admin"]}>
-              <Users />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/userdetails/:id"
-          element={
-            <PrivateRoute allowedRoles={["admin"]}>
-              <UpdateUser />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/pamdash"
-          element={
-            <PrivateRoute allowedRoles={["projectManager"]}>
-              <Home1/>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/clientdash"
-          element={
-            <PrivateRoute allowedRoles={["client"]}>
-              <Clientdashboard />
-            </PrivateRoute>
-          }
-        />
-         <Route
-          path="/qsdash"
-          element={
-            <PrivateRoute allowedRoles={["quantitysurveyor"]}>
-              <QShome/>
-            </PrivateRoute>
-          }
-        />
-         <Route
-          path="/fodash"
-          element={
-            <PrivateRoute allowedRoles={["financeofficer"]}>
-              <FOhome/>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/imdash"
-          element={
-            <PrivateRoute allowedRoles={["inventorymanager"]}>
-              <HomeIM/>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/supplierdash"
-          element={
-            <PrivateRoute allowedRoles={["supplier"]}>
-              <Supplier/>
-            </PrivateRoute>
-          }
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/mainhome" element={<Home />} />
+          <Route path="/log" element={<Login />} />
+          <Route path="/passRe" element={<PasswordReset />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/service" element={<Appservices />} />
+          <Route path="/passReset" element={<AddPasswordRequest/>} />
+          <Route path="/passworddetails" element={<Passwords/>} />
+          <Route path="/updatepassword/:id" element={<UpdatePasswordRequest/>} />
+          <Route path="/notificationdetails" element={<Notifications/>} />
+          <Route path="/addnotification" element={<AddNotification/>} />
+          <Route path="/notificationdetails/:id" element={<UpdateNotification/>} />
+          <Route path="/helpcenter" element={<HelpCenter/>} />
+          <Route path="/userprofile" element={<ProfileUser/>} />
+          <Route path="/users" element={<Users/>} />
+          <Route
+            path="/admindash"
+            element={
+              <PrivateRoute allowedRoles={["admin"]}>
+                <Admindashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/addusr"
+            element={
+              <PrivateRoute allowedRoles={["admin"]}>
+                <AddUsr />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/userdetails"
+            element={
+              <PrivateRoute allowedRoles={["admin"]}>
+                <Users />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/userdetails/:id"
+            element={
+              <PrivateRoute allowedRoles={["admin"]}>
+                <UpdateUser />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/pamdash"
+            element={
+              <PrivateRoute allowedRoles={["projectManager"]}>
+                <Home1 />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/clientdash"
+            element={
+              <PrivateRoute allowedRoles={["client"]}>
+                <Clientdashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/qsdash"
+            element={
+              <PrivateRoute allowedRoles={["quantitysurveyor"]}>
+                <QShome />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/fodash"
+            element={
+              <PrivateRoute allowedRoles={["financeofficer"]}>
+                <FOhome />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/imdash"
+            element={
+              <PrivateRoute allowedRoles={["inventorymanager"]}>
+                <HomeIM />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/supplierdash"
+            element={
+              <PrivateRoute allowedRoles={["supplier"]}>
+                <Supplier />
+              </PrivateRoute>
+            }
+          />
 
-        />
         <Route
           path="/ssdash"
           element={

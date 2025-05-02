@@ -16,10 +16,14 @@ const requestinRouter = require("./Router/inventoryrequest");
 const progressRouter = require("./Router/Progressroter");
 const router = require("./Router/Budgetroute");
 const router1 = require("./Router/Expensesroute");
+
 const monitoringRouter = require("./Router/MonitoringRoutes");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const routerNotification = require("./Router/NotificationRoute");
+const routerPassword = require("./Router/Passwordroute");
+
 
 // Clear model cache
 delete mongoose.connection.models['Task'];
@@ -57,6 +61,13 @@ app.use("/Materials", router2);
 app.use("/Orders", orderrouter);
 app.use("/Equipments", equipmentrouter);
 app.use("/ConfirmedOrders", confirmrouter);
+
+app.use("/Notification", routerNotification);
+app.use("/Password", routerPassword);
+//ajtdQYIXjaiZbNli
+//mongoose.connect("mongodb+srv://janithsdissanayaka:ajtdQYIXjaiZbNli@cluster0.n2zxb.mongodb.net/")
+//mongoose.connect("mongodb://0.0.0.0:27017/CCMS")
+
 
 // Health check endpoint
 app.get('/health', (req, res) => {
