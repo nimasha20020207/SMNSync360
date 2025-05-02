@@ -74,6 +74,14 @@ import UPpro from "./Component/Progress/UpdateProgress";
 import Passwords from "./Component/Admin/PasswordResetDetails.js/Passwords";
 import ProfileUser from "./Component/ProfileUser/ProfileUser";
 
+// Site Supervisor Components
+import SiteSupervisorDashboard from "./Component/SiteSupervisor/ssdash";
+import CreateMonitor from "./Component/SiteSupervisor/MonitorOnSite/CreateMonitor";
+import ViewMonitors from "./Component/SiteSupervisor/MonitorOnSite/ViewMonitors";
+import UpdateMonitor from "./Component/SiteSupervisor/MonitorOnSite/UpdateMonitor";
+import Imguploder from "./Component/SiteSupervisor/Imguploder/Imguploder";
+import SiteImages from "./Component/SiteSupervisor/SiteImages";
+
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,6 +94,7 @@ function App() {
     "/userdetails/:id",
     "/clientdash",
     "/supplierdash",
+    "/ssdash"
     "/sitesupervisor"
   ];
 
@@ -217,80 +226,81 @@ function App() {
             }
           />
 
-          <Route
-            path="/ssdash"
-            element={
-              <PrivateRoute allowedRoles={["sitesupervisor"]}>
-                <Supplier />
-              </PrivateRoute>
-            }
+        <Route
+          path="/ssdash"
+          element={
+            <PrivateRoute allowedRoles={["sitesupervisor"]}>
+              <SiteSupervisorDashboard/>
+            </PrivateRoute>
+          }
+
           />
+    
+      
+          <Route path='/FOhome' element={<FOhome/>}/>
+          <Route path='/' element={<QShome/>}/>
+          <Route path='/QShome' element={<QShome/>}/>
+          <Route path='/Budget' element={<Budgetread/>}/>
+          <Route path='/task' element={<QsTask/>}/>
+          <Route path='/Newbudget' element={<Newbudget/>}/>
+          <Route path='/Budget/:id' element={<UpdateBudget/>}/>
+          <Route path='/Communication' element={<QsCommunication/>}/>
+          <Route path='/taskfo' element={<FoTask/>}/>
+          <Route path='/Expenses' element={<Expenses/>}/>
+          <Route path='/Newexpenses' element={<Newexpense/>}/>
+          <Route path='/Expenses/:id' element={<UpdateExpenses/>}/>
+          <Route path='/BudgetApprove' element={<Budgetstatus/>}/>
+          <Route path='/Communicationfo' element={<Focommunicate/>}/>
+          
+        {/* Existing routes */}
+        <Route path="/" element={<Home1 />} />
+        <Route path="/pmhome" element={<Home1 />} />
+        <Route path="/AddProjectDetails" element={<AddProjectDetails />} />
+        <Route path="/ScheduleProjectDetails" element={<ScheduleProjectDetails />} />
+        <Route path="/ScheduleProjectDetails/:id" element={<UpdateScheduleProjects />} />
+        
+        {/* New Task Management routes */}
+        <Route path="/AssignTask" element={<AssignTask />} />
+        <Route path="/AssignedTasks" element={<AssignedTasks />} />
+        <Route path="/UpdateAssignedTask/:id" element={<UpdateAssignedTask />} />
 
-          <Route path="/FOhome" element={<FOhome />} />
-          <Route path="/" element={<QShome />} />
-          <Route path="/QShome" element={<QShome />} />
-          <Route path="/Budget" element={<Budgetread />} />
-          <Route path="/task" element={<QsTask />} />
-          <Route path="/Newbudget" element={<Newbudget />} />
-          <Route path="/Budget/:id" element={<UpdateBudget />} />
-          <Route path="/Communication" element={<QsCommunication />} />
-          <Route path="/taskfo" element={<FoTask />} />
-          <Route path="/Expenses" element={<Expenses />} />
-          <Route path="/Newexpenses" element={<Newexpense />} />
-          <Route path="/Expenses/:id" element={<UpdateExpenses />} />
-          <Route path="/BudgetApprove" element={<Budgetstatus />} />
-          <Route path="/Communicationfo" element={<Focommunicate />} />
+        <Route path="/addinven" element={<Inventorycreate />} />
+        <Route path="/Inventory" element={<Inventory />} />
+        <Route path="/Inventoryup/:_id" element={<Inventoryupdate />} />
 
-          {/* Existing routes */}
-          <Route path="/" element={<Home1 />} />
-          <Route path="/pmhome" element={<Home1 />} />
-          <Route path="/AddProjectDetails" element={<AddProjectDetails />} />
-          <Route
-            path="/ScheduleProjectDetails"
-            element={<ScheduleProjectDetails />}
-          />
-          <Route
-            path="/ScheduleProjectDetails/:id"
-            element={<UpdateScheduleProjects />}
-          />
+        <Route path="/Progress" element={<Progressrea />} />  
+        <Route path="/viewprogress" element={<ReadPro />} /> 
+        <Route path="/update/:id" element={<UPpro />} />
 
-          {/* New Task Management routes */}
-          <Route path="/AssignTask" element={<AssignTask />} />
-          <Route path="/AssignedTasks" element={<AssignedTasks />} />
-          <Route
-            path="/UpdateAssignedTask/:id"
-            element={<UpdateAssignedTask />}
-          />
+        <Route path='/HomeIM' element={<HomeIM/>}/>
+        <Route path='/Materials' element={<Materials />}/>
+        <Route path='/MaterialView' element={<MaterialView/>}/>
+        <Route path='/Orders' element={<Orders/>}/>
+        <Route path='/OrderView' element={<OrderView/>}/>
+        <Route path='/Equipment' element={<Equipment/>}/>
+        <Route path='/Item' element={<Item/>}/>
+        <Route path='/AllocateMaterial' element={<AllocateMaterial/>}/>
+        <Route path='/EquipmentView' element={<EquipmentView/>}/>
+        <Route path='/Checkinventory' element={<Checkinventory/>}/>
+        <Route path='/UpdateMaterial/:id' element={<UpdateMaterial/>}/>
+        <Route path='/UpdateEquipment/:id' element={<UpdateEquipment/>}/>
+        <Route path='/UpdateOrder/:id' element={<UpdateOrder/>}/>
+        <Route path='/SupplierViewOrder' element={<SupplierViewOrder/>}/>
+        <Route path='/Form' element={<Form/>}/>
+        <Route path='/TableView' element={<TableView/>}/>
+        <Route path='/UpdateStatus/:id' element={<UpdateStatus/>}/>
+        <Route path='/History' element={<History/>}/>
+        <Route path='/OrderStatus' element={<OrderStatus/>}/>
 
-          <Route path="/addinven" element={<Inventorycreate />} />
-          <Route path="/Inventory" element={<Inventory />} />
-          <Route path="/Inventoryup/:_id" element={<Inventoryupdate />} />
+        <Route path='/Supplier' element={<Supplier/>}/>
 
-          <Route path="/Progress" element={<Progressrea />} />
-          <Route path="/viewprogress" element={<ReadPro />} />
-          <Route path="/update/:id" element={<UPpro />} />
-
-          <Route path="/HomeIM" element={<HomeIM />} />
-          <Route path="/Materials" element={<Materials />} />
-          <Route path="/MaterialView" element={<MaterialView />} />
-          <Route path="/Orders" element={<Orders />} />
-          <Route path="/OrderView" element={<OrderView />} />
-          <Route path="/Equipment" element={<Equipment />} />
-          <Route path="/Item" element={<Item />} />
-          <Route path="/AllocateMaterial" element={<AllocateMaterial />} />
-          <Route path="/EquipmentView" element={<EquipmentView />} />
-          <Route path="/Checkinventory" element={<Checkinventory />} />
-          <Route path="/UpdateMaterial/:id" element={<UpdateMaterial />} />
-          <Route path="/UpdateEquipment/:id" element={<UpdateEquipment />} />
-          <Route path="/UpdateOrder/:id" element={<UpdateOrder />} />
-          <Route path="/SupplierViewOrder" element={<SupplierViewOrder />} />
-          <Route path="/Form" element={<Form />} />
-          <Route path="/TableView" element={<TableView />} />
-          <Route path="/UpdateStatus/:id" element={<UpdateStatus />} />
-          <Route path="/History" element={<History />} />
-          <Route path="/OrderStatus" element={<OrderStatus />} />
-
-          <Route path="/Supplier" element={<Supplier />} />
+        {/* Site Supervisor Routes */}
+        <Route path="/site-supervisor" element={<SiteSupervisorDashboard />} />
+        <Route path="/site-supervisor/monitor/create" element={<CreateMonitor />} />
+        <Route path="/site-supervisor/monitor/view" element={<ViewMonitors />} />
+        <Route path="/site-supervisor/monitor/update/:id" element={<UpdateMonitor />} />
+        <Route path="/site-supervisor/Imguploder/Img" element={<Imguploder />} />
+        <Route path="/site-supervisor/site-images/:id" element={<SiteImages />} />
         </Routes>
       </React.Fragment>
     </div>
