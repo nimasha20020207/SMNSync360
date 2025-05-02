@@ -4,7 +4,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../topnav/supervisor/ss";
 import Footer from "../bottomnav/foter";
-import { Container, Card, Button, Row, Col, Spinner } from "react-bootstrap";
+import { Container, Card, Button, Row, Col, Spinner,Carousel } from "react-bootstrap";
+import imgA from "../pictures/A.jpg";
+import imgB from "../pictures/B.jpg";
+import imgC from "../pictures/C.jpg";
+
+
+
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -105,8 +111,89 @@ function Dashboard() {
   return (
     <div>
       <Navbar />
+      {/* Carousel Section */}
+      <div style={{ width: "100%", height: "300px", overflow: "hidden", marginBottom: "20px" }}>
+                <Carousel style={{ height: "100%" }}>
+                    <Carousel.Item>
+                        <div
+                            style={{
+                                height: "300px",
+                                backgroundImage: `url(${imgA})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                position: "relative",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <div style={{
+                                backgroundColor: "rgba(0,0,0,0.4)",
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                color: "white",
+                                textAlign: "center"
+                            }}>
+                                <h5>Effectively monitor onsite work and team activities.</h5>
+                           <p>Stay updated with real-time progress to ensure smooth operations on every site.</p>
+
+                            </div>
+                        </div>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <div
+                            style={{
+                                height: "300px",
+                                backgroundImage: `url(${imgB})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <div style={{
+                                backgroundColor: "rgba(0,0,0,0.4)",
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                color: "white",
+                                textAlign: "center"
+                            }}>
+                                <h5>Ensure tasks are completed on time with efficient team coordination.</h5>
+                           <p>Track worker performance and site activities to maintain workflow and accountability.</p>
+
+                            </div>
+                        </div>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <div
+                            style={{
+                                height: "300px",
+                                backgroundImage: `url(${imgC})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <div style={{
+                                backgroundColor: "rgba(0,0,0,0.4)",
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                color: "white",
+                                textAlign: "center"
+                            }}>
+                                <h5>Instantly address onsite issues before they affect progress.</h5>
+                       <p>Proactive supervision helps maintain safety, quality, and timely project delivery.</p>
+
+                            </div>
+                        </div>
+                    </Carousel.Item>
+                </Carousel>
+            </div>
       <Container className="mt-4">
-        <h1 className="text-center mb-4">Site Supervisor Dashboard</h1>
+        
         
         <Row className="mb-4 g-3">
           {dashboardCards.map((card, index) => (
