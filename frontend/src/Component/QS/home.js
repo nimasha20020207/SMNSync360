@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Topnav from "../topnav/QS/qs";
 import Fot from "../bottomnav/foter";
-import { Container, Row, Col, Card, Form, Dropdown } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Dropdown , Carousel } from "react-bootstrap";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import axios from "axios";
+import inventoryImg from '../pictures/q1.jpg';
+import materialImg from '../pictures/q2.jpg';
+import stockImg from '../pictures/q3.jpg';
 
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -156,6 +159,79 @@ function Home() {
   return (
     <div>
       <Topnav />
+       {/* Full-width Carousel */}
+       <div style={{ width: "100%", height: "300px", overflow: "hidden", marginBottom: "20px" }}>
+        <Carousel style={{ height: "100%" }}>
+          <Carousel.Item>
+            <div style={{
+              height: "300px",
+              backgroundImage: `url(${inventoryImg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
+              <div style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                padding: "10px 20px",
+                borderRadius: "10px",
+                color: "white",
+                textAlign: "center"
+              }}>
+                <h5>Seamlessly track and manage materials and equipment.</h5>
+                <p>Real-time visibility into stock levels ensures the right resources are always available</p>
+              </div>
+            </div>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div style={{
+              height: "300px",
+              backgroundImage: `url(${materialImg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
+              <div style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                padding: "10px 20px",
+                borderRadius: "10px",
+                color: "white",
+                textAlign: "center"
+              }}>
+                <h5>Assign the right materials and equipment to the right projects – effortlessly.</h5>
+                <p>Strategic allocation ensures smooth project execution and resource optimization.</p>
+              </div>
+            </div>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div style={{
+              height: "300px",
+              backgroundImage: `url(${stockImg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
+              <div style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                padding: "10px 20px",
+                borderRadius: "10px",
+                color: "white",
+                textAlign: "center"
+              }}>
+                <h5>Automated order placement when materials run low – never pause a project again</h5>
+                <p>Proactive inventory intelligence helps keep every site running efficiently</p>
+              </div>
+            </div>
+          </Carousel.Item>
+        </Carousel>
+      </div>
       <Container fluid className="mt-4">
         {/* Top: Budget Dropdown */}
         <Row className="mb-4">
@@ -179,40 +255,35 @@ function Home() {
               </Dropdown>
             </Form.Group>
           </Col>
-        </Row>
-
-        {/* Main Content: Budget Boxes (Left) and Bar Chart (Right) */}
-        <Row>
-          {/* Left: Budget Boxes */}
           <Col md={6}>
             <h3>Budget Overview</h3>
             <Row>
-              <Col md={6} className="mb-3">
-                <Card bg="primary" text="white" style={{ height: "100px" }}>
+              <Col md={3} className="mb-3">
+                <Card bg="primary" text="white" style={{ height: "" }}>
                   <Card.Body>
                     <Card.Title>Total Budget</Card.Title>
                     <Card.Text>{getBudgetAmount()}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={6} className="mb-3">
-                <Card bg="success" text="white" style={{ height: "100px" }}>
+              <Col md={3} className="mb-3">
+                <Card bg="success" text="white" style={{ height: "" }}>
                   <Card.Body>
                     <Card.Title>Spent</Card.Title>
                     <Card.Text>{getSpentAmount()}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={6} className="mb-3">
-                <Card bg="warning" text="dark" style={{ height: "100px" }}>
+              <Col md={3} className="mb-3">
+                <Card bg="warning" text="dark" style={{ height: "" }}>
                   <Card.Body>
                     <Card.Title>Remaining</Card.Title>
                     <Card.Text>{getRemainingAmount()}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={6} className="mb-3">
-                <Card bg="danger" text="white" style={{ height: "100px" }}>
+              <Col md={3} className="mb-3">
+                <Card bg="danger" text="white" style={{ height: "" }}>
                   <Card.Body>
                     <Card.Title>Overdue</Card.Title>
                     <Card.Text>{getOverdueAmount()}</Card.Text>
@@ -220,6 +291,9 @@ function Home() {
                 </Card>
               </Col>
             </Row>
+          
+
+      
           </Col>
 
           {/* Right: Expenses Bar Chart */}
