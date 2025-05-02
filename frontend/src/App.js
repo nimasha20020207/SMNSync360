@@ -11,6 +11,7 @@ import ContactUs from "./Component/Admin/ContactUs/ContactUs";
 import Login from "./Component/Login/Login";
 import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
 import Notifications from "./Component/Admin/NotificationDetails/Notifications";
+import PasswordReset from "./Component/Admin/PasswordReset/PasswordResets";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
 
@@ -122,6 +123,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/mainhome" element={<Home />} />
           <Route path="/log" element={<Login />} />
+          <Route path="/passRe" element={<PasswordReset />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/service" element={<Appservices />} />

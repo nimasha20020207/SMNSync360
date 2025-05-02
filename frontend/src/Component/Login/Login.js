@@ -84,7 +84,7 @@ function Login() {
 
   return (
     <div>
-      <Nav />
+      <Nav/>
       <div className="login-container">
         <div className="login-box">
           <div className="left-side">
@@ -119,7 +119,7 @@ function Login() {
             </form>
             <div className="reset-password">
               Request to reset password.{" "}
-              <Link to="/passRe" className="click-here">
+              <Link to="/passReset" className="click-here">
                 Click here
               </Link>
             </div>
