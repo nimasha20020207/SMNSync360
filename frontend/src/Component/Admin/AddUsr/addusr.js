@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-//import Nav from "../../topnav/mainnav/nav";
-import "./addusr.css";
+import Nav from "../../topnav/mainnav/nav";
+import "./adduser.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
-  Container,
   Paper,
   TextField,
   Button,
@@ -43,8 +42,6 @@ function AddUsr() {
     { value: "projectManager", label: "Project Manager", prefix: "PM" },
     { value: "quantitysurveyor", label: "Quantity Surveyor", prefix: "QS" },
     { value: "inventorymanager", label: "Inventory Manager", prefix: "IM" },
-    { value: "financeofficer", label: "Finance officer", prefix: "FO" },
-    { value: "supplier", label: "supplier", prefix: "SP" }
   ];
 
   useEffect(() => {
@@ -86,93 +83,105 @@ function AddUsr() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-    
-      <Container maxWidth="sm">
+    <div className="add-user-form">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
         <Paper elevation={6} className="form-container">
           <Typography variant="h5" className="form-title">
             Add New User
           </Typography>
-          {error && <Typography color="error" className="error-message">{error}</Typography>}
+          {error && <div className="error-message">{error}</div>}
           <form onSubmit={handleSubmit} className="user-form">
-            <FormControl fullWidth className="input-field">
-              <InputLabel id="userrole-label">User Role *</InputLabel>
-              <Select
-                labelId="userrole-label"
-                name="userrole"
-                value={inputs.userrole}
-                onChange={handleChange}
-                label="User Role *"
-                required
-              >
-                {userRoles.map((role) => (
-                  <MenuItem key={role.value} value={role.value}>
-                    {role.label}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>Select the user's role</FormHelperText>
-            </FormControl>
+            <div className="form-row">
+              <div className="form-group">
+                <FormControl fullWidth className="input-field">
+                  <InputLabel>User Role *</InputLabel>
+                  <Select
+                    name="userrole"
+                    value={inputs.userrole}
+                    onChange={handleChange}
+                    required
+                  >
+                    {userRoles.map((role) => (
+                      <MenuItem key={role.value} value={role.value}>
+                        {role.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>Select the user's role</FormHelperText>
+                </FormControl>
+              </div>
+              <div className="form-group">
+                <TextField
+                  label="User ID"
+                  name="userid"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  value={inputs.userid}
+                  required
+                  className="input-field"
+                  helperText={`Format: ${idPrefix}001 (e.g., AD001 for Admin)`}
+                  disabled={!!inputs.userrole}
+                />
+              </div>
+            </div>
 
-            <TextField
-              label="User ID"
-              name="userid"
-              variant="outlined"
-              fullWidth
-              onChange={handleChange}
-              value={inputs.userid}
-              required
-              className="input-field"
-              helperText={`Format: ${idPrefix}001 (e.g., AD001 for Admin)`}
-              disabled={!!inputs.userrole}
-            />
+            <div className="form-row">
+              <div className="form-group">
+                <TextField
+                  label="Name"
+                  name="name"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  value={inputs.name}
+                  required
+                  className="input-field"
+                />
+              </div>
+              <div className="form-group">
+                <TextField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  value={inputs.email}
+                  required
+                  className="input-field"
+                />
+              </div>
+            </div>
 
-            <TextField
-              label="Name"
-              name="name"
-              variant="outlined"
-              fullWidth
-              onChange={handleChange}
-              value={inputs.name}
-              required
-              className="input-field"
-            />
-
-            <TextField
-              label="Email"
-              name="email"
-              type="email"
-              variant="outlined"
-              fullWidth
-              onChange={handleChange}
-              value={inputs.email}
-              required
-              className="input-field"
-            />
-
-            <TextField
-              label="Age"
-              name="age"
-              type="number"
-              variant="outlined"
-              fullWidth
-              onChange={handleChange}
-              value={inputs.age}
-              required
-              className="input-field"
-              inputProps={{ min: 18, max: 100 }}
-            />
-
-            <TextField
-              label="Address"
-              name="address"
-              variant="outlined"
-              fullWidth
-              onChange={handleChange}
-              value={inputs.address}
-              required
-              className="input-field"
-            />
+            <div className="form-row">
+              <div className="form-group">
+                <TextField
+                  label="Age"
+                  name="age"
+                  type="number"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  value={inputs.age}
+                  required
+                  className="input-field"
+                  inputProps={{ min: 18, max: 100 }}
+                />
+              </div>
+              <div className="form-group">
+                <TextField
+                  label="Address"
+                  name="address"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  value={inputs.address}
+                  required
+                  className="input-field"
+                />
+              </div>
+            </div>
 
             <TextField
               label="Password"
@@ -205,7 +214,6 @@ function AddUsr() {
                 type="submit" 
                 variant="contained" 
                 className="submit-btn" 
-                fullWidth 
                 disabled={loading}
               >
                 {loading ? <CircularProgress size={24} color="inherit" /> : "Submit"}
@@ -213,8 +221,8 @@ function AddUsr() {
             </motion.div>
           </form>
         </Paper>
-      </Container>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 

@@ -1,38 +1,64 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  padding: 0;
-  background-color: #f4f4f4;
-}
-table {
+/* Scoped styles for the AddUser component */
+.add-user-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  background: transparent;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
-th, td {
+
+.add-user-table-header,
+.add-user-table-cell {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
+  background: transparent;
 }
-th {
+
+.add-user-table-header {
   background: #007bff;
   color: white;
 }
-.btn {
-  padding: 5px 10px;
+
+.add-user-button-update {
+  padding: 6px 15px;
   text-decoration: none;
+  margin-right: 10px;
   color: white;
+  font-size: 17px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
 }
-.btn-update {
+
+.add-user-button-delete {
+  padding: 6px 15px;
+  text-decoration: none;
+  color: white;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-user-button-update {
   background: #28a745;
 }
-.btn-delete {
+
+.add-user-button-delete {
   background: #dc3545;
 }
-.btn-delete:hover {
+
+.add-user-button-delete:hover {
   background: #c82333;
+}
+
+.add-user-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Ensure the font is applied only to this component */
+.add-user-table {
+  font-family: Arial, sans-serif;
 }

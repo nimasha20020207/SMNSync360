@@ -77,11 +77,11 @@ function UpdateUser() {
                                 >
                                     <option value="">Select Role</option>
                                     <option value="admin">Admin</option>
-                                    <option value="sitesupervisor">sitesupervisor</option>
-                                    <option value="projectManager">projectManager</option>
-                                    <option value="quantitysurveyor">projectManager</option>
-                                    <option value="inventorymanager">inventorymanager</option>
-                                    <option value="financeofficer">financeofficer</option>
+                                    <option value="client">Client</option>
+                                    <option value="projectmanager">Project Manager</option>
+                                    <option value="sitesupervisor">Site Supervisor</option>
+                                    <option value="quantitysurveyor">Quantity Surveyor</option>
+                                    <option value="inventorymanager">Inventory Manager</option>
                                 </select>
                             </div>
                         </div>
@@ -102,8 +102,6 @@ function UpdateUser() {
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="name">Full Name</label>
-                            <div className="input-with-icon">
-                                <FiUser className="input-icon" />
                                 <input
                                     type="text"
                                     id="name"
@@ -112,13 +110,11 @@ function UpdateUser() {
                                     onChange={handleChange}
                                     required
                                 />
-                            </div>
+                            
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="email">Email Address</label>
-                            <div className="input-with-icon">
-                                <FiMail className="input-icon" />
                                 <input
                                     type="email"
                                     id="email"
@@ -127,15 +123,13 @@ function UpdateUser() {
                                     onChange={handleChange}
                                     required
                                 />
-                            </div>
+                            
                         </div>
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="age">Age</label>
-                            <div className="input-with-icon">
-                                <FiCalendar className="input-icon" />
                                 <input
                                     type="number"
                                     id="age"
@@ -145,13 +139,11 @@ function UpdateUser() {
                                     min="18"
                                     max="100"
                                 />
-                            </div>
+                            
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="address">Address</label>
-                            <div className="input-with-icon">
-                                <FiHome className="input-icon" />
                                 <input
                                     type="text"
                                     id="address"
@@ -159,14 +151,12 @@ function UpdateUser() {
                                     value={inputs.address}
                                     onChange={handleChange}
                                 />
-                            </div>
                         </div>
                     </div>
 
                     <div className="form-group password-group">
                         <label htmlFor="password">Password</label>
-                        <div className="input-with-icon">
-                            <FiKey className="input-icon" />
+                        
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
@@ -181,7 +171,7 @@ function UpdateUser() {
                             >
                                 {showPassword ? <FiEyeOff /> : <FiEye />}
                             </button>
-                        </div>
+                        
                     </div>
 
                     {error && <div className="error-message">{error}</div>}

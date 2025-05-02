@@ -1,12 +1,12 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import "./Admindashboard.css";
-import { 
-  FaTachometerAlt, FaUsers, FaUserCircle, FaBell, 
-  FaExclamationCircle, FaHandshake, FaQuestionCircle, 
-  FaSignOutAlt, FaCommentDots 
-} from "react-icons/fa";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import './Admindashboard.css';
+import {
+  FaTachometerAlt, FaUsers, FaUserCircle, FaBell,
+  FaExclamationCircle, FaHandshake, FaQuestionCircle,
+  FaSignOutAlt, FaCommentDots
+} from 'react-icons/fa';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -35,8 +35,8 @@ function AdminDashboard() {
     if (typeof window.cancelRequest === 'function') {
       window.cancelRequest();
     }
-    alert("Logged out successfully");
-    navigate("/log", { replace: true });
+    alert('Logged out successfully');
+    navigate('/log', { replace: true });
   };
 
   return (
@@ -47,7 +47,9 @@ function AdminDashboard() {
         </div>
         <div className="ad-header-right">
           <div className="ad-notification-badge">
+          <Link to="/notificationdetails">
             <FaBell className="ad-icon ad-notification-icon" />
+            </Link>
             <span className="ad-badge">3</span>
           </div>
           <div className="ad-user-profile">
@@ -78,24 +80,34 @@ function AdminDashboard() {
               </Link>
             </li>
             <li>
-              <FaUserCircle className="ad-icon" />
-              <span>Profiles</span>
+              <Link to="/users" state={{ showGridView: true }}>
+                <FaUserCircle className="ad-icon" />
+                <span>Profiles</span>
+              </Link>
             </li>
             <li>
-              <FaBell className="ad-icon" />
-              <span>Notifications</span>
+              <Link to="/notificationdetails">
+                <FaBell className="ad-icon" />
+                <span>Notifications</span>
+              </Link>
             </li>
             <li>
+            <Link to="/issues">
               <FaExclamationCircle className="ad-icon" />
               <span>Issues</span>
+              </Link>
             </li>
             <li>
-              <FaHandshake className="ad-icon" />
-              <span>Request</span>
+              <Link to="/passworddetails">
+                <FaHandshake className="ad-icon" />
+                <span>Request</span>
+              </Link>
             </li>
             <li>
-              <FaQuestionCircle className="ad-icon" />
-              <span>Help & Center</span>
+              <Link to="/helpcenter">
+                <FaQuestionCircle className="ad-icon" />
+                <span>Help & Center</span>
+              </Link>
             </li>
             <li onClick={handleLogout}>
               <FaSignOutAlt className="ad-icon" />
@@ -106,22 +118,22 @@ function AdminDashboard() {
 
         <main className="ad-main-content">
           <section className="ad-stats-section">
-            <div className="ad-stat-card ad-blue">
+            <div className="ad-stat-card blue">
               <h3>Total Users</h3>
               <p>1,250</p>
               <FaUserCircle className="ad-stat-icon" />
             </div>
-            <div className="ad-stat-card ad-green">
+            <div className="ad-stat-card green">
               <h3>Active Projects</h3>
               <p>24</p>
               <FaTachometerAlt className="ad-stat-icon" />
             </div>
-            <div className="ad-stat-card ad-orange">
+            <div className="ad-stat-card orange">
               <h3>Pending Requests</h3>
               <p>12</p>
               <FaHandshake className="ad-stat-icon" />
             </div>
-            <div className="ad-stat-card ad-red">
+            <div className="ad-stat-card red">
               <h3>Issues Reported</h3>
               <p>8</p>
               <FaExclamationCircle className="ad-stat-icon" />
@@ -149,7 +161,7 @@ function AdminDashboard() {
                 <Tooltip />
               </PieChart>
             </div>
-            
+
             <div className="ad-chart-container">
               <h3>Users vs Projects</h3>
               <BarChart
