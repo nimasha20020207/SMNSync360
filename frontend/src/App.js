@@ -94,7 +94,7 @@ function App() {
     "/userdetails/:id",
     "/clientdash",
     "/supplierdash",
-    "/ssdash"
+    "/ssdash",
     "/sitesupervisor"
   ];
 
