@@ -30,7 +30,7 @@ function Users() {
     { value: 'admin', label: 'Admin' },
     { value: 'client', label: 'Client' },
     { value: 'sitesupervisor', label: 'Site Supervisor' },
-    { value: 'projectmanager', label: 'Project Manager' },
+    { value: 'projectManager', label: 'Project Manager' },
     { value: 'quantitysurveyor', label: 'Quantity Surveyor' },
     { value: 'inventorymanager', label: 'Inventory Manager' },
   ];
