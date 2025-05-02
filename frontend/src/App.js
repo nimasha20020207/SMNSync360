@@ -70,6 +70,7 @@ import CreateMonitor from "./Component/SiteSupervisor/MonitorOnSite/CreateMonito
 import ViewMonitors from "./Component/SiteSupervisor/MonitorOnSite/ViewMonitors";
 import UpdateMonitor from "./Component/SiteSupervisor/MonitorOnSite/UpdateMonitor";
 import Imguploder from "./Component/SiteSupervisor/Imguploder/Imguploder";
+import SiteImages from "./Component/SiteSupervisor/SiteImages";
 
 function App() {
   const navigate = useNavigate();
@@ -280,7 +281,7 @@ function App() {
         <Route path="/site-supervisor/monitor/view" element={<ViewMonitors />} />
         <Route path="/site-supervisor/monitor/update/:id" element={<UpdateMonitor />} />
         <Route path="/site-supervisor/Imguploder/Img" element={<Imguploder />} />
-
+        <Route path="/site-supervisor/site-images/:id" element={<SiteImages />} />
         </Routes>
       </React.Fragment>
     </div>

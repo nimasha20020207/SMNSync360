@@ -134,11 +134,13 @@ const upload = multer({
 
 app.post("/uploadImg", upload.single("image"), async (req, res) => {
     try {
+        const {projectId} = req.body
         if (!req.file) {
             return res.status(400).json({ status: "error", message: "No file uploaded" });
         }
 
         const newImage = await Img.create({ 
+            ProjectId: projectId,
             Image: req.file.filename,
             path: `/files/${req.file.filename}`,
             size: req.file.size,
@@ -163,8 +165,34 @@ app.post("/uploadImg", upload.single("image"), async (req, res) => {
 });
 
 // Display Images  
-app.get("/getImage", async (req, res) => {
+app.get("/getImage/:id", async (req, res) => {
     try {
+        const id = req.params.id;
+        const images = await Img.find({ProjectId: id}).sort({ createdAt: -1 });
+        
+        console.log("hello")
+        res.json({ 
+            status: "ok", 
+            data: images.map(img => ({
+                _id: img._id,
+                Image: img.Image,
+                path: img.path,
+                createdAt: img.createdAt
+            }))
+        });
+    } catch (error) {
+        console.error("Error fetching images:", error);
+        res.status(500).json({ 
+            status: "error",
+            message: "Failed to fetch images" 
+        });
+    }
+});
+
+// Display Images  
+app.get("/getImages", async (req, res) => {
+    try {
+
         const images = await Img.find({}).sort({ createdAt: -1 });
         res.json({ 
             status: "ok", 
@@ -183,6 +211,8 @@ app.get("/getImage", async (req, res) => {
         });
     }
 });
+
+
 
 // Delete Image Endpoint
 app.delete("/deleteImage/:id", async (req, res) => {

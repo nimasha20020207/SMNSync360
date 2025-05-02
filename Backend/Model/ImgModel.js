@@ -7,6 +7,11 @@ const path = require("path");
 const uploadDir = path.join(__dirname, "../../frontend/src/Components/Imguploder/files");
 
 const ImgSchema = new Schema({
+    ProjectId: {
+        type: Schema.Types.ObjectId,
+        ref: "Monitoring",
+        required: true
+    },
     Image: {
         type: String,
         required: true,

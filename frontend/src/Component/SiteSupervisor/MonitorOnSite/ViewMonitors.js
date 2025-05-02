@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { 
   Table, 
   Button, 
@@ -214,6 +214,7 @@ function ViewMonitors() {
                     <th>Weather</th>
                     <th>Workers</th>
                     <th>Actions</th>
+                    <th>Photos</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -255,7 +256,16 @@ function ViewMonitors() {
   >
     Delete
   </Button>
+  
 </td>
+<td><Link 
+    to={`/site-supervisor/site-images/${record._id}`}  
+    className="btn btn-primary"
+    size="sm"
+    // onClick={}
+  >
+    View Photos
+  </Link></td>
                     </tr>
                   ))}
                 </tbody>
