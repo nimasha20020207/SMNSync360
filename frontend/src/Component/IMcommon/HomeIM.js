@@ -5,6 +5,16 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import Footer from '../bottomnav/IM/Footer';
 import { Card, Row, Col, Container, Button, ProgressBar, ListGroup } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
+<<<<<<< Updated upstream
+=======
+import inventoryImg from '../pictures/inventory2.jpg';
+import materialImg from '../pictures/material.jpg';
+import stockImg from '../pictures/stock2.jpg';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css'; // default styling
+
+
+>>>>>>> Stashed changes
 
 function App() {
   const pendingProjects = [
@@ -44,7 +54,36 @@ function App() {
             </Row>
           </Col>
 
+<<<<<<< Updated upstream
           {/* Right Side - Order Status Graph */}
+=======
+          <Col md={6}>
+  <div className="d-flex flex-column gap-3">
+    <Card>
+      <Card.Header as="h5">📢 Announcements</Card.Header>
+      <Card.Body>
+        <Card.Text><strong>03/25/2025:</strong> Budget review meeting scheduled for next week.</Card.Text>
+        <Card.Text><strong>03/20/2025:</strong> Project A deadline extended to April 10th.</Card.Text>
+        <Card.Text><strong>03/20/2025:</strong> Project B deadline extended to May 10th.</Card.Text>
+        <Card.Text><strong>03/20/2025:</strong> Order 005 has been delivered successfully.</Card.Text>
+      </Card.Body>
+    </Card>
+
+    {/* Calendar */}
+    <Card className="p-2">
+      <Calendar className="custom-calendar" />
+    </Card>
+  </div>
+</Col>
+
+
+          
+
+        </Row>
+
+        {/* Progress Bars */}
+        <Row className="mt-3">
+>>>>>>> Stashed changes
           <Col md={6}>
             <h5>Orders</h5>
             <p><strong>Pending:</strong></p>
