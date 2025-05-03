@@ -12,11 +12,13 @@ import Login from "./Component/Login/Login";
 import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
 import Notifications from "./Component/Admin/NotificationDetails/Notifications";
 import PasswordReset from "./Component/Admin/PasswordReset/PasswordResets";
+import ResetPassword from "./Component/Admin/ResetPassword/ResetPassword";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
 
 
 import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
+import PasswordDetails from "./Component/Admin/PasswordResetDetails/Passwords";
 import UpdatePasswordRequest from "./Component/Admin/UpdatePasswordRequest/UpdatePasswordRequest";
 import HelpCenter from "./Component/Admin/HelpCenter/HelpCenter";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
@@ -71,7 +73,7 @@ import Inventoryupdate from "./Component/Inventory/updateinventory";
 import Progressrea from "./Component/Progress/Users";
 import ReadPro from "./Component/Progress/UserTableView";
 import UPpro from "./Component/Progress/UpdateProgress";
-import Passwords from "./Component/Admin/PasswordResetDetails.js/Passwords";
+import Passwords from "./Component/Admin/PasswordResetDetails/Passwords";
 import ProfileUser from "./Component/ProfileUser/ProfileUser";
 
 // Site Supervisor Components
@@ -145,6 +147,10 @@ function App() {
           <Route path="/helpcenter" element={<HelpCenter/>} />
           <Route path="/userprofile" element={<ProfileUser/>} />
           <Route path="/users" element={<Users/>} />
+          <Route path="/reset-password/:userId/:token" element={<ResetPassword />} />
+          <Route path="/passworddetails" element={<PasswordDetails />} />
+          <Route path="/add-password" element={<AddPasswordRequest />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/admindash"
             element={

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./PasswordResets.css"; // Import the external CSS file
-import Nav from "../../topnav/mainnav/nav";
+
 
 function PasswordResets(props) {
   if (!props.passwordReset) {
@@ -33,7 +33,7 @@ function PasswordResets(props) {
 
   return (
     <div>
-      <Nav/>
+      
       <tr className="password-resets-row">
         <td className="password-resets-cell">{passwordid || "N/A"}</td>
         <td className="password-resets-cell">{email || "N/A"}</td>

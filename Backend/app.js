@@ -16,6 +16,7 @@ const requestinRouter = require("./Router/inventoryrequest");
 const progressRouter = require("./Router/Progressroter");
 const router = require("./Router/Budgetroute");
 const router1 = require("./Router/Expensesroute");
+const bcrypt = require("bcrypt");
 
 const monitoringRouter = require("./Router/MonitoringRoutes");
 const multer = require("multer");
@@ -86,13 +87,16 @@ app.post("/login", async (req, res) => {
         if (!user) {
             return res.json({ err: "User not found" });
         }
-        if (user.password === password) {
+        // Verify password using bcrypt
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (isPasswordValid) {
             return res.json({ 
                 status: "ok", 
-                userrole: user.userrole // Return the user's role
+                userrole: user.userrole,
+                username: user.name // Include username for frontend
             });
         } else {
-            return res.json({ err: "incorrect password" });
+            return res.json({ err: "Incorrect password" });
         }
     } catch (err) {
         console.error(err);

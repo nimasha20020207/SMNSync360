@@ -1,44 +1,16 @@
-const mongoose=require("mongoose");
-const Schema=mongoose.Schema;
+// PasswordModel.js
+const mongoose = require("mongoose");
 
-const PasswordSchema=new Schema({
-
-    passwordid:{
-        type:String,//datatype
-        required:true//validate
-    },
-    
-    email:{
-        type:String,//datatype
-        required:true//validate
-    },
-    
-    userid:{
-        type:String,//datatype
-        required:true//validate
-    },
-    phoneNumber:{
-        type:Number,//datatype
-        required:true//validate
-    },
-    question1:{
-        type:String,//datatype
-    },
-    question2:{
-        type:String,//datatype
-    },
-
-    reason:{
-        type:String,//datatype
-        required:true//validate
-    },
-    
-    
-    
+const PasswordSchema = new mongoose.Schema({
+  passwordid: { type: String, required: true },
+  email: { type: String, required: true },
+  userid: { type: String, required: true },
+  phoneNumber: { type: Number },
+  question1: { type: String },
+  question2: { type: String },
+  reason: { type: String, required: true },
+  resetToken: { type: String }, // Store reset token
+  resetTokenExpires: { type: Date }, // Token expiration
 });
 
-module.exports=mongoose.model(
-    "PasswordModel",//file name
-    PasswordSchema //function name
-
-)
+module.exports = mongoose.model("Passwords", PasswordSchema);
