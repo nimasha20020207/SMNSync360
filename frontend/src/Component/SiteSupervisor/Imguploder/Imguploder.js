@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../Navbar";
 import Footer from "../../bottomnav/foter";
-import { Form, Container, Button, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import { FaTrash, FaUpload } from "react-icons/fa";
+import "./files/Imguploder.css";
 
 function Imguploder() {
   const [image, setImage] = useState(null);
@@ -70,8 +71,8 @@ function Imguploder() {
       
       if (response.data.status === "ok") {
         setDeleteStatus({ success: true, message: "Image deleted successfully" });
-        setTimeout(() => setDeleteStatus(null), 3000); // Clear message after 3 seconds
-        getImage(); // Refresh the image list
+        setTimeout(() => setDeleteStatus(null), 3000);
+        getImage();
       } else {
         setDeleteStatus({ success: false, message: response.data.message || "Deletion failed" });
       }
@@ -89,111 +90,88 @@ function Imguploder() {
   }, []);
 
   return (
-    <div>
+    <div className="uploader-page-wrapper">
       <Navbar />
-      <Container className="mt-2">
-        <h1 className="text-center mb-4">Image Uploader</h1>
+      <div className="uploader-container">
+        <h1 className="uploader-title">Image Uploader</h1>
         
         {/* Upload Form */}
-        <Card className="mb-4">
-          <Card.Body>
-            <Form onSubmit={submitImg}>
-              <Form.Group controlId="formFile" className="mb-3">
-                <Form.Label>Choose an image to upload</Form.Label>
-                <Form.Control 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={(e) => {
-                    setImage(e.target.files[0]);
-                    setUploadError(null);
-                  }}
-                  required
-                />
-              </Form.Group>
-              
-              <Button 
-                variant="primary" 
-                type="submit" 
-                disabled={isUploading}
-                className="me-2"
-              >
-                {isUploading ? (
-                  <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                    <span className="ms-2">Uploading...</span>
-                  </>
-                ) : 'Upload'}
-              </Button>
-            </Form>
-          </Card.Body>
-        </Card>
+        <div className="upload-form-container">
+          <form onSubmit={submitImg} className="upload-form">
+            <div className="form-group">
+              <label>Choose an image to upload</label>
+              <input
+                type="file" 
+                accept="image/*" 
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                  setUploadError(null);
+                }}
+                required
+                className="file-input"
+              />
+            </div>
+            
+            <button 
+              type="submit" 
+              disabled={isUploading}
+              className="upload-button"
+            >
+              {isUploading ? (
+                <span className="upload-spinner"></span>
+              ) : (
+                <>
+                  <FaUpload className="button-icon" />
+                  Upload
+                </>
+              )}
+            </button>
+          </form>
+        </div>
 
         {/* Status Messages */}
         {uploadError && (
-          <Alert variant="danger" className="mt-3">
+          <div className="error-message">
             {uploadError}
-          </Alert>
+          </div>
         )}
         {deleteStatus && (
-          <Alert variant={deleteStatus.success ? "success" : "danger"} className="mt-3">
+          <div className={`status-message ${deleteStatus.success ? 'success' : 'error'}`}>
             {deleteStatus.message}
-          </Alert>
+          </div>
         )}
 
         {/* Image Gallery */}
-        <h2 className="mb-3">Your Images</h2>
+        <h2 className="gallery-title">Your Images</h2>
         {allImage.length > 0 ? (
-          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+          <div className="image-gallery">
             {allImage.map((data) => (
-              <Col key={data._id}>
-                <Card style={{ position: "relative" }}>
-                  <Card.Img
-                    variant="top"
+              <div key={data._id} className="image-card">
+                <div className="image-container">
+                  <img
                     src={`http://localhost:5000/files/${data.Image}`}
                     alt={`Uploaded ${data.Image}`}
-                    style={{
-                      height: "200px",
-                      objectFit: "cover",
-                    }}
                     onError={(e) => {
                       e.target.src = "fallback-image-url";
                     }}
                   />
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    style={{
-                      position: "absolute",
-                      top: "-10px",
-                      right: "-10px",
-                      borderRadius: "50%",
-                      width: "30px",
-                      height: "30px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: 0,
-                    }}
+                  <button
+                    className="delete-image-button"
                     onClick={() => deleteImage(data._id, data.Image)}
                     title="Delete image"
                   >
-                    ×
-                  </Button>
-                </Card>
-              </Col>
+                    <FaTrash />
+                  </button>
+                </div>
+              </div>
             ))}
-          </Row>
+          </div>
         ) : (
-          <Alert variant="info">No images uploaded yet.</Alert>
+          <div className="no-images-message">
+            No images uploaded yet.
+          </div>
         )}
-      </Container>
-
+      </div>
       <Footer />
     </div>
   );

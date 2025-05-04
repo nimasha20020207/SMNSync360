@@ -230,17 +230,23 @@ function Dashboard() {
       </div>
       
       <Container className="mt-3">
-        <Row className="mb-3 g-3">
+        {/* Larger Dashboard Cards */}
+        <Row className="mb-4 g-4">
           {dashboardCards.map((card, index) => (
             <Col md={4} key={index}>
               <Card 
                 className={`text-center h-100 shadow-sm ${card.bg} ${card.text} ${activeCard === card.title.toLowerCase().replace(/\s+/g, '') ? 'border border-3 border-dark' : ''}`}
                 onClick={card.onClick}
-                style={{ cursor: "pointer", transition: "all 0.3s" }}
+                style={{ 
+                  cursor: "pointer", 
+                  transition: "all 0.3s",
+                  minHeight: "180px",
+                  borderRadius: "15px"
+                }}
               >
-                <Card.Body className="d-flex flex-column justify-content-center p-3">
-                  <Card.Title className="fs-5 mb-2">{card.title}</Card.Title>
-                  <Card.Text className="display-5 fw-bold mb-0">{card.value}</Card.Text>
+                <Card.Body className="d-flex flex-column justify-content-center p-4">
+                  <Card.Title className="fs-4 mb-3">{card.title}</Card.Title>
+                  <Card.Text className="display-3 fw-bold mb-0">{card.value}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -250,14 +256,14 @@ function Dashboard() {
         {/* Side by side section - Announcements and Calendar */}
         <Row className="mt-3">
           {/* Announcements - Left Side */}
-          <Col md={6} className="mb-3">
-            <Card className="h-100">
-              <Card.Header as="h5" className="bg-primary text-white py-2">📢 Announcements</Card.Header>
-              <Card.Body className="p-3">
-                <Card.Text className="mb-2">
+          <Col md={6} className="mb-4">
+            <Card className="h-100" style={{ borderRadius: "15px" }}>
+              <Card.Header as="h5" className="bg-primary text-white py-3" style={{ borderRadius: "15px 15px 0 0" }}>📢 Announcements</Card.Header>
+              <Card.Body className="p-4">
+                <Card.Text className="mb-3">
                   <strong>05/02/2024:</strong> Weekly safety inspections every Monday at 9 AM.
                 </Card.Text>
-                <Card.Text className="mb-2">
+                <Card.Text className="mb-3">
                   <strong>04/28/2024:</strong> Reports due by Friday EOD.
                 </Card.Text>
                 <Card.Text className="mb-0">
@@ -268,10 +274,10 @@ function Dashboard() {
           </Col>
 
           {/* Calendar - Right Side */}
-          <Col md={6} className="mb-3">
-            <Card className="h-100">
-              <Card.Header as="h5" className="bg-primary text-white py-2">📅 Site Schedule</Card.Header>
-              <Card.Body className="p-2" style={{ height: '300px' }}>
+          <Col md={6} className="mb-1">
+            <Card className="h-100" style={{ borderRadius: "15px" }}>
+              <Card.Header as="h5" className="bg-primary text-white py-3" style={{ borderRadius: "15px 15px 0 0" }}>📅 Site Schedule</Card.Header>
+              <Card.Body className="p-3" style={{ height: '350px' }}>
                 <Calendar
                   localizer={localizer}
                   events={events}
