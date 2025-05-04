@@ -15,6 +15,10 @@ import PasswordReset from "./Component/Admin/PasswordReset/PasswordResets";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
 
+//inventory bootstrap components
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
 import UpdatePasswordRequest from "./Component/Admin/UpdatePasswordRequest/UpdatePasswordRequest";

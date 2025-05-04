@@ -1,156 +1,217 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-//{ Ename,EType,Qty,Remarks,Date,Supplier}
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import background from '../pictures/inventory2.jpg';
 
 function EquipmentForm() {
-
-  const [inputs,setInputs]=useState({
-    Ename:"",
-    EType:"",
-    Qty:"",
-    Remarks:"",
-    Date:"",
-    Supplier:"",
+  const [inputs, setInputs] = useState({
+    Ename: "",
+    EType: "",
+    Qty: "",
+    Remarks: "",
+    Date: "",
+    Supplier: "",
   });
 
-  const handleChange=(e)=>{
-    setInputs((prevState)=>({
-      ...prevState,
-      [e.target.name]:e.target.value,
+  const handleChange = (e) => {
+    setInputs((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputs);
     sendRequest().then(() => {
-      alert('Equipment successfully added!');
+      toast.success("✅ Equipment successfully added!");
+      setInputs({
+        Ename: "",
+        EType: "",
+        Qty: "",
+        Remarks: "",
+        Date: "",
+        Supplier: "",
+      });
     });
   };
-  
 
-  const sendRequest=async()=>{
-    await axios.post("http://localhost:5000/Equipments",{
-      Ename:String(inputs.Ename),
-      EType:typeof inputs.EType==="string" ? inputs.EType:inputs.EType?.value||"unknown",
-      Qty:String(inputs.Qty),
-      Remarks:String(inputs.Remarks),
-      Date: inputs.Date instanceof Date ? inputs.Date.toISOString() : new Date(inputs.Date).toISOString(),
-      Supplier: typeof inputs.Supplier === "string" ? inputs.Supplier : inputs.Supplier?.value || "Unknown",
-
-    }).then(res => res.data);
-  }
-
+  const sendRequest = async () => {
+    await axios.post("http://localhost:5000/Equipments", {
+      Ename: String(inputs.Ename),
+      EType: String(inputs.EType),
+      Qty: String(inputs.Qty),
+      Remarks: String(inputs.Remarks),
+      Date: new Date(inputs.Date).toISOString(),
+      Supplier: String(inputs.Supplier),
+    });
+  };
 
   return (
-    <div>
-      <div className="container my-5">
-      <div className="bg-white p-4 shadow rounded-lg border border-gray-300" style={{ maxWidth: '500px', margin: '0 auto' }}>
-        <h2 className="text-center text-primary mb-4">Add New Equipment</h2>
+    <div className="min-vh-100 d-flex align-items-center justify-content-center p-3" style={{ position: 'relative' }}>
+      {/* Background Image */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `url(${background})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.8,
+          zIndex: -1,
+        }}
+      ></div>
 
-        <form onSubmit={handleSubmit}>
-          {/* Material Name */}
-          <div className="mb-3">
-            <label htmlFor="itemName" className="form-label">Equipment:</label>
-            <input
-              type="text"
-              id="itemName"
-              name="Ename"
-              value={inputs.Ename}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="Enter equipment name (and number for machines)"
-            />
+      <div className="container" style={{ maxWidth: '900px' }}>
+        <div className="row g-4 align-items-start">
+          {/* Form Section */}
+          <div className="col-md-8">
+            <div className="card shadow-lg border-0 rounded-4 p-4 w-100">
+              <h2 className="text-center mb-4" style={{ color: '#0056b3' }}>
+                <i className="bi bi-tools me-2"></i> Add New Equipment
+              </h2>
+
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3 form-floating">
+                  <input
+                    type="text"
+                    id="itemName"
+                    name="Ename"
+                    value={inputs.Ename}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Equipment Name"
+                  />
+                  <label htmlFor="itemName">Equipment Name</label>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="etype" className="form-label">Equipment Type</label>
+                  <select
+                    id="etype"
+                    name="EType"
+                    value={inputs.EType}
+                    onChange={handleChange}
+                    className="form-select"
+                  >
+                    <option value="">Select equipment type</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="machine">Machine</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div className="mb-3 form-floating">
+                  <input
+                    type="text"
+                    id="quantity"
+                    name="Qty"
+                    value={inputs.Qty}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Quantity"
+                  />
+                  <label htmlFor="quantity">Quantity</label>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="remarks" className="form-label">Remarks</label>
+                  <textarea
+                    id="remarks"
+                    name="Remarks"
+                    value={inputs.Remarks}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Enter any remarks"
+                    rows={3}
+                  ></textarea>
+                </div>
+
+                <div className="mb-3 form-floating">
+                  <input
+                    type="date"
+                    id="date"
+                    name="Date"
+                    value={inputs.Date}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Date"
+                  />
+                  <label htmlFor="date">Date</label>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="supplier" className="form-label">Supplier (for rented equipment)</label>
+                  <select
+                    id="supplier"
+                    name="Supplier"
+                    value={inputs.Supplier}
+                    onChange={handleChange}
+                    className="form-select"
+                  >
+                    <option value="">Select Supplier</option>
+                    <option value="Supplier A">Supplier A</option>
+                    <option value="Supplier B">Supplier B</option>
+                    <option value="Supplier C">Supplier C</option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn w-100 shadow mt-3"
+                  style={{ backgroundColor: '#0056b3', color: 'white', border: 'none' }}
+                >
+                  <i className="bi bi-save me-2"></i> Add Equipment
+                </button>
+              </form>
+            </div>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="etype" className="form-label">Equipment type:</label>
-            <select
-              id="etype"
-              name="EType"
-              value={inputs.EType}
-              onChange={handleChange}
-              className="form-select"
+          {/* Right-Side Navigation Cards */}
+          <div className="col-md-4 d-flex flex-column align-items-center gap-4" style={{ marginTop: '200px' }}>
+            <div
+              className="card text-white text-center shadow"
+              style={{
+                backgroundColor: '#003c80',
+                height: '100px',
+                width: '90%',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: '1rem'
+              }}
+              onClick={() => window.location.href = "/EquipmentView"}
             >
-              <option value="">Select equipment type</option>
-              <option value="vehicle">vehicle</option>
-              <option value="machine">machine</option>
-              <option value="other">other</option>
-            </select>
-          </div>
+              <i className="bi bi-wrench-adjustable" style={{ fontSize: '2.5rem' }}></i>
+              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}>want to view added equipment in inventory?</h5>
+            </div>
 
-            
-            {/* Quantity */}
-          <div className="mb-3">
-            <label htmlFor="quantity" className="form-label">Quantity</label>
-            <input
-              type="text"
-              id="quantity"
-              name="Qty"
-              value={inputs.Qty}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="Enter quantity"
-            />
-          </div>
-
-          {/* Remarks */}
-          <div className="mb-3">
-            <label htmlFor="remarks" className="form-label">Remarks</label>
-            <textarea
-              id="remarks"
-              name="Remarks"
-              value={inputs.Remarks}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="Enter any remarks"
-            ></textarea>
-          </div>
-
-          {/* Date */}
-          <div className="mb-3">
-            <label htmlFor="date" className="form-label">Date</label>
-            <input
-              type="date"
-              id="date"
-              name="Date"
-              value={inputs.Date}
-              onChange={handleChange}
-              className="form-control"
-            />
-          </div>
-
-          {/* Supplier */}
-          <div className="mb-3">
-            <label htmlFor="supplier" className="form-label">Supplier(for rented equipments)</label>
-            <select
-              id="supplier"
-              name="Supplier"
-              value={inputs.Supplier}
-              onChange={handleChange}
-              className="form-select"
+            <div
+              className="card text-white text-center shadow"
+              style={{
+                backgroundColor: '#007bff',
+                height: '100px',
+                width: '90%',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: '1rem'
+              }}
+              onClick={() => window.location.href = "/Orders"}
             >
-              <option value="">Select Supplier</option>
-              <option value="Supplier A">Supplier A</option>
-              <option value="Supplier B">Supplier B</option>
-              <option value="Supplier C">Supplier C</option>
-            </select>
+              <i className="bi bi-truck" style={{ fontSize: '2.5rem' }}></i>
+              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}>want to place more orders?</h5>
+            </div>
           </div>
-
-          {/* Submit Button */}
-          <div className="text-center">
-          <button
-              type="submit"
-              className="btn btn-primary w-100 mt-3"
-            >
-              Submit
-            </button>
-
-          </div>
-        </form>
         </div>
       </div>
-     </div> 
+
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+    </div>
   );
 }
 
