@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../topnav/Header";
 import Footer from "../bottomnav/foter";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
+import "./addproject.css"; // Import the CSS file
 
 function AddProjectDetails() {
   const history = useNavigate();
@@ -41,105 +39,102 @@ function AddProjectDetails() {
     sendRequest().then(() => history('/ScheduleProjectDetails'));
   };
 
-
   return (
     <div className="page-container">
       <Header />
-      <Container className="d-flex justify-content-center align-items-center flex-column mt-4 mb-5">
-        <Form
-          onSubmit={handleSubmit}
-          style={{
-            width: "70%",
-            background: "#ffff",
-            padding: "40px",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.7)",
-          }}
-        >
-          <h1 className="text-center mb-4 text-primary">Add New Project</h1>
+      <div className="add-project-form">
+        <div className="form-container">
+          <h1 className="form-title">Add New Project</h1>
+          
+          <form onSubmit={handleSubmit} className="project-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label>Project Name</label>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                  placeholder="Enter Project Name"
+                  name="Project_Name"
+                  value={inputs.Project_Name}
+                  required
+                  className="input-field"
+                />
+              </div>
 
-          <Form.Group className="mb-3" controlId="formProjectName">
-            <Form.Label>Project Name</Form.Label>
-            <Form.Control
-              type="text"
-              onChange={handleChange}
-              placeholder="Enter Project Name"
-              name="Project_Name"
-              value={inputs.Project_Name}
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label>Project Location</label>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                  placeholder="Enter Project Location"
+                  name="Project_Location"
+                  value={inputs.Project_Location}
+                  required
+                  className="input-field"
+                />
+              </div>
+            </div>
 
-          <Form.Group className="mb-3" controlId="formProjectLocation">
-            <Form.Label>Project Location</Form.Label>
-            <Form.Control
-              type="text"
-              onChange={handleChange}
-              placeholder="Enter Project Location"
-              name="Project_Location"
-              value={inputs.Project_Location}
-              required
-            />
-          </Form.Group>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Client Details</label>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                  placeholder="Enter Client Details"
+                  name="Client_Details"
+                  value={inputs.Client_Details}
+                  required
+                  className="input-field"
+                />
+              </div>
 
-          <Form.Group className="mb-3" controlId="formClientDetails">
-            <Form.Label>Client Details</Form.Label>
-            <Form.Control
-              type="text"
-              onChange={handleChange}
-              placeholder="Enter Client Details"
-              name="Client_Details"
-              value={inputs.Client_Details}
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label>Supervisor Details</label>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                  placeholder="Enter Supervisor Details"
+                  name="Supervisor_Details"
+                  value={inputs.Supervisor_Details}
+                  required
+                  className="input-field"
+                />
+              </div>
+            </div>
 
-          <Form.Group className="mb-3" controlId="formSupervisorDetails">
-            <Form.Label>Supervisor Details</Form.Label>
-            <Form.Control
-              type="text"
-              onChange={handleChange}
-              placeholder="Enter Supervisor Details"
-              name="Supervisor_Details"
-              value={inputs.Supervisor_Details}
-              required
-            />
-          </Form.Group>
-
-          <div className="row">
-            <div className="col-md-6">
-              <Form.Group className="mb-3" controlId="formStartDate">
-                <Form.Label>Start Date</Form.Label>
-                <Form.Control
+            <div className="form-row">
+              <div className="form-group">
+                <label>Start Date</label>
+                <input
                   type="date"
                   onChange={handleChange}
                   name="Start_Date"
                   value={inputs.Start_Date}
                   required
+                  className="input-field"
                 />
-              </Form.Group>
-            </div>
-            <div className="col-md-6">
-              <Form.Group className="mb-3" controlId="formEndDate">
-                <Form.Label>End Date</Form.Label>
-                <Form.Control
+              </div>
+
+              <div className="form-group">
+                <label>End Date</label>
+                <input
                   type="date"
                   onChange={handleChange}
                   name="End_Date"
                   value={inputs.End_Date}
                   required
+                  className="input-field"
                 />
-              </Form.Group>
+              </div>
             </div>
-          </div>
 
-          <div className="mt-4" style={{ width: 'same-as-inputs' }}>
-  <Button variant="primary" type="submit" className="w-100">
-    Submit
-  </Button>
-   </div>
-        </Form>
-      </Container>
+            <button type="submit" className="submit-btn">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
       <Footer />
     </div>
   );

@@ -3,40 +3,41 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from "../topnav/Header";
 import Footer from "../bottomnav/foter";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
+import "./update-project.css";
 
 function UpdateScheduleProjects() {
   const [inputs, setInputs] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
   const history = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     const fetchHandler = async () => {
-      await axios.get(`http://localhost:5000/ProjectSchedules/${id}`)
-        .then((res) => res.data)
-        .then((data) => {
-          const projectData = data.ProjectSchedules || data; // Fallback to flat structure
-          setInputs({
-            ...projectData,
-            Start_Date: projectData.Start_Date ? new Date(projectData.Start_Date).toISOString().split('T')[0] : "",
-            End_Date: projectData.End_Date ? new Date(projectData.End_Date).toISOString().split('T')[0] : ""
-          });
+      try {
+        const response = await axios.get(`http://localhost:5000/ProjectSchedules/${id}`);
+        const projectData = response.data.ProjectSchedules || response.data;
+        setInputs({
+          ...projectData,
+          Start_Date: projectData.Start_Date ? new Date(projectData.Start_Date).toISOString().split('T')[0] : "",
+          End_Date: projectData.End_Date ? new Date(projectData.End_Date).toISOString().split('T')[0] : ""
         });
+      } catch (err) {
+        setError("Failed to fetch project details. Please try again.");
+      }
     };
     fetchHandler();
   }, [id]);
 
   const sendRequest = async () => {
-    await axios.put(`http://localhost:5000/ProjectSchedules/${id}`, {
+    return await axios.put(`http://localhost:5000/ProjectSchedules/${id}`, {
       Project_Name: String(inputs.Project_Name),
       Project_Location: String(inputs.Project_Location),
       Client_Details: String(inputs.Client_Details),
       Supervisor_Details: String(inputs.Supervisor_Details),
       Start_Date: String(inputs.Start_Date),
       End_Date: String(inputs.End_Date),
-    }).then((res) => res.data);
+    });
   };
 
   const handleChange = (e) => {
@@ -46,101 +47,119 @@ function UpdateScheduleProjects() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    sendRequest().then(() => history('/ScheduleProjectDetails'));
+    setIsSubmitting(true);
+    setError(null);
+    
+    try {
+      await sendRequest();
+      history('/ScheduleProjectDetails');
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to update project. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div>
+    <div className="update-project-container">
       <Header />
-      <Container className="d-flex justify-content-center align-items-center flex-column mt-4">
-        <Form
-          onSubmit={handleSubmit}
-          style={{
-            width: "70%",
-            background: "#ffff",
-            padding: "40px",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.7)",
-            marginBottom: "40px"
-          }}
-        >
-          <h1 className="text-center mb-4 text-primary">Update Project Details</h1>
+      <div className="update-project-form">
+        <div className="form-container">
+          <h1 className="form-title">Update Project Details</h1>
+          
+          {error && <div className="error-message">{error}</div>}
 
-          <Form.Group className="mb-3" controlId="formProjectName">
-            <Form.Label>Project Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="Project_Name"
-              onChange={handleChange}
-              value={inputs.Project_Name || ""}
-              required
-            />
-          </Form.Group>
+          <form className="project-form" onSubmit={handleSubmit}>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Project Name</label>
+                <input
+                  type="text"
+                  name="Project_Name"
+                  onChange={handleChange}
+                  value={inputs.Project_Name || ""}
+                  required
+                  className="input-field"
+                />
+              </div>
 
-          <Form.Group className="mb-3" controlId="formProjectLocation">
-            <Form.Label>Project Location</Form.Label>
-            <Form.Control
-              type="text"
-              name="Project_Location"
-              onChange={handleChange}
-              value={inputs.Project_Location || ""}
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label>Project Location</label>
+                <input
+                  type="text"
+                  name="Project_Location"
+                  onChange={handleChange}
+                  value={inputs.Project_Location || ""}
+                  required
+                  className="input-field"
+                />
+              </div>
+            </div>
 
-          <Form.Group className="mb-3" controlId="formClientDetails">
-            <Form.Label>Client Details</Form.Label>
-            <Form.Control
-              type="text"
-              name="Client_Details"
-              onChange={handleChange}
-              value={inputs.Client_Details || ""}
-              required
-            />
-          </Form.Group>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Client Details</label>
+                <input
+                  type="text"
+                  name="Client_Details"
+                  onChange={handleChange}
+                  value={inputs.Client_Details || ""}
+                  required
+                  className="input-field"
+                />
+              </div>
 
-          <Form.Group className="mb-3" controlId="formSupervisorDetails">
-            <Form.Label>Supervisor Details</Form.Label>
-            <Form.Control
-              type="text"
-              name="Supervisor_Details"
-              onChange={handleChange}
-              value={inputs.Supervisor_Details || ""}
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label>Supervisor Details</label>
+                <input
+                  type="text"
+                  name="Supervisor_Details"
+                  onChange={handleChange}
+                  value={inputs.Supervisor_Details || ""}
+                  required
+                  className="input-field"
+                />
+              </div>
+            </div>
 
-          <Form.Group className="mb-3" controlId="formStartDate">
-            <Form.Label>Start Date</Form.Label>
-            <Form.Control
-              type="date"
-              name="Start_Date"
-              onChange={handleChange}
-              value={inputs.Start_Date || ""}
-              required
-            />
-          </Form.Group>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Start Date</label>
+                <input
+                  type="date"
+                  name="Start_Date"
+                  onChange={handleChange}
+                  value={inputs.Start_Date || ""}
+                  required
+                  className="input-field"
+                />
+              </div>
 
-          <Form.Group className="mb-3" controlId="formEndDate">
-            <Form.Label>End Date</Form.Label>
-            <Form.Control
-              type="date"
-              name="End_Date"
-              onChange={handleChange}
-              value={inputs.End_Date || ""}
-              required
-            />
-          </Form.Group>
+              <div className="form-group">
+                <label>End Date</label>
+                <input
+                  type="date"
+                  name="End_Date"
+                  onChange={handleChange}
+                  value={inputs.End_Date || ""}
+                  required
+                  className="input-field"
+                />
+              </div>
+            </div>
 
-          <div className="d-flex justify-content-between">
-            <Button variant="primary" type="submit" className="w-100">
-              Update
-            </Button>
-          </div>
-        </Form>
-      </Container>
+            <button 
+              type="submit" 
+              className="submit-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Updating..." : "Update Project"}
+            </button>
+          </form>
+        </div>
+      </div>
       <Footer />
     </div>
   );
