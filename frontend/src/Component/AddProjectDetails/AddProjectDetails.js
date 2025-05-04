@@ -36,7 +36,22 @@ function AddProjectDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendRequest().then(() => history('/ScheduleProjectDetails'));
+    
+    // Check if all fields are filled
+    const allFieldsFilled = Object.values(inputs).every(
+      (value) => value !== ""
+    );
+    
+    if (allFieldsFilled) {
+      // Show confirmation dialog
+      const isConfirmed = window.confirm("Are you sure you want to submit this project?");
+      if (isConfirmed) {
+        sendRequest().then(() => history('/ScheduleProjectDetails'));
+      }
+    } else {
+      // If any field is empty, proceed with original submission (or you could show an alert)
+      sendRequest().then(() => history('/ScheduleProjectDetails'));
+    }
   };
 
   return (

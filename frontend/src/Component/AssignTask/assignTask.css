@@ -120,18 +120,7 @@
     margin-right: auto;
   }
   
-  .submit-btn:hover {
-    background: linear-gradient(to right, #2c80d0, #2980b9);
-    transform: translateY(-2px);
-    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
-  }
   
-  .submit-btn:disabled {
-    background: #95a5a6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
   
   /* Responsive Design */
   @media (max-width: 768px) {
@@ -161,3 +150,18 @@
         font-size: 0.85rem !important;
     }
   }
+  /* Update the button color to blue gradient */
+.submit-btn {
+  background: linear-gradient(to right, #3498db, #2c80d0) !important;
+  color: white !important;
+}
+
+/* Hover state */
+.submit-btn:hover {
+  background: linear-gradient(to right, #2c80d0, #2980b9) !important;
+}
+
+/* Disabled state */
+.submit-btn:disabled {
+  background: #2c80d0 !important;
+}

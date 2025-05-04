@@ -29,8 +29,32 @@ function AssignTask() {
     }));
   };
 
+  const areAllFieldsFilled = () => {
+    return (
+      inputs.Project_ID &&
+      inputs.Project_Manager_ID &&
+      inputs.PM_Name &&
+      inputs.Site_Supervisor_ID &&
+      inputs.SS_Name &&
+      inputs.Worker_ID &&
+      inputs.Deadline
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!areAllFieldsFilled()) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    // Show confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to assign this task?");
+    if (!isConfirmed) {
+      return; // User clicked cancel
+    }
+
     setLoading(true);
 
     try {
@@ -190,8 +214,8 @@ function AssignTask() {
 
             <button 
               type="submit" 
-              className="submit-btn"
-              disabled={loading}
+              className={`submit-btn ${!areAllFieldsFilled() ? 'disabled-btn' : ''}`}
+              disabled={loading || !areAllFieldsFilled()}
             >
               {loading ? 'Assigning...' : 'Assign Task'}
             </button>

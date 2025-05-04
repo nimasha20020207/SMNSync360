@@ -49,6 +49,13 @@ function UpdateScheduleProjects() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Add confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to update this project?");
+    if (!isConfirmed) {
+      return; // If user clicks cancel, stop the submission
+    }
+    
     setIsSubmitting(true);
     setError(null);
     

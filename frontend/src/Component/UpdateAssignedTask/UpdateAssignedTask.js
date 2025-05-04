@@ -56,6 +56,12 @@ function UpdateAssignedTask() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Confirmation dialog before updating
+    if (!window.confirm("Are you sure you want to update this task?")) {
+      return; // Exit if user clicks "Cancel"
+    }
+
     setLoading(true);
     
     try {
