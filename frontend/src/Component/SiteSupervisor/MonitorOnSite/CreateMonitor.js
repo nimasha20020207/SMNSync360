@@ -26,6 +26,13 @@ function CreateMonitor() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Add confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to create this record?");
+    if (!isConfirmed) {
+      return; // Stop if user cancels
+    }
+    
     setLoading(true);
     
     try {

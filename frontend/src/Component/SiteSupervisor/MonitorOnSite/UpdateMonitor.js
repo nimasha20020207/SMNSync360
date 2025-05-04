@@ -48,6 +48,14 @@ function UpdateMonitor() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Show confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to update this record?");
+    
+    if (!isConfirmed) {
+      return; // If user cancels, do nothing
+    }
+    
     try {
       await axios.put(`http://localhost:5000/Monitoring/${id}`, inputs);
       toast.success("Record updated!");
