@@ -40,18 +40,18 @@ function Budget() {
       // Generate WhatsApp click-to-chat URL
       const pmPhone = "+940764703413"; // PM's phone number
       const message = encodeURIComponent(
-        `Dear Project Manager,\n\n` +
-        `A new budget has been created with the following details:\n` +
+        `*Dear Project Manager*,\n\n` +
+        `*A new budget has been created with the following details*:\n` +
         `----------------------------------------\n` +
-        `P_ID: ${input.P_ID}\n` +
-        `Name: ${input.name}\n` +
-        `Amount: ${input.amount}\n` +
-        `Date: ${input.createdDate}\n` +
+        `*P_ID:* ${input.P_ID}\n` +
+        `*Name:* ${input.name}\n` +
+        `*Amount:* ${input.amount}\n` +
+        `*Date:* ${input.createdDate}\n` +
         `----------------------------------------\n\n` +
-        `Please review the details and take necessary actions.\n\n` +
+        `*Please review the details and take necessary actions.*\n\n` +
         `Best regards,\n` +
-        `CCMS\n\n` +
-        `This is a system-generated message. ©CCMS All rights reserved.`
+        `SMN Sync 360\n\n` +
+        `*This is a system-generated message. ©SMN Sync 360 All rights reserved.*`
       );
       const whatsappUrl = `https://wa.me/${pmPhone}?text=${message}`;
 

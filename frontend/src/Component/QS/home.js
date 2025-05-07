@@ -303,65 +303,92 @@ function Home() {
       <Container fluid className="mt-4">
         {/* Top: Budget Dropdown */}
         <Row className="mb-6">
-      <Col md={12}>
-        <h3>Budget Overview</h3>
-        <Row>
-          <Col md={2} className="mb-3">
-            <Dropdown onSelect={handleBudgetSelect}>
-              <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                {loading
-                  ? "Loading..."
-                  : selectedBudgetId || "Select a Budget"}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {budgets.map((budget) => (
-                  <Dropdown.Item key={budget.P_ID} eventKey={budget.P_ID}>
-                    {budget.P_ID}
-                  </Dropdown.Item>
-                ))}
-                {budgets.length === 0 && !loading && (
-                  <Dropdown.Item disabled>
-                    No Budgets Available
-                  </Dropdown.Item>
-                )}
-              </Dropdown.Menu>
-            </Dropdown>
-          </Col>
-          <Col md={2} className="mb-3">
-            <Card bg="primary" text="white" style={{ height: "100px" }}>
-              <Card.Body>
-                <Card.Title>Total Budget</Card.Title>
-                <Card.Text>{getBudgetAmount()}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={2} className="mb-3">
-            <Card bg="success" text="white" style={{ height: "100px" }}>
-              <Card.Body>
-                <Card.Title>Spent</Card.Title>
-                <Card.Text>{getSpentAmount()}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={2} className="mb-3">
-            <Card bg="warning" text="dark" style={{ height: "100px" }}>
-              <Card.Body>
-                <Card.Title>Remaining</Card.Title>
-                <Card.Text>{getRemainingAmount()}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={2} className="mb-3">
-            <Card bg="danger" text="white" style={{ height: "100px" }}>
-              <Card.Body>
-                <Card.Title>Overdue</Card.Title>
-                <Card.Text>{getOverdueAmount()}</Card.Text>
-              </Card.Body>
-            </Card>
+          <Col md={12}>
+            <h3>Budget Overview</h3>
+            <Row>
+              <Col md={2} className="mb-3">
+                <Dropdown onSelect={handleBudgetSelect}>
+                  <Dropdown.Toggle
+                    id="dropdown-basic"
+                    style={{ backgroundColor: "#00008B", color: "white" }}
+                  >
+                    {loading
+                      ? "Loading..."
+                      : selectedBudgetId || "Select a Budget"}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {budgets.map((budget) => (
+                      <Dropdown.Item key={budget.P_ID} eventKey={budget.P_ID}>
+                        {budget.P_ID}
+                      </Dropdown.Item>
+                    ))}
+                    {budgets.length === 0 && !loading && (
+                      <Dropdown.Item disabled>
+                        No Budgets Available
+                      </Dropdown.Item>
+                    )}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#00008B",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>Total Budget</Card.Title>
+                    <Card.Text>{getBudgetAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#00008B",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>Spent</Card.Title>
+                    <Card.Text>{getSpentAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#00008B",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>Remaining</Card.Title>
+                    <Card.Text>{getRemainingAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#00008B",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>Overdue</Card.Title>
+                    <Card.Text>{getOverdueAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
           </Col>
         </Row>
-      </Col>
-    </Row>
 
         {/* Right: Expenses Bar Chart */}
         <Col md={6}>
