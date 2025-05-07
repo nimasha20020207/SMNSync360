@@ -38,9 +38,20 @@ function Budget() {
       alert("Budget added successfully!");
 
       // Generate WhatsApp click-to-chat URL
-      const pmPhone = "+940755892208"; 
+      const pmPhone = "+940764703413"; // PM's phone number
       const message = encodeURIComponent(
-        `New Budget Created:\nP_ID: ${input.P_ID}\nName: ${input.name}\nAmount: ${input.amount}`
+        `Dear Project Manager,\n\n` +
+        `A new budget has been created with the following details:\n` +
+        `----------------------------------------\n` +
+        `P_ID: ${input.P_ID}\n` +
+        `Name: ${input.name}\n` +
+        `Amount: ${input.amount}\n` +
+        `Date: ${input.createdDate}\n` +
+        `----------------------------------------\n\n` +
+        `Please review the details and take necessary actions.\n\n` +
+        `Best regards,\n` +
+        `CCMS\n\n` +
+        `This is a system-generated message. ©CCMS All rights reserved.`
       );
       const whatsappUrl = `https://wa.me/${pmPhone}?text=${message}`;
 
