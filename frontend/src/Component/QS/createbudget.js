@@ -33,12 +33,24 @@ function Budget() {
     console.log(input);
     
     try {
+      // Create budget
       await sendRequest();
       alert("Budget added successfully!");
+
+      // Generate WhatsApp click-to-chat URL
+      const pmPhone = "+940755892208"; 
+      const message = encodeURIComponent(
+        `New Budget Created:\nP_ID: ${input.P_ID}\nName: ${input.name}\nAmount: ${input.amount}`
+      );
+      const whatsappUrl = `https://wa.me/${pmPhone}?text=${message}`;
+
+      // Open WhatsApp URL
+      window.open(whatsappUrl, "_blank");
+
       navigate("/Budget");
     } catch (error) {
       console.error("Error in submission:", error);
-      if (error.response && error.response.status === 400) { // Adjust status code based on your backend
+      if (error.response && error.response.status === 400) {
         alert("P_ID is already used. Please use a different P_ID.");
       } else {
         console.error("Error in submission:", error.response || error);
@@ -81,7 +93,7 @@ function Budget() {
             <Form.Control
               type="text"
               onChange={handleChange}
-              placeholder="Enter Name"
+              placeholder="Enter P_ID"
               name="P_ID"
               value={input.P_ID}
               required
