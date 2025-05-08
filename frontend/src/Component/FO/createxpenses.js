@@ -44,8 +44,7 @@ function Expenses() {
       console.log("Expenses Data:", expensesData.data);
   
       // Get budget amount
-      const budgetAmount =
-        budgetData.data.Budgets?.amount || 0;
+      const budgetAmount = budgetData.data.Budgets?.amount || 0;
   
       // Normalize expense data
       let expensesList = expensesData.data.expenses;
@@ -69,9 +68,27 @@ function Expenses() {
   
       // Show warning if budget exceeded
       if (totalExpenses >= budgetThreshold) {
-        alert(
-          "Warning: Total expenses have now exceeded 80% of the allocated budget!"
-        );
+        alert("Warning: Total expenses have now exceeded 80% of the allocated budget!");
+  
+        // Hardcoded phone number
+        const phoneNumber = '+94757189312';
+        const message =
+          "Budget Alert (PID: " + input.P_ID + ")\nYour total expenses RS."+ totalExpenses+" have exceeded 80% of the allocated budget Rs."+ budgetAmount +" Please review your expenses!";
+  
+        try {
+          const response = await axios.post(
+            'http://localhost:5000/api/send-whatsapp-message',
+            { phoneNumber, message }
+          );
+  
+          if (response.data.success) {
+            console.log('WhatsApp message sent successfully!');
+          } else {
+            console.error('Failed to send WhatsApp message:', response.data.message);
+          }
+        } catch (error) {
+          console.error('Error sending WhatsApp message:', error);
+        }
       }
   
       navigate("/Expenses");
@@ -86,6 +103,7 @@ function Expenses() {
       );
     }
   };
+  
   
   
 
