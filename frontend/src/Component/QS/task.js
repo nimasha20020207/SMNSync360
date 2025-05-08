@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Topnav from "../topnav/QS/qs";
 import Fot from "../bottomnav/foter";
-import { Container, Row, Col, Card, Dropdown, Badge, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Container, Row, Col, Card, Badge, Button } from "react-bootstrap";
 
-function Task() { // Renamed to PascalCase
-  // Static task data (replace with backend fetch later if needed)
+function Task() {
   const initialTasks = [
     {
       id: 1,
@@ -35,22 +35,26 @@ function Task() { // Renamed to PascalCase
       status: "Complete",
     },
   ];
-
-  // State to manage tasks
   const [tasks, setTasks] = useState(initialTasks);
 
   // Function to update task status
   const updateTaskStatus = (taskId, newStatus) => {
-    setTasks(tasks.map(task => 
-      task.id === taskId ? { ...task, status: newStatus } : task
-    ));
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      )
+    );
   };
 
   // Status badge color mapping
   const getStatusBadge = (status) => {
     switch (status) {
       case "Pending":
-        return <Badge bg="warning" text="dark">{status}</Badge>;
+        return (
+          <Badge bg="warning" text="dark">
+            {status}
+          </Badge>
+        );
       case "In Progress":
         return <Badge bg="info">{status}</Badge>;
       case "Complete":
@@ -63,43 +67,100 @@ function Task() { // Renamed to PascalCase
   return (
     <div>
       <Topnav />
-      <Container fluid className="mt-4">
-        <h1 className="text-center mb-4">Your Task</h1>
-        <Row>
-          {tasks.map((task) => (
-            <Col md={4} key={task.id} className="mb-4">
-              <Card className="shadow-sm" style={{ borderRadius: "15px", overflow: "hidden" }}>
-                <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center">
-                  <span>{task.title}</span>
-                  {getStatusBadge(task.status)}
-                </Card.Header>
-                <Card.Body>
-                  <Card.Text>{task.description}</Card.Text>
-                  <Card.Text>
-                    <small className="text-muted">Assigned by: {task.assignedBy}</small>
-                  </Card.Text>
-                  <Dropdown onSelect={(eventKey) => updateTaskStatus(task.id, eventKey)}>
-                    <Dropdown.Toggle variant="outline-primary" id={`dropdown-${task.id}`} size="sm">
-                      Change Status
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="Pending">Pending</Dropdown.Item>
-                      <Dropdown.Item eventKey="In Progress">In Progress</Dropdown.Item>
-                      <Dropdown.Item eventKey="Complete">Complete</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Card.Body>
-                <Card.Footer className="text-end">
-                  <Button variant="link" size="sm" onClick={() => updateTaskStatus(task.id, "Complete")}>
-                    Mark as Complete
-                  </Button>
-                </Card.Footer>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Container>
-      <Fot />
+      <div
+        style={{
+          background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+          minHeight: "100vh",
+          padding: "20px 0",
+        }}
+      >
+        <Container fluid className="mt-4">
+          <h1
+            className="mb-5 text-center"
+            style={{
+              fontFamily: "'Poppins', sans-serif",
+              color: "#2c3e50",
+              fontWeight: "bold",
+            }}
+          >
+            Your Tasks
+          </h1>
+          <Row>
+            {tasks.map((task) => (
+              <Col md={4} key={task.id} className="mb-4">
+                <Card
+                  className="shadow-lg border-0"
+                  style={{
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                    transition: "transform 0.3s ease",
+                    background: "rgba(255, 255, 255, 0.95)",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = "translateY(-10px)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "translateY(0)")
+                  }
+                >
+                  <Card.Header
+                    className="text-white d-flex justify-content-between align-items-center"
+                    style={{
+                      background: "linear-gradient(45deg, #3498db, #8e44ad)",
+                      borderRadius: "20px 20px 0 0",
+                    }}
+                  >
+                    <span style={{ fontWeight: "600" }}>{task.title}</span>
+                    {getStatusBadge(task.status)}
+                  </Card.Header>
+                  <Card.Body className="p-4">
+                    <Card.Text className="text-dark">
+                      {task.description}
+                    </Card.Text>
+                    <Card.Text>
+                      <small className="text-muted">
+                        Assigned by: {task.assignedBy}
+                      </small>
+                    </Card.Text>
+                    <div className="d-flex gap-2 flex-wrap">
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => updateTaskStatus(task.id, "In Progress")}
+                        style={{ borderRadius: "10px" }}
+                      >
+                        In Progress
+                      </Button>
+                      <Button
+                        variant="outline-success"
+                        size="sm"
+                        onClick={() => updateTaskStatus(task.id, "Complete")}
+                        style={{ borderRadius: "10px" }}
+                      >
+                        Complete
+                      </Button>
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => alert(`Starting task: ${task.title}`)}
+                        style={{
+                          borderRadius: "10px",
+                          background:
+                            "linear-gradient(45deg, #ff6b6b, #ff8e53)",
+                        }}
+                        as={Link} to={`/Newbudget`}
+                      >
+                        Do Task
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+        <Fot />
+      </div>
     </div>
   );
 }
