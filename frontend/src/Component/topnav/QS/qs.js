@@ -41,7 +41,7 @@ function HeadNav() {
             <Nav.Link href="/QShome" className="fq-home">Home</Nav.Link>
             <Nav.Link href="/task" className="fq-task">Task</Nav.Link>
             <Nav.Link href="/Budget" className="fq-budget">Budget</Nav.Link>
-            <Nav.Link href="/Communication" className="fq-budget">Communication</Nav.Link>
+            {/* <Nav.Link href="/Communication" className="fq-budget">Communication</Nav.Link> */}
           </Nav>
 
           <Nav className="ms-auto">
