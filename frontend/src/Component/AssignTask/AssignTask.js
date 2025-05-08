@@ -12,12 +12,11 @@ function AssignTask() {
     Project_ID: "",
     Project_Manager_ID: "",
     PM_Name: "",
-    Site_Supervisor_ID: "",
-    SS_Name: "",
     Worker_ID: "",
     Deadline: "",
     Priority_Level: "medium",
     Task_Status: "pending",
+    Description: ""
   });
   const [loading, setLoading] = useState(false);
 
@@ -34,10 +33,9 @@ function AssignTask() {
       inputs.Project_ID &&
       inputs.Project_Manager_ID &&
       inputs.PM_Name &&
-      inputs.Site_Supervisor_ID &&
-      inputs.SS_Name &&
       inputs.Worker_ID &&
-      inputs.Deadline
+      inputs.Deadline &&
+      inputs.Description
     );
   };
 
@@ -131,32 +129,6 @@ function AssignTask() {
               </div>
 
               <div className="form-group">
-                <label>Site Supervisor ID</label>
-                <input
-                  type="text"
-                  name="Site_Supervisor_ID"
-                  onChange={handleChange}
-                  value={inputs.Site_Supervisor_ID}
-                  required
-                  className="input-field"
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>SS Name</label>
-                <input
-                  type="text"
-                  name="SS_Name"
-                  onChange={handleChange}
-                  value={inputs.SS_Name}
-                  required
-                  className="input-field"
-                />
-              </div>
-
-              <div className="form-group">
                 <label>Worker ID</label>
                 <input
                   type="text"
@@ -211,7 +183,17 @@ function AssignTask() {
                 <option value="completed">Completed</option>
               </select>
             </div>
-
+            <div className="form-group">
+              <label>Description</label>
+              <input
+                  type="text"
+                  name="Description"
+                  onChange={handleChange}
+                  value={inputs.Description}
+                  required
+                  className="input-field"
+                />
+            </div>
             <button 
               type="submit" 
               className={`submit-btn ${!areAllFieldsFilled() ? 'disabled-btn' : ''}`}

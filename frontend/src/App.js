@@ -81,6 +81,7 @@ import ViewMonitors from "./Component/SiteSupervisor/MonitorOnSite/ViewMonitors"
 import UpdateMonitor from "./Component/SiteSupervisor/MonitorOnSite/UpdateMonitor";
 import Imguploder from "./Component/SiteSupervisor/Imguploder/Imguploder";
 import SiteImages from "./Component/SiteSupervisor/SiteImages";
+import SupervisorTasks from "./Component/SiteSupervisor/SupervisorTasks";
 
 function App() {
   const navigate = useNavigate();
@@ -296,11 +297,12 @@ function App() {
 
         {/* Site Supervisor Routes */}
         <Route path="/site-supervisor" element={<SiteSupervisorDashboard />} />
-        <Route path="/site-supervisor/monitor/create" element={<CreateMonitor />} />
+        <Route path="/site-supervisor/monitor/create/:id" element={<CreateMonitor />} />
         <Route path="/site-supervisor/monitor/view" element={<ViewMonitors />} />
         <Route path="/site-supervisor/monitor/update/:id" element={<UpdateMonitor />} />
         <Route path="/site-supervisor/Imguploder/Img" element={<Imguploder />} />
         <Route path="/site-supervisor/site-images/:id" element={<SiteImages />} />
+        <Route path="/site-supervisor/tasks/view" element={<SupervisorTasks />} /> 
         </Routes>
       </React.Fragment>
     </div>

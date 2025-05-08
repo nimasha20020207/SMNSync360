@@ -205,8 +205,6 @@ function AssignedTasks() {
                     <th>Project ID</th>
                     <th>PM ID</th>
                     <th>PM Name</th>
-                    <th>Supervisor ID</th>
-                    <th>Supervisor Name</th>
                     <th>Worker ID</th>
                     <th>Deadline</th>
                     <th>Priority</th>
@@ -220,8 +218,6 @@ function AssignedTasks() {
                       <td>{task.Project_ID || "N/A"}</td>
                       <td>{task.Project_Manager_ID || "N/A"}</td>
                       <td>{task.PM_Name || "N/A"}</td>
-                      <td>{task.Site_Supervisor_ID || "N/A"}</td>
-                      <td>{task.SS_Name || "N/A"}</td>
                       <td>{task.Worker_ID || "N/A"}</td>
                       <td>{formatDate(task.Deadline)}</td>
                       <td className={getPriorityClass(task.Priority_Level)}>

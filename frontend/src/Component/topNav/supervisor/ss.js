@@ -31,6 +31,8 @@ function HeadNav() {
           <Nav className="fq-navbar-nav">
           <Nav.Link href="/site-supervisor">Home</Nav.Link>
           <Nav.Link href="/site-supervisor/monitor/view">Monitoring</Nav.Link>
+          <Nav.Link href="/site-supervisor/tasks/view">Tasks</Nav.Link>
+
           </Nav>
 
           <Nav className="ms-auto">

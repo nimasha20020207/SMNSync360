@@ -89,7 +89,8 @@ app.post("/login", async (req, res) => {
         if (user.password === password) {
             return res.json({ 
                 status: "ok", 
-                userrole: user.userrole // Return the user's role
+                userrole: user.userrole,
+                userId: user.userid // Return the user's role
             });
         } else {
             return res.json({ err: "incorrect password" });

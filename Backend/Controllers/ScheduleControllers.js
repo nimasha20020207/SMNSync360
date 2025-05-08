@@ -43,11 +43,11 @@ const addProjectSchedules = async (req, res, next) => {
 // Get project schedule by ID
 const getById = async (req, res, next) => {
     const id = req.params.id;
-
+console.log(id)
     let ProjectSchedules;
 
     try {
-        ProjectSchedules = await Schedule.findById(id);
+        ProjectSchedules = await Schedule.find({Project_ID: id});
     } catch (err) {
         console.log(err);
     }
