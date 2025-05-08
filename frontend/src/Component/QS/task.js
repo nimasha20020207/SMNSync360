@@ -253,7 +253,7 @@ function Task() {
                             background: "linear-gradient(45deg, #ff6b6b, #ff8e53)",
                           }}
                           as={Link}
-                          to={`/Newbudget/${task._id}`}
+                          to={`/Newbudget/${task.Project_ID}`}
                         >
                           Do Task
                         </Button>

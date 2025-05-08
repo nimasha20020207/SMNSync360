@@ -29,15 +29,15 @@ function Budget() {
       try {
         console.log("Fetching budget with ID:", userId);
         const response = await axios.get(
-          `http://localhost:5000/tasks/${userId}`
+          `http://localhost:5000/ProjectSchedules/project/${userId}`
         );
         // console.log("API Response:", JSON.stringify(response.data, null, 2));
-        const taskData = response.data.task;
+        const taskData = response.data.projectSchedule;
         console.log("API Response:", response.data);
         setInput({
           P_ID: taskData.Project_ID || "",
-          name: "",
-          location: "",
+          name: taskData.Project_Name||"",
+          location:taskData.Project_Location|| "",
           amount: "",
           createdDate: "",
           status: "Pending...",

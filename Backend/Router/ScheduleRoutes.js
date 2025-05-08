@@ -13,7 +13,7 @@ router.post("/",ScheduleController.addProjectSchedules);
 router.get("/:id",ScheduleController.getById);
 router.put("/:id",ScheduleController.updateProjectSchedules);
 router.delete("/:id", ScheduleController.deleteProjectSchedules);
-
+router.get("/project/:Project_ID", ScheduleController.getByProjectId); 
 
 
 
