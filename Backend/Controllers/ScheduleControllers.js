@@ -22,12 +22,12 @@ const getAllProjectSchedules = async (req, res, next) => {
 
 // Add a new project schedule
 const addProjectSchedules = async (req, res, next) => {
-    const { Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date } = req.body;
-
+    const { Project_Id, Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date } = req.body;
+    console.log(Project_Id)
     let ProjectSchedules;
 
     try {
-        ProjectSchedules = new Schedule({ Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date });
+        ProjectSchedules = new Schedule({ Project_ID: Project_Id, Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date });
         await ProjectSchedules.save();
     } catch (err) {
         console.log(err);

@@ -8,6 +8,7 @@ import "./addproject.css"; // Import the CSS file
 function AddProjectDetails() {
   const history = useNavigate();
   const [inputs, setInputs] = useState({
+    Project_Id: "", 
     Project_Name: "",
     Project_Location: "",
     Client_Details: "",
@@ -25,6 +26,7 @@ function AddProjectDetails() {
 
   const sendRequest = async () => {
     await axios.post("http://localhost:5000/ProjectSchedules", {
+      Project_Id: String(inputs.Project_Id),
       Project_Name: String(inputs.Project_Name),
       Project_Location: String(inputs.Project_Location),
       Client_Details: String(inputs.Client_Details),
@@ -63,6 +65,18 @@ function AddProjectDetails() {
           
           <form onSubmit={handleSubmit} className="project-form">
             <div className="form-row">
+            <div className="form-group">
+                <label>Project ID</label>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                  placeholder="Enter Project Id"
+                  name="Project_Id"
+                  value={inputs.Project_Id}
+                  required
+                  className="input-field"
+                />
+              </div>
               <div className="form-group">
                 <label>Project Name</label>
                 <input

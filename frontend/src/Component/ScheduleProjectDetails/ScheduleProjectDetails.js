@@ -178,6 +178,7 @@ function ScheduleProjectDetails() {
               <table className="projects-table">
                 <thead>
                   <tr>
+                    <th>Project Id</th>
                     <th>Project Name</th>
                     <th>Project Location</th>
                     <th>Client Details</th>
@@ -190,6 +191,7 @@ function ScheduleProjectDetails() {
                 <tbody>
                   {currentProjects.map((project) => (
                     <tr key={project._id}>
+                      <td>{project.Project_ID || "N/A"}</td>
                       <td>{project.Project_Name || "N/A"}</td>
                       <td>{project.Project_Location || "N/A"}</td>
                       <td>{project.Client_Details || "N/A"}</td>

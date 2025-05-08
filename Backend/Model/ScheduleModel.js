@@ -3,6 +3,11 @@ const mongoose = require ("mongoose");
 const Schema = mongoose.Schema;
 
 const ScheduleSchema = new Schema({
+    Project_ID: {
+        type: String,
+        required: [true, "Project ID is required"],
+        trim: true
+    },
     Project_Name:{
         type:String, //dataType,what data u want to ur form
         required:true, //validate

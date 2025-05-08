@@ -176,6 +176,33 @@ const deleteTask = async (req, res) => {
             error: err.message 
         });
     }
+
+  
+};
+
+const getTasksByWorkerId = async (req, res) => {
+    try {
+        const { workerId } = req.params;
+        if (!workerId) {
+            return res.status(400).json({
+                success: false,
+                message: "Worker_ID is required"
+            });
+        }
+        const tasks = await Task.find({ Worker_ID: workerId }).sort({ createdAt: 1 });
+        return res.status(200).json({
+            success: true,
+            count: tasks.length,
+            tasks
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: err.message
+        });
+    }
 };
 
 module.exports = {
@@ -183,5 +210,6 @@ module.exports = {
     addTask,
     getTaskById,
     updateTask,
-    deleteTask
+    deleteTask, 
+    getTasksByWorkerId
 };
