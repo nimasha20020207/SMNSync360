@@ -54,7 +54,7 @@ function HeadNav() {
               }
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
+              <NavDropdown.Item>My Account</NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>

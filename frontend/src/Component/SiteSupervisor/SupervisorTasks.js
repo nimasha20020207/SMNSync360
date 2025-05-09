@@ -7,14 +7,14 @@ import { Badge, Button, Card, Col } from "react-bootstrap";
 
 function SupervisorTasks() {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState("");
+  const [userIds, setUserId] = useState("");
   const [tasks, setTasks] = useState([]);
 
   // Get user ID from localStorage
   useEffect(() => {
-    const userid = localStorage.getItem("userid");
-    if (userid) {
-      setUserId(userid);
+    const userids = localStorage.getItem("userid");
+    if (userids) {
+      setUserId(userids);
     } else {
       navigate("/log");
     }
@@ -22,12 +22,12 @@ function SupervisorTasks() {
 
   // Fetch tasks
   useEffect(() => {
-    if (!userId) return;
+    if (!userIds) return;
 
     const getTask = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/Tasks/worker/${userId}`
+          `http://localhost:5000/Tasks/worker/${userIds}`
         );
         const taskList = response.data.tasks;
         console.log(taskList);
@@ -38,7 +38,7 @@ function SupervisorTasks() {
     };
 
     getTask();
-  }, [userId]);
+  }, [userIds]);
 
   const updateTaskStatus = async (taskId, newStatus) => {
     try {
