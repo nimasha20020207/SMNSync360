@@ -1,118 +1,255 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { FaSearch, FaPlus, FaExclamationTriangle } from 'react-icons/fa';
 import Header from "../topnav/Header";
 import Footer from "../bottomnav/foter";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Container";
-import InputGroup from "react-bootstrap/InputGroup";
-import Form from "react-bootstrap/Form";
-import { FaSearch, FaPlus } from 'react-icons/fa';
-
-const URL = "http://localhost:5000/ProjectSchedules";
-
-const fetchHandler = async () => {
-  return await axios.get(URL).then((res) => res.data);
-};
+import "./ScheduleProjectDetails.css";
 
 function ScheduleProjectDetails() {
-  const [ProjectDetails, setScheduleProjectDetails] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const history = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [projectsPerPage] = useState(10);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    fetchHandler().then((data) => setScheduleProjectDetails(data.ProjectSchedules));
+  const fetchData = useCallback(async () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await axios.get("http://localhost:5000/ProjectSchedules", { signal });
+      
+      const receivedProjects = Array.isArray(res.data?.ProjectSchedules) 
+        ? res.data.ProjectSchedules 
+        : [];
+      
+      setProjects(receivedProjects);
+      setFilteredProjects(receivedProjects);
+    } catch (err) {
+      if (axios.isCancel(err)) {
+        console.log("Request canceled:", err.message);
+      } else {
+        console.error("Fetch error:", err);
+        setError(err.response?.data?.message || "Failed to fetch projects. Please try again.");
+        toast.error("Failed to fetch projects");
+      }
+    } finally {
+      setLoading(false);
+    }
+
+    return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    fetchData();
+    
+    if (location.state?.success) {
+      toast.success(location.state.success);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [fetchData, location, navigate]);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredProjects(projects);
+    } else {
+      const searchTermLower = searchTerm.toLowerCase();
+      const filtered = projects.filter(project => {
+        return (
+          (project.Project_Name?.toLowerCase().includes(searchTermLower)) ||
+          (project.Project_Location?.toLowerCase().includes(searchTermLower)) ||
+          (project.Client_Details?.toLowerCase().includes(searchTermLower)) ||
+          (project.Supervisor_Details?.toLowerCase().includes(searchTermLower))
+        );
+      });
+      setFilteredProjects(filtered);
+    }
+    setCurrentPage(1);
+  }, [searchTerm, projects]);
+  
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/ProjectSchedules/${id}`)
-      .then(() => {
-        setScheduleProjectDetails(prevProjects => prevProjects.filter(project => project._id !== id));
-      })
-      .catch(err => console.error("Delete error:", err));
+    if (!window.confirm("Are you sure you want to delete this project?")) return;
+    
+    try {
+      await axios.delete(`http://localhost:5000/ProjectSchedules/${id}`);
+      toast.success("Project deleted successfully!");
+      await fetchData();
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Delete failed: " + (err.response?.data?.message || err.message));
+    }
   };
 
-  const filteredProjects = ProjectDetails.filter(project =>
-    project.Project_Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.Project_Location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.Client_Details.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    
+    try {
+      const date = new Date(dateString);
+      return isNaN(date.getTime()) ? "Invalid Date" : date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (e) {
+      return "Invalid Date";
+    }
+  };
+
+  // Pagination logic
+  const indexOfLastProject = currentPage * projectsPerPage;
+  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  if (loading) {
+    return (
+      <div className="projects-page-wrapper">
+        <div className="loading-spinner">Loading projects...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="projects-page-wrapper">
+        <div className="error-alert">
+          <FaExclamationTriangle className="error-icon" />
+          <div>
+            <h5>Error Loading Data</h5>
+            <p>{error}</p>
+            <button className="retry-button" onClick={fetchData}>
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="projects-page-wrapper">
       <Header />
-      <Container className="mt-4">
-        <h1 className="text-center mb-4">Scheduled Projects</h1>
-        
-        <Row className="mb-3">
-  <Col md={8}>
-    <InputGroup>
-      <Form.Control
-        placeholder="Search projects..."
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <Button variant="outline-secondary">
-        <FaSearch />
-      </Button>
-    </InputGroup>
-  </Col>
-  <Col md={4} className="d-flex justify-content-end">
-    <Button 
-      variant="primary" 
-      onClick={() => history('/AddProjectDetails')}
-      className="px-4"
-    >
-      <FaPlus className="me-2" />
-      Add New Project
-    </Button>
-  </Col>
-</Row>
+      <div className="projects-container">
+        <div className="projects-header">
+          <div className="projects-controls">
+            <input
+              type="text"
+              placeholder="Search projects by name, location, client, or supervisor..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <button className="search-button" disabled={loading}>
+              <FaSearch />
+            </button>
+          </div>
+          <h1 className="projects-title">Scheduled Projects</h1>
+          <div className="projects-buttons">
+            <button 
+              className="add-project-button"
+              onClick={() => navigate("/AddProjectDetails")}
+              disabled={loading}
+            >
+              <FaPlus className="button-icon" />
+              New Project
+            </button>
+          </div>
+        </div>
 
-        <Table striped bordered hover responsive>
-          <thead className="table-secondary">
-            <tr>
-              <th>Project Name</th>
-              <th>Project Location</th>
-              <th>Client Details</th>
-              <th>Supervisor Details</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProjects.map((project, i) => (
-              <tr key={i}>
-                <td>{project.Project_Name}</td>
-                <td>{project.Project_Location}</td>
-                <td>{project.Client_Details}</td>
-                <td>{project.Supervisor_Details}</td>
-                <td>{new Date(project.Start_Date).toLocaleDateString()}</td>
-                <td>{new Date(project.End_Date).toLocaleDateString()}</td>
-                <td>
-                  <Button 
-                    variant="success" 
-                    className="mx-1"
-                    onClick={() => history(`/ScheduleProjectDetails/${project._id}`)}
+        {filteredProjects.length === 0 ? (
+          <div className="no-projects">
+            {projects.length === 0 
+              ? "No scheduled projects found. Create your first project!" 
+              : "No projects match your search criteria"}
+          </div>
+        ) : (
+          <>
+            <div className="projects-table-container">
+              <table className="projects-table">
+                <thead>
+                  <tr>
+                    <th>Project Id</th>
+                    <th>Project Name</th>
+                    <th>Project Location</th>
+                    <th>Client Details</th>
+                    <th>Supervisor Details</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentProjects.map((project) => (
+                    <tr key={project._id}>
+                      <td>{project.Project_ID || "N/A"}</td>
+                      <td>{project.Project_Name || "N/A"}</td>
+                      <td>{project.Project_Location || "N/A"}</td>
+                      <td>{project.Client_Details || "N/A"}</td>
+                      <td>{project.Supervisor_Details || "N/A"}</td>
+                      <td>{formatDate(project.Start_Date)}</td>
+                      <td>{formatDate(project.End_Date)}</td>
+                      <td>
+                        <div className="action-buttons-container">
+                          <button 
+                            className="action-button update"
+                            onClick={() => navigate(`/ScheduleProjectDetails/${project._id}`)}
+                          >
+                            Update
+                          </button>
+                          <button 
+                            className="action-button delete"
+                            onClick={() => handleDelete(project._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button 
+                  className="page-button prev"
+                  onClick={() => paginate(Math.max(1, currentPage - 1))} 
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                {[...Array(totalPages).keys()].map(number => (
+                  <button
+                    key={number + 1}
+                    className={`page-button ${number + 1 === currentPage ? 'active' : ''}`}
+                    onClick={() => paginate(number + 1)}
                   >
-                    Update
-                  </Button>
-                  <Button 
-                    variant="danger" 
-                    className="mx-1"
-                    onClick={() => handleDelete(project._id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Container>
+                    {number + 1}
+                  </button>
+                ))}
+                <button 
+                  className="page-button next"
+                  onClick={() => paginate(Math.min(totalPages, currentPage + 1))} 
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
       <Footer />
     </div>
   );

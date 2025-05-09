@@ -28,6 +28,7 @@ const barData = [
 
 function AdminDashboard() {
   const navigate = useNavigate();
+  const loggedInUserId = localStorage.getItem('userId'); // Replace with your auth mechanism
 
   const handleLogout = () => {
     localStorage.clear();
@@ -56,7 +57,7 @@ function AdminDashboard() {
             <FaUserCircle className="ad-profile-icon" />
             <span className="ad-username">Admin</span>
             <div className="ad-dropdown-menu">
-              <Link to="/profile">My Profile</Link>
+            <Link to={`/profile/${loggedInUserId}`}>My Profile</Link>
               <button onClick={handleLogout}>Logout</button>
             </div>
           </div>

@@ -22,12 +22,12 @@ const getAllProjectSchedules = async (req, res, next) => {
 
 // Add a new project schedule
 const addProjectSchedules = async (req, res, next) => {
-    const { Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date } = req.body;
-
+    const { Project_Id, Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date } = req.body;
+    console.log(Project_Id)
     let ProjectSchedules;
 
     try {
-        ProjectSchedules = new Schedule({ Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date });
+        ProjectSchedules = new Schedule({ Project_ID: Project_Id, Project_Name, Project_Location, Client_Details, Supervisor_Details, Start_Date, End_Date });
         await ProjectSchedules.save();
     } catch (err) {
         console.log(err);
@@ -43,11 +43,11 @@ const addProjectSchedules = async (req, res, next) => {
 // Get project schedule by ID
 const getById = async (req, res, next) => {
     const id = req.params.id;
-
+console.log(id)
     let ProjectSchedules;
 
     try {
-        ProjectSchedules = await Schedule.findById(id);
+        ProjectSchedules = await Schedule.find({Project_ID: id});
     } catch (err) {
         console.log(err);
     }
@@ -106,6 +106,28 @@ const deleteProjectSchedules = async (req, res, next) => {
     return res.status(200).json({ ProjectSchedules });
   };
 
+
+  const getBypId = async (req, res, next) => {
+    const id = req.params.id;
+
+    let ProjectSchedules;
+
+    try {
+        ProjectSchedules = await Schedule.findById(id);
+    } catch (err) {
+        console.log(err);
+    }
+
+    // If project schedule is not found
+    if (!ProjectSchedules) {
+        return res.status(404).json({ message: "Project not founds" });
+    }
+
+    // Display the project schedule
+    return res.status(200).json({ ProjectSchedules });
+};
+
+
   const getByProjectId = async (req, res, next) => {
     const projectId = req.params.Project_ID;
   
@@ -128,6 +150,8 @@ exports.addProjectSchedules = addProjectSchedules;
 exports.getById = getById;
 exports.updateProjectSchedules = updateProjectSchedules;
 exports.deleteProjectSchedules = deleteProjectSchedules;
+exports.getBypId = getBypId;
 exports.getByProjectId = getByProjectId;
+
 
 

@@ -98,8 +98,8 @@
   }
   
   .hero .cta-button {
-    background-color: #f1c40f;
-    color: #2c3e50;
+    background-color: #0545ab;
+    color: #f4f5f6;
     padding: 15px 30px;
     text-decoration: none;
     font-weight: 600;
@@ -109,7 +109,7 @@
   }
   
   .hero .cta-button:hover {
-    background-color: #e67e22;
+    background-color: #270e84;
   }
   
   /* Responsive Design */

@@ -4,13 +4,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Header from "../topnav/Header";
 import Footer from "../bottomnav/foter";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
+import "./UpdateAssignedTask.css";
 
 function UpdateAssignedTask() {
   const { id } = useParams();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     Project_ID: "",
     Project_Manager_ID: "",
@@ -30,7 +28,6 @@ function UpdateAssignedTask() {
         const response = await axios.get(`http://localhost:5000/Tasks/${id}`);
         const taskData = response.data.task;
         
-        // Format date for input field
         const formattedDeadline = new Date(taskData.Deadline).toISOString().split('T')[0];
         
         setInputs({
@@ -40,14 +37,14 @@ function UpdateAssignedTask() {
       } catch (error) {
         console.error("Error fetching task:", error);
         toast.error(error.response?.data?.message || "Failed to load task");
-        history('/AssignedTasks');
+        navigate('/AssignedTasks');
       } finally {
         setLoading(false);
       }
     };
 
     fetchTask();
-  }, [id, history]);
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,13 +56,19 @@ function UpdateAssignedTask() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Confirmation dialog before updating
+    if (!window.confirm("Are you sure you want to update this task?")) {
+      return; // Exit if user clicks "Cancel"
+    }
+
     setLoading(true);
     
     try {
       const response = await axios.put(`http://localhost:5000/Tasks/${id}`, inputs);
       if (response.data.success) {
         toast.success("Task updated successfully!");
-        history('/AssignedTasks');
+        navigate('/AssignedTasks');
       }
     } catch (error) {
       console.error("Error updating task:", error);
@@ -85,146 +88,130 @@ function UpdateAssignedTask() {
   };
 
   if (loading) {
-    return <div className="text-center my-5">Loading task data...</div>;
+    return (
+      <div className="update-task-wrapper">
+        <Header />
+        <div className="update-task-loading">Loading task data...</div>
+        <Footer />
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="update-task-wrapper">
       <Header />
-      <Container className="d-flex justify-content-center align-items-center flex-column mt-4">
-        <Form
-          onSubmit={handleSubmit}
-          style={{
-            width: "70%",
-            background: "#ffff",
-            padding: "40px",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.7)",
-          }}
-        >
-          <h1 className="text-center mb-4 text-primary">Update Assigned Task</h1>
+      <div className="update-task-form">
+        <div className="form-container">
+          <h1 className="form-title">Update Assigned Task</h1>
 
-          <div className="row">
-            <div className="col-md-6">
-              <Form.Group className="mb-3" controlId="formProjectID">
-                <Form.Label>Project ID</Form.Label>
-                <Form.Control
+          <form onSubmit={handleSubmit} className="task-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label>Project ID</label>
+                <input
                   type="text"
                   name="Project_ID"
                   onChange={handleChange}
                   value={inputs.Project_ID}
                   required
                   readOnly
+                  className="input-field"
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group className="mb-3" controlId="formProjectManagerID">
-                <Form.Label>Project Manager ID</Form.Label>
-                <Form.Control
+              <div className="form-group">
+                <label>Project Manager ID</label>
+                <input
                   type="text"
                   name="Project_Manager_ID"
                   onChange={handleChange}
                   value={inputs.Project_Manager_ID}
                   required
+                  className="input-field"
                 />
-              </Form.Group>
+              </div>
+            </div>
 
-              <Form.Group className="mb-3" controlId="formPMName">
-                <Form.Label>PM Name</Form.Label>
-                <Form.Control
+            <div className="form-row">
+              <div className="form-group">
+                <label>PM Name</label>
+                <input
                   type="text"
                   name="PM_Name"
                   onChange={handleChange}
                   value={inputs.PM_Name}
                   required
+                  className="input-field"
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group className="mb-3" controlId="formSiteSupervisorID">
-                <Form.Label>Site Supervisor ID</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Site_Supervisor_ID"
-                  onChange={handleChange}
-                  value={inputs.Site_Supervisor_ID}
-                  required
-                />
-              </Form.Group>
-            </div>
-
-            <div className="col-md-6">
-              <Form.Group className="mb-3" controlId="formSSName">
-                <Form.Label>SS Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="SS_Name"
-                  onChange={handleChange}
-                  value={inputs.SS_Name}
-                  required
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formWorkerID">
-                <Form.Label>Worker ID</Form.Label>
-                <Form.Control
+              <div className="form-group">
+                <label>Worker ID</label>
+                <input
                   type="text"
                   name="Worker_ID"
                   onChange={handleChange}
                   value={inputs.Worker_ID}
                   required
+                  className="input-field"
                 />
-              </Form.Group>
+              </div>
+            </div>
 
-              <Form.Group className="mb-3" controlId="formDeadline">
-                <Form.Label>Task Deadline</Form.Label>
-                <Form.Control
+            <div className="form-row">
+              <div className="form-group">
+                <label>Task Deadline</label>
+                <input
                   type="date"
                   name="Deadline"
                   onChange={handleChange}
                   value={inputs.Deadline}
                   required
                   min={new Date().toISOString().split('T')[0]}
+                  className="input-field"
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group className="mb-3" controlId="formPriorityLevel">
-                <Form.Label>Priority Level</Form.Label>
-                <Form.Select
+              <div className="form-group">
+                <label>Priority Level</label>
+                <select
                   name="Priority_Level"
                   onChange={handleChange}
                   value={inputs.Priority_Level}
+                  className="input-field"
                 >
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
                   <option value="low">Low</option>
-                </Form.Select>
-              </Form.Group>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <Form.Group className="mb-4" controlId="formTaskStatus">
-            <Form.Label>Task Status</Form.Label>
-            <Form.Select
-              name="Task_Status"
-              onChange={handleChange}
-              value={inputs.Task_Status}
+            <div className="form-group">
+              <label>Task Status</label>
+              <select
+                name="Task_Status"
+                onChange={handleChange}
+                value={inputs.Task_Status}
+                className="input-field"
+                 
+              >
+                <option value="pending">Pending</option>
+                <option value="inprogress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+
+            <button 
+              type="submit" 
+              className="submit-btn"
+              disabled={loading}
             >
-              <option value="pending">Pending</option>
-              <option value="inprogress">In Progress</option>
-              <option value="completed">Completed</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Button 
-            variant="primary" 
-            type="submit" 
-            className="w-100"
-            disabled={loading}
-          >
-            {loading ? 'Updating...' : 'Update Task'}
-          </Button>
-        </Form>
-      </Container>
+              {loading ? 'Updating...' : 'Update Task'}
+            </button>
+          </form>
+        </div>
+      </div>
       <Footer />
     </div>
   );

@@ -12,11 +12,13 @@ import Login from "./Component/Login/Login";
 import UpdateUser from "./Component/Admin/Updateusers/Updateuser";
 import Notifications from "./Component/Admin/NotificationDetails/Notifications";
 import PasswordReset from "./Component/Admin/PasswordReset/PasswordResets";
+import ResetPassword from "./Component/Admin/ResetPassword/ResetPassword";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
-
+import Profile from './Component/Admin/Profile/Profile';
 
 import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
+import PasswordDetails from "./Component/Admin/PasswordResetDetails/Passwords";
 import UpdatePasswordRequest from "./Component/Admin/UpdatePasswordRequest/UpdatePasswordRequest";
 import HelpCenter from "./Component/Admin/HelpCenter/HelpCenter";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
@@ -71,7 +73,7 @@ import Inventoryupdate from "./Component/Inventory/updateinventory";
 import Progressrea from "./Component/Progress/Users";
 import ReadPro from "./Component/Progress/UserTableView";
 import UPpro from "./Component/Progress/UpdateProgress";
-import Passwords from "./Component/Admin/PasswordResetDetails.js/Passwords";
+import Passwords from "./Component/Admin/PasswordResetDetails/Passwords";
 import ProfileUser from "./Component/ProfileUser/ProfileUser";
 
 // Site Supervisor Components
@@ -81,6 +83,7 @@ import ViewMonitors from "./Component/SiteSupervisor/MonitorOnSite/ViewMonitors"
 import UpdateMonitor from "./Component/SiteSupervisor/MonitorOnSite/UpdateMonitor";
 import Imguploder from "./Component/SiteSupervisor/Imguploder/Imguploder";
 import SiteImages from "./Component/SiteSupervisor/SiteImages";
+import SupervisorTasks from "./Component/SiteSupervisor/SupervisorTasks";
 
 function App() {
   const navigate = useNavigate();
@@ -145,6 +148,11 @@ function App() {
           <Route path="/helpcenter" element={<HelpCenter/>} />
           <Route path="/userprofile" element={<ProfileUser/>} />
           <Route path="/users" element={<Users/>} />
+          <Route path="/reset-password/:userId/:token" element={<ResetPassword />} />
+          <Route path="/passworddetails" element={<PasswordDetails />} />
+          <Route path="/add-password" element={<AddPasswordRequest />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile/:userId?" element={<Profile />} />
           <Route
             path="/admindash"
             element={
@@ -297,11 +305,12 @@ function App() {
 
         {/* Site Supervisor Routes */}
         <Route path="/site-supervisor" element={<SiteSupervisorDashboard />} />
-        <Route path="/site-supervisor/monitor/create" element={<CreateMonitor />} />
+        <Route path="/site-supervisor/monitor/create/:id" element={<CreateMonitor />} />
         <Route path="/site-supervisor/monitor/view" element={<ViewMonitors />} />
         <Route path="/site-supervisor/monitor/update/:id" element={<UpdateMonitor />} />
         <Route path="/site-supervisor/Imguploder/Img" element={<Imguploder />} />
         <Route path="/site-supervisor/site-images/:id" element={<SiteImages />} />
+        <Route path="/site-supervisor/tasks/view" element={<SupervisorTasks />} /> 
         </Routes>
       </React.Fragment>
     </div>

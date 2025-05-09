@@ -12,6 +12,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 function FOHome() {
   const [budgets, setBudgets] = useState([]);
   const [expenses, setExpenses] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBudgetId, setSelectedBudgetId] = useState(null);
 
@@ -19,7 +20,7 @@ function FOHome() {
   const fetchBudgets = async () => {
     try {
       const response = await axios.get("http://localhost:5000/Budgets");
-      console.log("API Response:", response.data);
+      console.log("Budgets API Response:", response.data);
       const budgetData = response.data.Budgets || response.data || [];
       const budgetArray = Array.isArray(budgetData) ? budgetData : [];
       setBudgets(budgetArray);
@@ -46,10 +47,24 @@ function FOHome() {
     }
   };
 
-  // Fetch data on component mount
+  // Fetch notifications from backend
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/Notification");
+      console.log("Notifications API Response:", response.data);
+      const notificationData = response.data.notification || response.data || [];
+      const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+      setNotifications(notificationArray);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setNotifications([]);
+    }
+  };
+
+  // Fetch all data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchBudgets(), fetchExpenses()]);
+      await Promise.all([fetchBudgets(), fetchExpenses(), fetchNotifications()]);
       setLoading(false);
     };
     fetchData();
@@ -158,7 +173,7 @@ function FOHome() {
     }
 
     const filteredExpenses = expenses.filter((expense) => expense.P_ID === selectedBudgetId);
-    const labels = filteredExpenses.map((expense) => 
+    const labels = filteredExpenses.map((expense) =>
       new Date(expense.createdDate).toLocaleDateString()
     );
     const data = filteredExpenses.map((expense) => Number(expense.amount));
@@ -229,7 +244,8 @@ function FOHome() {
         <Row>
           {/* Left: Budget Bars */}
           <Col md={6}>
-            <h3>Budget Overview</h3><br/>
+            <h3>Budget Overview</h3>
+            <br />
             <div className="mb-3">
               <h6>Total Budget: Rs {totalBudget.toLocaleString()}</h6>
               <ProgressBar
@@ -279,12 +295,23 @@ function FOHome() {
             <Card>
               <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
               <Card.Body>
-                <Card.Text>
-                  <strong>03/25/2025:</strong> Budget review meeting scheduled for next week.
-                </Card.Text>
-                <Card.Text>
-                  <strong>03/20/2025:</strong> Project A deadline extended to April 10th.
-                </Card.Text>
+                {loading ? (
+                  <Card.Text>Loading notifications...</Card.Text>
+                ) : notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <Card.Text key={index}>
+                      <strong>
+                        {notification.Date
+                          ? new Date(notification.Date).toLocaleDateString()
+                          : "No Date"}
+                        :
+                      </strong>{" "}
+                      {notification.message || "No message available"}
+                    </Card.Text>
+                  ))
+                ) : (
+                  <Card.Text>No announcements available.</Card.Text>
+                )}
               </Card.Body>
             </Card>
           </Col>
