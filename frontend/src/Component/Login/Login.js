@@ -80,6 +80,7 @@ function Login() {
         localStorage.setItem("userRole", response.userrole);
         localStorage.setItem("username", response.username || "User");
         localStorage.setItem("userId", response.userId);
+        localStorage.setItem("userId", response.userId || "User"); // Store userid from response
 
         const userRole = response.userrole
           ? response.userrole.toLowerCase()

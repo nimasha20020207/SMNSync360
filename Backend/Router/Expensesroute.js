@@ -9,5 +9,6 @@ router.get("/:id",expensesControle.getById);
 router.put("/:id",expensesControle.UpdateExpenses);
 router.delete("/:id",expensesControle.DeleteExpenses);
 router.get("/P_ID/:P_ID",expensesControle.findbyPID);
+router.get("/P_IDs/:P_ID",expensesControle.findbyPIDs);
 
 module.exports =router;

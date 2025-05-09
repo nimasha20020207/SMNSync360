@@ -250,6 +250,7 @@ function App() {
           <Route path='/Budget' element={<Budgetread/>}/>
           <Route path='/task' element={<QsTask/>}/>
           <Route path='/Newbudget' element={<Newbudget/>}/>
+          <Route path='/Newbudget/:userId' element={<Newbudget/>}/>
           <Route path='/Budget/:id' element={<UpdateBudget/>}/>
           <Route path='/Communication' element={<QsCommunication/>}/>
           <Route path='/taskfo' element={<FoTask/>}/>
