@@ -5,17 +5,21 @@ import logo from "../../pictures/logo.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../nav.css";
 
 function HeadNav() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState("User");
+  const [userIds, setUserIds] = useState("userids");
 
   useEffect(() => {
     // Retrieve userId from localStorage
     const storedUserId = localStorage.getItem("username");
+    const storeuserIds = localStorage.getItem("userids");
     setUserId(storedUserId || "User"); // Fallback to "User" if not found
+    setUserIds(storeuserIds);
   }, []);
 
   const handleLogout = () => {
@@ -53,7 +57,7 @@ function HeadNav() {
               }
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to={`/profile/${userIds}`}>My Account</NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
