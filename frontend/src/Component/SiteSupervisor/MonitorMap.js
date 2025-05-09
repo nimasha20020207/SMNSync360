@@ -28,6 +28,16 @@ const monitoringSites = [
     position: [9.6615, 80.0255],
     description: 'Road development project' 
   },
+  { 
+    name: 'Site D - Kandy', 
+    position: [7.2906, 80.6337],
+    description: 'Road improvement work' 
+  },
+  { 
+    name: 'Site E - Gampaha', 
+    position: [7.1070, 80.2220],
+    description: 'Building foundation work' 
+  },
 ];
 
 function MonitorMap() {
@@ -36,9 +46,9 @@ function MonitorMap() {
       <Card.Header as="h5" className="bg-primary text-white">
         <i className="fas fa-map-marked-alt me-2"></i> Construction Sites Monitoring
       </Card.Header>
-      <Card.Body className="p-0" style={{ height: '400px' }}>
+      <Card.Body className="p-0" style={{ height: '200px' }}>
         <MapContainer 
-          center={[7.8731, 80.7718]}
+          center={[7.8731, 80.7718]} 
           zoom={7} 
           scrollWheelZoom={true} 
           style={{ height: '100%', width: '100%' }}

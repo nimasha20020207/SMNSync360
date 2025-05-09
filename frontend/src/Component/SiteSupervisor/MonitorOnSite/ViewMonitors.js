@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { 
@@ -13,6 +15,8 @@ import {
 import Navbar from "../../topnav/supervisor/ss";
 import Footer from "../../bottomnav/foter";
 import "./ViewMonitors.css";
+
+
 
 function ViewMonitors() {
   const [records, setRecords] = useState([]);
@@ -119,6 +123,41 @@ function ViewMonitors() {
       return "Invalid Date";
     }
   };
+
+  const generatePDF = (record) => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Monitoring Report", 14, 22);
+
+  doc.setFontSize(12);
+  const details = [
+    ["Project ID", record.Project_ID || "N/A"],
+    ["Project Name", record.Project_Name || "N/A"],
+    ["Location", record.Location || "N/A"],
+    ["Date", formatDate(record.Monitoring_Date)],
+    ["Issues Found", record.Issues_Found || "No issues reported"],
+    ["Weather Conditions", record.Weather_Conditions || "Unknown"],
+    ["Workers Present", record.Workers_Present || 0]
+  ];
+
+  let startY = 30;
+  const lineHeight = 10;
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Field", 14, startY);
+  doc.text("Value", 100, startY);
+
+  doc.setFont("helvetica", "normal");
+  details.forEach(([label, value], index) => {
+    const y = startY + (index + 1) * lineHeight;
+    doc.text(String(label), 14, y);
+    doc.text(String(value), 100, y);
+  });
+
+  doc.save(`Monitoring_Report_${record.Project_ID || "Unknown"}.pdf`);
+};
+
 
   // Pagination logic
   const indexOfLastRecord = currentPage * recordsPerPage;
@@ -239,6 +278,12 @@ function ViewMonitors() {
          >
           Delete
         </button>
+         <button 
+      className="action-button pdf"
+      onClick={() => generatePDF(record)}
+    >
+      Download PDF
+    </button>
        </div>
          </td>
           <td>

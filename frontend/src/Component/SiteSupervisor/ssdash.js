@@ -264,40 +264,55 @@ function Dashboard() {
               <Card.Header as="h5" className="bg-primary text-white py-3" style={{ borderRadius: "15px 15px 0 0" }}>📢 Announcements</Card.Header>
               <Card.Body className="p-4">
                 <Card.Text className="mb-3">
-                  <strong>05/02/2024:</strong> Weekly safety inspections every Monday at 9 AM.
-                </Card.Text>
-                <Card.Text className="mb-3">
-                  <strong>04/28/2024:</strong> Reports due by Friday EOD.
-                </Card.Text>
-                <Card.Text className="mb-0">
-                  <strong>05/10/2024:</strong> Equipment maintenance scheduled.
-                </Card.Text>
+       <strong>05/02/2024:</strong> Daily site inspections will be conducted at 8 AM.
+        </Card.Text>
+       <Card.Text className="mb-3">
+        <strong>05/04/2024:</strong> System downtime scheduled for maintenance from 12 PM to 3 PM.
+        </Card.Text>
+        <Card.Text className="mb-3">
+        <strong>05/06/2024:</strong> Weekly security audits starting at 10 AM every Monday.
+        </Card.Text>
+        <Card.Text className="mb-3">
+        <strong>05/08/2024:</strong> Scheduled update for site monitoring tools, please expect brief outages.
+        </Card.Text>
+        <Card.Text className="mb-0">
+       <strong>05/09/2024:</strong> Emergency alert testing will take place at 2 PM.
+       </Card.Text>
+
               </Card.Body>
             </Card>
           </Col>
           
 
-          {/* Calendar - Right Side */}
-          <Col md={6} className="mb-1">
-            <Card className="h-100" style={{ borderRadius: "15px" }}>
-              <Card.Header as="h5" className="bg-primary text-white py-3" style={{ borderRadius: "15px 15px 0 0" }}>📅 Site Schedule</Card.Header>
-              <Card.Body className="p-3" style={{ height: '350px' }}>
-                <Calendar
-                  localizer={localizer}
-                  events={events}
-                  startAccessor="start"
-                  endAccessor="end"
-                  date={currentDate}
-                  onNavigate={handleNavigate}
-                  style={{ height: '100%' }}
-                  defaultView="month"
-                  views={['month', 'week', 'day']}
-                  popup
-                  toolbar
-                />
-              </Card.Body>
-            </Card>
-          </Col>
+         {/* Calendar - Right Side */}
+       <Col md={6} className="mb-1">
+        <Card className="h-100" style={{ borderRadius: "15px" }}>
+        <Card.Header
+      as="h5"
+      className="bg-primary text-white py-2"
+      style={{ borderRadius: "15px 15px 0 0", fontSize: "1rem" }}
+    >
+      📅 Site Schedule
+    </Card.Header>
+    <Card.Body className="p-2" style={{ height: '200px' }}>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        date={currentDate}
+        onNavigate={handleNavigate}
+        style={{ height: '100%' }}
+        defaultView="month"
+        views={['month', 'week', 'day']}
+        popup
+        toolbar
+          />
+         </Card.Body>
+       </Card>
+      </Col>
+
+
         </Row>
       </Container>
       <Footer />
