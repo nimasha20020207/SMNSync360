@@ -98,11 +98,12 @@ app.post("/login", async (req, res) => {
             return res.json({ 
                 status: "ok", 
 
+                userrole: user.userrole,
+                userId: user.userid, // Return the user's role
                 username: user.name, // Include username for frontend
                 userId: user._id,
-                userrole: user.userrole ,// Return the user's role
-                userId: user.userid, // Return userid from UserSchema
                 username: user.email
+
 
             });
         } else {

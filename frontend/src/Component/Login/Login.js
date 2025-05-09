@@ -75,13 +75,14 @@ function Login() {
     try {
       const response = await sendRequest();
       if (response.status === "ok") {
+        console.log(response)
         alert("Login success");
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userRole", response.userrole);
         localStorage.setItem("username", response.username || "User");
-        localStorage.setItem("userId", response.userId);
-        localStorage.setItem("userId", response.userId || "User"); // Store userid from response
+        localStorage.setItem("userid", response.userId)
 
+    
         const userRole = response.userrole
           ? response.userrole.toLowerCase()
           : "";
