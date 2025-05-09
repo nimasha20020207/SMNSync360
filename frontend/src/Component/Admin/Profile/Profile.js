@@ -78,11 +78,11 @@ function Profile() {
           <button onClick={handleBack} className="profile-back-button">
             Back
           </button>
-          {loggedInUserId === user._id && (
-            <button onClick={() => navigate(`/edit-profile/${user._id}`)} className="profile-edit-button">
+          {/* {loggedInUserId === user._id && ( 
+           <button onClick={() => navigate(`/edit-profile/${user._id}`)} className="profile-edit-button">
               Edit Profile
             </button>
-          )}
+          )}*/}
         </div>
       </div>
     </div>
