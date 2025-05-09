@@ -12,9 +12,9 @@ function Expenses() {
 
   const [input, setInput] = useState({
     P_ID: "",
-    expencedetails:"",
+    expencedetails: "",
     amount: "",
-    createdDate: ""
+    createdDate: "",
   });
 
   const handleChange = (e) => {
@@ -27,23 +27,92 @@ function Expenses() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(input);
-    
+  
     try {
-      await sendRequest();
+      await sendRequest(); // Add the expense
       alert("Expense added successfully!");
+  
+      // Fetch budget and expenses
+      const budgetData = await axios.get(
+        `http://localhost:5000/Budgets/P_ID/${input.P_ID}`
+      );
+      const expensesData = await axios.get(
+        `http://localhost:5000/Expenses/P_IDs/${input.P_ID}`
+      );
+  
+      console.log("Budget Data:", budgetData.data);
+      console.log("Expenses Data:", expensesData.data);
+  
+      // Get budget amount
+      const budgetAmount = budgetData.data.Budgets?.amount || 0;
+  
+      // Normalize expense data
+      let expensesList = expensesData.data.expenses;
+  
+      // Convert to array if it's a single object
+      if (!Array.isArray(expensesList)) {
+        expensesList = [expensesList];
+      }
+  
+      // Calculate total expenses
+      const totalExpenses = expensesList.reduce(
+        (sum, exp) => sum + (exp.amount || 0),
+        0
+      );
+  
+      const budgetThreshold = budgetAmount * 0.8;
+  
+      console.log("Budget Amount:", budgetAmount);
+      console.log("Total Expenses:", totalExpenses);
+      console.log("Budget Threshold (80%):", budgetThreshold);
+  
+      // Show warning if budget exceeded
+      if (totalExpenses >= budgetThreshold) {
+        alert("Warning: Total expenses have now exceeded 80% of the allocated budget!");
+  
+        // Hardcoded phone number
+        const phoneNumber = '+94757189312';
+        const message =
+          "Budget Alert (PID: " + input.P_ID + ")\nYour total expenses RS."+ totalExpenses+" have exceeded 80% of the allocated budget Rs."+ budgetAmount +" Please review your expenses!";
+  
+        try {
+          const response = await axios.post(
+            'http://localhost:5000/api/send-whatsapp-message',
+            { phoneNumber, message }
+          );
+  
+          if (response.data.success) {
+            console.log('WhatsApp message sent successfully!');
+          } else {
+            console.error('Failed to send WhatsApp message:', response.data.message);
+          }
+        } catch (error) {
+          console.error('Error sending WhatsApp message:', error);
+        }
+      }
+  
       navigate("/Expenses");
     } catch (error) {
-      console.error("Error in submission:", error);
+      console.error(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      alert(
+        "Something went wrong: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   };
+  
+  
+  
 
   const sendRequest = async () => {
     const response = await axios.post("http://localhost:5000/Expenses", {
       P_ID: String(input.P_ID),
-      expencedetails:String(input.expencedetails),
+      expencedetails: String(input.expencedetails),
       amount: Number(input.amount),
-      createdDate: Date(input.createdDate)
+      createdDate: Date(input.createdDate),
     });
     return response.data;
   };
@@ -62,7 +131,9 @@ function Expenses() {
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.7)",
           }}
         >
-          <h1 className="text-center mb-4 text-primary">Add Expenses Details</h1>
+          <h1 className="text-center mb-4 text-primary">
+            Add Expenses Details
+          </h1>
 
           <Form.Group className="mb-3" controlId="formGroupName">
             <Form.Label style={{ fontWeight: "bold" }}>P_ID</Form.Label>
@@ -77,13 +148,15 @@ function Expenses() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formGroupDescription">
-            <Form.Label style={{ fontWeight: "bold" }}>Expenses Description</Form.Label>
+            <Form.Label style={{ fontWeight: "bold" }}>
+              Expenses Description
+            </Form.Label>
             <Form.Control
               as="textarea"
               rows={5}
               onChange={handleChange}
               name="expencedetails"
-              value={input.expencedetails} 
+              value={input.expencedetails}
               placeholder="Enter Details"
               required
             />

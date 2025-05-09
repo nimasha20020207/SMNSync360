@@ -24,6 +24,9 @@ const fs = require("fs");
 const routerNotification = require("./Router/NotificationRoute");
 const routerPassword = require("./Router/Passwordroute");
 
+const whatsappRoute = require("./Router/whatsapp.js");
+
+
 
 // Clear model cache
 delete mongoose.connection.models['Task'];
@@ -62,6 +65,8 @@ app.use("/Orders", orderrouter);
 app.use("/Equipments", equipmentrouter);
 app.use("/ConfirmedOrders", confirmrouter);
 
+app.use('/api', whatsappRoute);
+
 app.use("/Notification", routerNotification);
 app.use("/Password", routerPassword);
 //ajtdQYIXjaiZbNli
@@ -89,7 +94,9 @@ app.post("/login", async (req, res) => {
         if (user.password === password) {
             return res.json({ 
                 status: "ok", 
-                userrole: user.userrole // Return the user's role
+                userrole: user.userrole ,// Return the user's role
+                userId: user.userid, // Return userid from UserSchema
+                username: user.email
             });
         } else {
             return res.json({ err: "incorrect password" });
@@ -306,3 +313,5 @@ db
         console.error("MongoDB connection error:", err);
         process.exit(1);
     });
+
+    

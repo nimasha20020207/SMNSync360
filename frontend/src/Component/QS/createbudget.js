@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Topnav from "../topnav/QS/qs";
 import Fot from "../bottomnav/foter";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function Budget() {
@@ -17,8 +17,41 @@ function Budget() {
     amount: "",
     createdDate: "",
     status: "Pending...",
-    description: "No Changes yet"
+    description: "No Changes yet",
   });
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { userId } = useParams();
+
+  useEffect(() => {
+    const fetchHandler = async () => {
+      try {
+        console.log("Fetching budget with ID:", userId);
+        const response = await axios.get(
+          `http://localhost:5000/ProjectSchedules/project/${userId}`
+        );
+        // console.log("API Response:", JSON.stringify(response.data, null, 2));
+        const taskData = response.data.projectSchedule;
+        console.log("API Response:", response.data);
+        setInput({
+          P_ID: taskData.Project_ID || "",
+          name: taskData.Project_Name||"",
+          location:taskData.Project_Location|| "",
+          amount: "",
+          createdDate: "",
+          status: "Pending...",
+          description: "No Changes yet",
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching budget:", error);
+        setError("Failed to load budget data: " + error.message);
+        setLoading(false);
+      }
+    };
+    fetchHandler();
+  }, [userId]);
 
   const handleChange = (e) => {
     setInput((prevState) => ({
@@ -31,14 +64,37 @@ function Budget() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(input);
-    
+
     try {
+      // Create budget
       await sendRequest();
       alert("Budget added successfully!");
+
+      // Generate WhatsApp click-to-chat URL
+      const pmPhone = "+940764703413"; // PM's phone number
+      const message = encodeURIComponent(
+        `*Dear Project Manager*,\n\n` +
+          `*A new budget has been created with the following details*:\n` +
+          `----------------------------------------\n` +
+          `*P_ID:* ${input.P_ID}\n` +
+          `*Name:* ${input.name}\n` +
+          `*Amount:* ${input.amount}\n` +
+          `*Date:* ${input.createdDate}\n` +
+          `----------------------------------------\n\n` +
+          `*Please review the details and take necessary actions.*\n\n` +
+          `Best regards,\n` +
+          `SMN Sync 360\n\n` +
+          `*This is a system-generated message. ©SMN Sync 360 All rights reserved.*`
+      );
+      const whatsappUrl = `https://wa.me/${pmPhone}?text=${message}`;
+
+      // Open WhatsApp URL
+      window.open(whatsappUrl, "_blank");
+
       navigate("/Budget");
     } catch (error) {
       console.error("Error in submission:", error);
-      if (error.response && error.response.status === 400) { // Adjust status code based on your backend
+      if (error.response && error.response.status === 400) {
         alert("P_ID is already used. Please use a different P_ID.");
       } else {
         console.error("Error in submission:", error.response || error);
@@ -81,7 +137,7 @@ function Budget() {
             <Form.Control
               type="text"
               onChange={handleChange}
-              placeholder="Enter Name"
+              placeholder="Enter P_ID"
               name="P_ID"
               value={input.P_ID}
               required
@@ -154,7 +210,7 @@ function Budget() {
               rows={5}
               onChange={handleChange}
               name="description"
-              value={input.description} 
+              value={input.description}
               placeholder="Enter Description"
             />
           </Form.Group>
