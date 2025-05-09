@@ -8,7 +8,7 @@ import Footer from "../../bottomnav/foter";
 
 function CreateMonitor() {
   const navigate = useNavigate();
-  const { id: taskId } = useParams();
+  const { id: projectId } = useParams();
   const [inputs, setInputs] = useState({
     Project_ID: "",
     Project_Name: "",
@@ -24,45 +24,45 @@ function CreateMonitor() {
   useEffect(() => {
     const getTask = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/Tasks/${taskId}`);
-        const task = response.data.task;
-        
-        console.log(task)
-        if (task) {
-          const res = await axios.get(`http://localhost:5000/ProjectSchedules/${task.Project_ID}`)
-          console.log(res)
-          const project = res.data.ProjectSchedules[0]
-          console.log(project)
-          let projectName = ""
-          let projectLocation = ""
-          if (project) {
-            projectLocation = project.Project_Location 
-            projectName = project.Project_Name
-          }
+        const response = await axios.get(
+          `http://localhost:5000/ProjectSchedules/${projectId}`
+        );
+        console.log(response);
 
-          console.log(projectName)
+        const projects = response.data.ProjectSchedules;
+
+        if (projects.length === 0) {
+          throw Error("no project found");
+        }
+
+        const project = projects[0];
+        console.log(project);
+
+        if (project) {
+          let projectName = "";
+          let projectLocation = "";
+          projectLocation = project.Project_Location;
+          projectName = project.Project_Name;
+
           setInputs({
-            Project_ID: `${task.Project_ID}` ?? "",
+            Project_ID: `${projectId}` ?? "",
             Project_Name: `${projectName}` ?? "",
             Location: projectLocation ?? "",
-            Monitoring_Date: task.Monitoring_Date ?? "",
-            Issues_Found: task.Issues_Found ?? "",
-            Weather_Conditions: task.Weather_Conditions ?? "sunny",
-            Workers_Present: task.Workers_Present ?? "",
+            Monitoring_Date: project.Monitoring_Date ?? "",
+            Issues_Found: project.Issues_Found ?? "",
+            Weather_Conditions: project.Weather_Conditions ?? "sunny",
+            Workers_Present: project.Workers_Present ?? "",
           });
-          
-          
         }
       } catch (error) {
         console.error("Error fetching task:", error);
       }
     };
-  
-    if (taskId) {
+
+    if (projectId) {
       getTask();
     }
-  }, [taskId]);
-  
+  }, [projectId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

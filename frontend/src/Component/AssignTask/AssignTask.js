@@ -179,8 +179,7 @@ function AssignTask() {
                 className="input-field"
               >
                 <option value="pending">Pending</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
+                
               </select>
             </div>
             <div className="form-group">

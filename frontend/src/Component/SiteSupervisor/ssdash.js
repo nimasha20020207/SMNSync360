@@ -10,11 +10,11 @@ import format from 'date-fns/format';
 import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import getDay from 'date-fns/getDay';
-import addMonths from 'date-fns/addMonths';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import imgA from "../pictures/A.jpg";
 import imgB from "../pictures/B.jpg";
 import imgC from "../pictures/C.jpg";
+import MonitorMap from './MonitorMap'; 
 
 // Setup the localizer for the calendar
 const locales = {
@@ -150,6 +150,7 @@ function Dashboard() {
   return (
     <div>
       <Navbar />
+
       {/* Carousel Section */}
       <div style={{ width: "100%", height: "250px", overflow: "hidden", marginBottom: "20px" }}>
         <Carousel style={{ height: "100%" }}>
@@ -230,8 +231,8 @@ function Dashboard() {
       </div>
       
       <Container className="mt-3">
-        {/* Larger Dashboard Cards */}
-        <Row className="mb-4 g-4">
+        {/* Medium-sized Dashboard Cards */}
+        <Row className="mb-4 g-3">
           {dashboardCards.map((card, index) => (
             <Col md={4} key={index}>
               <Card 
@@ -240,18 +241,20 @@ function Dashboard() {
                 style={{ 
                   cursor: "pointer", 
                   transition: "all 0.3s",
-                  minHeight: "180px",
-                  borderRadius: "15px"
+                  minHeight: "140px",
+                  borderRadius: "10px"
                 }}
               >
-                <Card.Body className="d-flex flex-column justify-content-center p-4">
-                  <Card.Title className="fs-4 mb-3">{card.title}</Card.Title>
-                  <Card.Text className="display-3 fw-bold mb-0">{card.value}</Card.Text>
+                <Card.Body className="d-flex flex-column justify-content-center p-3">
+                  <Card.Title className="fs-5 mb-2">{card.title}</Card.Title>
+                  <Card.Text className="display-5 fw-bold mb-0">{card.value}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
           ))}
         </Row>
+        
+        <MonitorMap/>
 
         {/* Side by side section - Announcements and Calendar */}
         <Row className="mt-3">
@@ -272,6 +275,7 @@ function Dashboard() {
               </Card.Body>
             </Card>
           </Col>
+          
 
           {/* Calendar - Right Side */}
           <Col md={6} className="mb-1">

@@ -15,7 +15,7 @@ function UpdateScheduleProjects() {
   useEffect(() => {
     const fetchHandler = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/ProjectSchedules/${id}`);
+        const response = await axios.get(`http://localhost:5000/ProjectSchedules/pr/${id}`);
         const projectData = response.data.ProjectSchedules || response.data;
         setInputs({
           ...projectData,

@@ -146,32 +146,6 @@ function UpdateAssignedTask() {
               </div>
 
               <div className="form-group">
-                <label>Site Supervisor ID</label>
-                <input
-                  type="text"
-                  name="Site_Supervisor_ID"
-                  onChange={handleChange}
-                  value={inputs.Site_Supervisor_ID}
-                  required
-                  className="input-field"
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>SS Name</label>
-                <input
-                  type="text"
-                  name="SS_Name"
-                  onChange={handleChange}
-                  value={inputs.SS_Name}
-                  required
-                  className="input-field"
-                />
-              </div>
-
-              <div className="form-group">
                 <label>Worker ID</label>
                 <input
                   type="text"
@@ -220,6 +194,7 @@ function UpdateAssignedTask() {
                 onChange={handleChange}
                 value={inputs.Task_Status}
                 className="input-field"
+                 
               >
                 <option value="pending">Pending</option>
                 <option value="inprogress">In Progress</option>

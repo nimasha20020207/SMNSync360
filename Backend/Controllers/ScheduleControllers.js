@@ -54,7 +54,7 @@ console.log(id)
 
     // If project schedule is not found
     if (!ProjectSchedules) {
-        return res.status(404).json({ message: "Project not found" });
+        return res.status(404).json({ message: "Project not foundd" });
     }
 
     // Display the project schedule
@@ -106,12 +106,35 @@ const deleteProjectSchedules = async (req, res, next) => {
     return res.status(200).json({ ProjectSchedules });
   };
 
+  const getBypId = async (req, res, next) => {
+    const id = req.params.id;
+
+    let ProjectSchedules;
+
+    try {
+        ProjectSchedules = await Schedule.findById(id);
+    } catch (err) {
+        console.log(err);
+    }
+
+    // If project schedule is not found
+    if (!ProjectSchedules) {
+        return res.status(404).json({ message: "Project not founds" });
+    }
+
+    // Display the project schedule
+    return res.status(200).json({ ProjectSchedules });
+};
+
+
+
 // Export all functions
 exports.getAllProjectSchedules = getAllProjectSchedules;
 exports.addProjectSchedules = addProjectSchedules;
 exports.getById = getById;
 exports.updateProjectSchedules = updateProjectSchedules;
 exports.deleteProjectSchedules = deleteProjectSchedules;
+exports.getBypId = getBypId;
 
 
 
