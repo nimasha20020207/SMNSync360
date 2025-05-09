@@ -7,6 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import inventoryImg from '../pictures/inventory2.jpg';
 import materialImg from '../pictures/material.jpg';
 import stockImg from '../pictures/stock2.jpg';
+import SupplierMap from './SupplierMap'; // adjust the path as needed
+import React, { useEffect, useState } from "react";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import axios from "axios";
+
+
 
 
 function App() {
@@ -15,6 +21,48 @@ function App() {
     { id: 2, name: "Project B" },
     { id: 3, name: "Project C" },
   ];
+
+
+  const [statusPercentages, setStatusPercentages] = useState([]);
+
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/ConfirmedOrders")
+    .then((res) => {
+      const orders = res.data.records || [];
+
+      const statusCount = {
+        confirmed: 0,
+        processing: 0,
+        shipped: 0,
+        delivered: 0,
+      };
+
+      orders.forEach((order) => {
+        const status = order.OStatus?.toLowerCase();
+        if (statusCount[status] !== undefined) {
+          statusCount[status]++;
+        }
+      });
+
+      const total = Object.values(statusCount).reduce((sum, val) => sum + val, 0);
+      const statusPercent = Object.keys(statusCount).map((key) => ({
+        label: key.charAt(0).toUpperCase() + key.slice(1),
+        value: total > 0 ? Math.round((statusCount[key] / total) * 100) : 0,
+        color: {
+          confirmed: "#007bff", // Blue – primary
+          processing: "#fd7e14", // Orange – attention/delay
+          shipped: "#20c997", // Teal – in transit
+          delivered: "#28a745", // Green – success
+        }[key],
+      }));
+
+      setStatusPercentages(statusPercent);
+    })
+    .catch((err) => console.error("Error fetching order data:", err));
+}, []);
+
+
 
   const navigate = useNavigate();
 
@@ -96,6 +144,78 @@ function App() {
         </Carousel>
       </div>
 
+      <Container className="mb-4">
+  <Row>
+    {/* Left Column: Narrower Progress Bar Graph */}
+    <Col md={5}>
+      <div style={{
+        backgroundColor: "#fff",
+        padding: "20px",
+        borderRadius: "10px",
+        boxShadow: "0 0 10px rgba(0,0,0,0.05)"
+      }}>
+        <h5 className="text-center mb-3">📦 Current Order Status</h5>
+        {statusPercentages.map((status, index) => (
+          <div key={index} className="mb-3">
+            <div className="d-flex justify-content-between mb-1">
+              <strong>{status.label}</strong>
+              <span>{status.value}%</span>
+            </div>
+            <ProgressBar now={status.value} variant="custom" style={{ backgroundColor: "#e9ecef" }}>
+              <ProgressBar
+                now={status.value}
+                style={{ backgroundColor: status.color }}
+                animated
+              />
+            </ProgressBar>
+          </div>
+        ))}
+      </div>
+    </Col>
+
+    {/* Middle Column: Two Cards Stacked Vertically */}
+    <Col md={3}>
+  {/* Confirmed Orders Card */}
+  <Card className="mb-3 shadow-sm text-white bg-primary" style={{ minHeight: '100px' }}>
+    <Card.Body className="d-flex align-items-center">
+      <i className="fas fa-check-circle fa-2x me-3"></i>
+      <div>
+        <Card.Title className="mb-1">Confirmed Orders</Card.Title>
+        {/*<Card.Text>{confirmedCount} orders confirmed successfully.</Card.Text>*/}
+      </div>
+    </Card.Body>
+  </Card>
+
+  {/* Rejected Orders Card */}
+  <Card className="shadow-sm border-primary bg-light" style={{ minHeight: '100px' }}>
+    <Card.Body className="d-flex align-items-center">
+      <i className="fas fa-times-circle fa-2x text-primary me-3"></i>
+      <div>
+        <Card.Title className="mb-1 text-primary">Rejected Orders</Card.Title>
+        {/*<Card.Text className="text-primary">{rejectedCount} orders were rejected.</Card.Text>*/}
+      </div>
+    </Card.Body>
+  </Card>
+</Col>
+
+
+    {/* Right Column: Map */}
+    <Col md={4}>
+      <div style={{
+        width: "100%",
+        height: "100%",
+        minHeight: "300px",
+        borderRadius: "10px",
+        overflow: "hidden",
+        boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+      }}>
+        <SupplierMap />
+      </div>
+    </Col>
+  </Row>
+</Container>
+
+
       {/* Content Section */}
       <Container>
         {/* Side-by-side Pending Projects and Announcements */}
@@ -130,20 +250,7 @@ function App() {
 
         </Row>
 
-        {/* Progress Bars */}
-        <Row className="mt-3">
-          <Col md={6}>
-            <h5>Orders</h5>
-            <p><strong>Pending:</strong></p>
-            <ProgressBar variant="danger" now={25} label="25%" />
-            <p className="mt-2"><strong>Confirmed:</strong></p>
-            <ProgressBar variant="warning" now={50} label="50%" />
-            <p className="mt-2"><strong>Shipped:</strong></p>
-            <ProgressBar variant="primary" now={75} label="75%" />
-            <p className="mt-2"><strong>Delivered:</strong></p>
-            <ProgressBar variant="success" now={100} label="100%" />
-          </Col>
-        </Row>
+       
       </Container>
 
       <Footer />

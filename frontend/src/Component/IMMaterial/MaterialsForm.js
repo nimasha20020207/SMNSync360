@@ -12,14 +12,19 @@ function MaterialsForm() {
     Remarks: "",
     Date: "",
     Supplier: "",
+    pdfFile: null,
   });
 
   const handleChange = (e) => {
+    const { name, value, files } = e.target;
+  
     setInputs((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: files && files.length > 0 ? files[0] : value,
     }));
   };
+  
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,21 +43,25 @@ function MaterialsForm() {
   };
 
   const sendRequest = async () => {
-    await axios.post("http://localhost:5000/Materials", {
-      Mname: String(inputs.Mname),
-      MID: String(inputs.MID),
-      Qty: String(inputs.Qty),
-      Remarks: String(inputs.Remarks),
-      Date:
-        inputs.Date instanceof Date
-          ? inputs.Date.toISOString()
-          : new Date(inputs.Date).toISOString(),
-      Supplier:
-        typeof inputs.Supplier === "string"
-          ? inputs.Supplier
-          : inputs.Supplier?.value || "Unknown",
+    const formData = new FormData();
+    formData.append("Mname", inputs.Mname);
+    formData.append("MID", inputs.MID);
+    formData.append("Qty", inputs.Qty);
+    formData.append("Remarks", inputs.Remarks);
+    formData.append("Date", new Date(inputs.Date).toISOString());
+    formData.append("Supplier", inputs.Supplier);
+    
+    if (inputs.pdfFile) {
+      formData.append("pdfFile", inputs.pdfFile);
+    }
+  
+    await axios.post("http://localhost:5000/Materials", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   };
+  
 
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center p-3" style={{ position: 'relative' }}>
@@ -167,6 +176,18 @@ function MaterialsForm() {
                   </select>
                 </div>
   
+                <div className="mb-3">
+                  <label htmlFor="pdfFile" className="form-label">Attach PDF (Optional)</label>
+                  <input
+                    type="file"
+                    id="pdfFile"
+                    name="pdfFile"
+                    onChange={handleChange}
+                    className="form-control"
+                    accept="application/pdf"
+                  />
+                </div>
+
                 <button
                   type="submit"
                   className="btn w-100 shadow mt-3"

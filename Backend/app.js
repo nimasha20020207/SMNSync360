@@ -278,6 +278,10 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Serve static files from uploads directory-InventoryManager
+app.use('/materialuploads', express.static(path.join(__dirname, 'materialuploads')));
+
+
 // Handle 404
 app.use((req, res) => {
     res.status(404).json({
@@ -306,3 +310,5 @@ db
         console.error("MongoDB connection error:", err);
         process.exit(1);
     });
+
+

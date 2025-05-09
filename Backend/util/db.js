@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 //const db = mongoose.connect("mongodb+srv://janithsdissanayaka:ajtdQYIXjaiZbNli@cluster0.n2zxb.mongodb.net/");
 
 
-const db=mongoose.connect("mongodb+srv://admin:XPXnccQFdUXAu3S@cluster0.e3evh.mongodb.net/");
+const db=mongoose.connect("mongodb+srv://admin:2jJAe9D2xykYSgQF@cluster0.e3evh.mongodb.net/");//nimasha-db
 
 
 module.exports = db;

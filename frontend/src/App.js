@@ -49,6 +49,9 @@ import UpdateStatus from "./Component/IMConfirmedOrders/UpdateStatus";
 import History from "./Component/IMConfirmedOrders/History";
 import OrderStatus from "./Component/IMOrders/OrderStatus";
 
+//map
+import "leaflet/dist/leaflet.css";
+
 import QShome from "./Component/QS/home";
 import Budgetread from "./Component/QS/budget";
 import QsTask from "./Component/QS/task";
