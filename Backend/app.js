@@ -93,7 +93,8 @@ app.post("/login", async (req, res) => {
             return res.json({ 
                 status: "ok", 
                 userrole: user.userrole,
-                username: user.name // Include username for frontend
+                username: user.name, // Include username for frontend
+                userId: user._id
             });
         } else {
             return res.json({ err: "Incorrect password" });

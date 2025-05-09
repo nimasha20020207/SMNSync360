@@ -26,6 +26,7 @@ function Login() {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userRole", response.userrole);
         localStorage.setItem("username", response.username || "User");
+        localStorage.setItem("userId", response.userId); // Store userId
 
         const userRole = response.userrole
           ? response.userrole.toLowerCase()

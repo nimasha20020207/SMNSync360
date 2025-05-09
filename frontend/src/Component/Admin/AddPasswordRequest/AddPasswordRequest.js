@@ -198,7 +198,7 @@ function AddPasswordRequest() {
       setVerificationCode('');
       setServerCode('');
       setIsEmailVerified(false);
-      navigate('/passworddetails');
+      navigate('login');
     } catch (error) {
       console.error('Error adding password reset request:', error);
       alert('Failed to add password reset request. Please try again.');

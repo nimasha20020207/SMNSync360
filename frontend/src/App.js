@@ -15,7 +15,7 @@ import PasswordReset from "./Component/Admin/PasswordReset/PasswordResets";
 import ResetPassword from "./Component/Admin/ResetPassword/ResetPassword";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
-
+import Profile from './Component/Admin/Profile/Profile';
 
 import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
 import PasswordDetails from "./Component/Admin/PasswordResetDetails/Passwords";
@@ -151,6 +151,7 @@ function App() {
           <Route path="/passworddetails" element={<PasswordDetails />} />
           <Route path="/add-password" element={<AddPasswordRequest />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile/:userId?" element={<Profile />} />
           <Route
             path="/admindash"
             element={
