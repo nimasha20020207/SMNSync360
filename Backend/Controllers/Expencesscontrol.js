@@ -108,9 +108,32 @@ const findbyPID = async(req,res,next) =>{
 
 };
 
+const findbyPIDs = async (req, res, next) => {
+    const P_ID = req.params.P_ID;
+    let expenses;
+    
+    try {
+      // Use find to fetch all expenses for the given P_ID
+      expenses = await Expenses.find({ P_ID });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: "Failed to fetch expenses" });
+    }
+  
+    if (!expenses || expenses.length === 0) {
+      return res.status(404).json({ message: "No expenses found" });
+    }
+  
+    return res.status(200).json({ expenses });
+  };
+  
+
+
+
 exports.getAllexpenses = getAllexpenses;
 exports.addExpenses = addExpenses;
 exports.getById = getById;
 exports.UpdateExpenses = UpdateExpenses;
 exports.DeleteExpenses = DeleteExpenses;
 exports.findbyPID = findbyPID;
+exports.findbyPIDs = findbyPIDs;

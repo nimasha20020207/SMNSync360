@@ -260,5 +260,6 @@ module.exports = {
     updateTask,
     deleteTask, 
     getTasksByWorkerId, 
-    updateTaskStatus
+    updateTaskStatus,
+    getTasksByWorkerId
 };

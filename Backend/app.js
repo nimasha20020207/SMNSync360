@@ -16,6 +16,7 @@ const requestinRouter = require("./Router/inventoryrequest");
 const progressRouter = require("./Router/Progressroter");
 const router = require("./Router/Budgetroute");
 const router1 = require("./Router/Expensesroute");
+const bcrypt = require("bcrypt");
 
 const monitoringRouter = require("./Router/MonitoringRoutes");
 const multer = require("multer");
@@ -23,6 +24,9 @@ const path = require("path");
 const fs = require("fs");
 const routerNotification = require("./Router/NotificationRoute");
 const routerPassword = require("./Router/Passwordroute");
+
+const whatsappRoute = require("./Router/whatsapp.js");
+
 
 
 // Clear model cache
@@ -62,6 +66,8 @@ app.use("/Orders", orderrouter);
 app.use("/Equipments", equipmentrouter);
 app.use("/ConfirmedOrders", confirmrouter);
 
+app.use('/api', whatsappRoute);
+
 app.use("/Notification", routerNotification);
 app.use("/Password", routerPassword);
 //ajtdQYIXjaiZbNli
@@ -86,14 +92,22 @@ app.post("/login", async (req, res) => {
         if (!user) {
             return res.json({ err: "User not found" });
         }
-        if (user.password === password) {
+        // Verify password using bcrypt
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (isPasswordValid) {
             return res.json({ 
                 status: "ok", 
+
                 userrole: user.userrole,
-                userId: user.userid // Return the user's role
+                userId: user.userid, // Return the user's role
+                username: user.name, // Include username for frontend
+                userId: user._id,
+                username: user.email
+
+
             });
         } else {
-            return res.json({ err: "incorrect password" });
+            return res.json({ err: "Incorrect password" });
         }
     } catch (err) {
         console.error(err);
@@ -307,3 +321,5 @@ db
         console.error("MongoDB connection error:", err);
         process.exit(1);
     });
+
+    

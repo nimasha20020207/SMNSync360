@@ -54,7 +54,7 @@ console.log(id)
 
     // If project schedule is not found
     if (!ProjectSchedules) {
-        return res.status(404).json({ message: "Project not foundd" });
+        return res.status(404).json({ message: "Project not founds" });
     }
 
     // Display the project schedule
@@ -106,6 +106,7 @@ const deleteProjectSchedules = async (req, res, next) => {
     return res.status(200).json({ ProjectSchedules });
   };
 
+
   const getBypId = async (req, res, next) => {
     const id = req.params.id;
 
@@ -127,7 +128,22 @@ const deleteProjectSchedules = async (req, res, next) => {
 };
 
 
-
+  const getByProjectId = async (req, res, next) => {
+    const projectId = req.params.Project_ID;
+  
+    try {
+      const projectSchedule = await Schedule.findOne({ Project_ID: projectId });
+      if (!projectSchedule) {
+        return res.status(404).json({ message: "Project schedule not found for Project_ID" });
+      }
+      return res.status(200).json({ projectSchedule });
+    } catch (err) {
+      console.error("Error fetching schedule by Project_ID:", err);
+      return res.status(500).json({ message: "Server error", error: err.message });
+    }
+  };
+  
+  
 // Export all functions
 exports.getAllProjectSchedules = getAllProjectSchedules;
 exports.addProjectSchedules = addProjectSchedules;
@@ -135,6 +151,7 @@ exports.getById = getById;
 exports.updateProjectSchedules = updateProjectSchedules;
 exports.deleteProjectSchedules = deleteProjectSchedules;
 exports.getBypId = getBypId;
+exports.getByProjectId = getByProjectId;
 
 
 

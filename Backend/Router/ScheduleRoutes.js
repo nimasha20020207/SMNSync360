@@ -14,7 +14,7 @@ router.post("/",ScheduleController.addProjectSchedules);
 router.put("/:id",ScheduleController.updateProjectSchedules);
 router.get("/pr/:id",ScheduleController.getBypId);
 router.delete("/:id", ScheduleController.deleteProjectSchedules);
-
+router.get("/project/:Project_ID", ScheduleController.getByProjectId); 
 
 
 

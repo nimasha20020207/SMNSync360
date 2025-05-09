@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../pictures/logo.png";
@@ -9,6 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 function HeadNav() {
   const navigate = useNavigate();
+  const [userId, setUserId] = useState("User");
+  
+    useEffect(() => {
+      // Retrieve userId from localStorage
+      const storedUserId = localStorage.getItem("username");
+      setUserId(storedUserId || "User"); // Fallback to "User" if not found
+    }, []);
+  
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -33,14 +41,14 @@ function HeadNav() {
             <Nav.Link href="/taskfo" className="fq-task">Task</Nav.Link>
             <Nav.Link href="/BudgetApprove" className="fq-budget">Budget</Nav.Link>
             <Nav.Link href="/Expenses" className="fq-budget">Expenses</Nav.Link>
-            <Nav.Link href="/Communicationfo" className="fq-budget">Communication</Nav.Link>
+            {/* <Nav.Link href="/Communicationfo" className="fq-budget">Communication</Nav.Link> */}
           </Nav>
 
           <Nav className="ms-auto">
             <NavDropdown
               title={
                 <div className="fq-user-profile">
-                  <span className="fq-username">Username</span>
+                  <span className="fq-username">{userId}</span>
                 </div>
               }
               id="basic-nav-dropdown"

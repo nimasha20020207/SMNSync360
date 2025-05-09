@@ -11,14 +11,67 @@ function Login() {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+  });
+
+  const validateEmail = (email) => {
+    if (!email) return "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Please enter a valid email address";
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password) return "Password is required";
+    if (password.length < 8) return "Password must be at least 8 characters long";
+    return "";
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({ ...prevUser, [name]: value }));
+    setTouched((prev) => ({ ...prev, [name]: true }));
+
+    // Validate the changed field
+    if (name === "email") {
+      setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    } else if (name === "password") {
+      setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+
+    // Validate on blur
+    if (name === "email") {
+      setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    } else if (name === "password") {
+      setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate all fields before submission
+    const emailError = validateEmail(user.email);
+    const passwordError = validatePassword(user.password);
+
+    setErrors({ email: emailError, password: passwordError });
+    setTouched({ email: true, password: true });
+
+    if (emailError || passwordError) {
+      return;
+    }
+
     try {
       const response = await sendRequest();
       if (response.status === "ok") {
@@ -29,6 +82,7 @@ function Login() {
         localStorage.setItem("username", response.username || "User");
         localStorage.setItem("userid", response.userId)
 
+    
         const userRole = response.userrole
           ? response.userrole.toLowerCase()
           : "";
@@ -86,7 +140,7 @@ function Login() {
 
   return (
     <div>
-      <Nav/>
+      <Nav />
       <div className="login-container">
         <div className="login-box">
           <div className="left-side">
@@ -102,9 +156,13 @@ function Login() {
                   id="email"
                   value={user.email}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   name="email"
-                  required
+                  className={touched.email && errors.email ? "input-error" : ""}
                 />
+                {touched.email && errors.email && (
+                  <span className="error-message">{errors.email}</span>
+                )}
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
@@ -113,9 +171,13 @@ function Login() {
                   id="password"
                   value={user.password}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   name="password"
-                  required
+                  className={touched.password && errors.password ? "input-error" : ""}
                 />
+                {touched.password && errors.password && (
+                  <span className="error-message">{errors.password}</span>
+                )}
               </div>
               <button type="submit">Login</button>
             </form>
