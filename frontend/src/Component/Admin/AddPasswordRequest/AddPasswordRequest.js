@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './AddPasswordRequest.css'; // Import the external CSS file
+import Nav from "../../topnav/mainnav/nav"
 
 function AddPasswordRequest() {
   const [formData, setFormData] = useState({
@@ -198,7 +199,7 @@ function AddPasswordRequest() {
       setVerificationCode('');
       setServerCode('');
       setIsEmailVerified(false);
-      navigate('/passworddetails');
+      navigate('/login');
     } catch (error) {
       console.error('Error adding password reset request:', error);
       alert('Failed to add password reset request. Please try again.');
@@ -214,7 +215,9 @@ function AddPasswordRequest() {
   }
 
   return (
-    <div className="add-password-container">
+    <div>
+       <Nav/>
+      <div className="add-password-container">
       <h1 className="add-password-heading">Add Password Reset Request</h1>
       <form className="add-password-form" onSubmit={handleSubmit}>
         <div className="add-password-field">
@@ -321,6 +324,10 @@ function AddPasswordRequest() {
       </p>
       </form>
     </div>
+
+    </div>
+   
+    
   );
 }
 

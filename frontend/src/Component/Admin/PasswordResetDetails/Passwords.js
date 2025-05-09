@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import PasswordResets from '../PasswordReset/PasswordResets';
-import './Passwords.css'; // Import the external CSS file
-import AdNav from "../NavAdmin/NavAdmin";
-
+import './Passwords.css';
 
 const URL = "http://localhost:5000/Password";
 
@@ -39,7 +37,7 @@ function Passwords() {
     if (window.confirm("Are you sure you want to delete this password reset request?")) {
       try {
         await axios.delete(`${URL}/${id}`);
-        fetchPasswords(); // Refresh the table after deletion
+        fetchPasswords();
       } catch (err) {
         console.error("Error deleting password reset request:", err);
         alert("Failed to delete password reset request. Please try again.");
@@ -60,8 +58,7 @@ function Passwords() {
   };
 
   return (
-    <div className="passwords-page"> {/* Added class here */}
-      <AdNav />
+    <div className="passwords-page">
       <div className="passwords-container">
         <h1 className="passwords-heading">Password Reset Requests</h1>
         {loading ? (
@@ -71,14 +68,13 @@ function Passwords() {
             <table className="passwords-table">
               <thead>
                 <tr>
-                 
-                  <th>Password ID</th>
-                  <th>Email</th>
-                  <th>User ID</th>
-                  <th>Phone Number</th>
-                  <th>Reason</th>
-                  <th>Created At</th>
-                  <th>Action</th>
+                  <th className="passwords-table-th">Password ID</th>
+                  <th className="passwords-table-th">Email</th>
+                  <th className="passwords-table-th">User ID</th>
+                  <th className="passwords-table-th">Phone Number</th>
+                  <th className="passwords-table-th">Reason</th>
+                  <th className="passwords-table-th">Created At</th>
+                  <th className="passwords-table-th">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,8 +88,8 @@ function Passwords() {
                     />
                   ))
                 ) : (
-                  <tr>
-                    <td colSpan="8">No password reset details found</td>
+                  <tr className="passwords-table-tr">
+                    <td className="passwords-table-td" colSpan="7">No password reset details found</td>
                   </tr>
                 )}
               </tbody>
