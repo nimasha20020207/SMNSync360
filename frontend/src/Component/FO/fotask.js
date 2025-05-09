@@ -9,13 +9,13 @@ function FoTask() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
-  const [userId, setUserId] = useState(null); // Initialize as null to indicate unset
+  const [userIds, setUserId] = useState(null); // Initialize as null to indicate unset
 
   // Retrieve userId from localStorage on mount
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    console.log("Retrieved userId from localStorage:", storedUserId); // Debugging
-    setUserId(storedUserId || null); // Set to stored value or null
+    const storedUserIds = localStorage.getItem("userId");
+    console.log("Retrieved userId from localStorage:", storedUserIds); // Debugging
+    setUserId(storedUserIds || null); // Set to stored value or null
   }, []);
 
   // Validate MongoDB ObjectId
@@ -25,7 +25,7 @@ function FoTask() {
 
   // Fetch tasks by Worker_ID (userId)
   const fetchTasks = async () => {
-    if (!userId) {
+    if (!userIds) {
       console.warn("No userId available, skipping fetchTasks");
       setAlert({
         show: true,
@@ -37,7 +37,7 @@ function FoTask() {
     }
 
     try {
-      const response = await axios.get(`http://localhost:5000/tasks/worker/${userId}`, {
+      const response = await axios.get(`http://localhost:5000/tasks/worker/${userIds}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -96,10 +96,10 @@ function FoTask() {
 
   // Fetch tasks when userId is set
   useEffect(() => {
-    if (userId) {
+    if (userIds) {
       fetchTasks();
     }
-  }, [userId]);
+  }, [userIds]);
 
   const getStatusBadge = (status) => {
     switch (status) {

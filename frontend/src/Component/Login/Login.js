@@ -80,8 +80,12 @@ function Login() {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userRole", response.userrole);
         localStorage.setItem("username", response.username || "User");
+
+        localStorage.setItem("userId", response.userIds || "User"); // Store userid from response
+
         localStorage.setItem("userid", response.userIds);
         localStorage.setItem("userids", response.userId || "userids");
+
 
     
         const userRole = response.userrole

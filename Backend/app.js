@@ -98,9 +98,8 @@ app.post("/login", async (req, res) => {
             return res.json({ 
                 status: "ok", 
 
-                userrole: user.userrole,
-                userIds: user.userid, // Return the user's role
-                // username: user.name, // Include username for frontend
+                userrole: user.userrole ,// Return the user's role
+                userIds: user.userid, // Return userid from UserSchema
                 userId: user._id,
                 username: user.email
 
