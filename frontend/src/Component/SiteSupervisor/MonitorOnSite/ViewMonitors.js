@@ -279,11 +279,10 @@ function ViewMonitors() {
           Delete
         </button>
          <button 
-      className="action-button pdf"
+      className="action-button pdf btn btn-primary"
       onClick={() => generatePDF(record)}
-    >
-      Download PDF
-    </button>
+   >       Download PDF
+     </button>
        </div>
          </td>
           <td>
