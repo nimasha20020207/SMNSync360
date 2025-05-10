@@ -15,6 +15,11 @@ import PasswordReset from "./Component/Admin/PasswordReset/PasswordResets";
 import ResetPassword from "./Component/Admin/ResetPassword/ResetPassword";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
+
+//inventory bootstrap components
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'react-toastify/dist/ReactToastify.css';
 import Profile from './Component/Admin/Profile/Profile';
 
 import AddPasswordRequest from "./Component/Admin/AddPasswordRequest/AddPasswordRequest";
@@ -46,6 +51,9 @@ import TableView from "./Component/IMConfirmedOrders/TableView";
 import UpdateStatus from "./Component/IMConfirmedOrders/UpdateStatus";
 import History from "./Component/IMConfirmedOrders/History";
 import OrderStatus from "./Component/IMOrders/OrderStatus";
+
+//map
+import "leaflet/dist/leaflet.css";
 
 import QShome from "./Component/QS/home";
 import Budgetread from "./Component/QS/budget";

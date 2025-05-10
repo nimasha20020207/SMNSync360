@@ -28,6 +28,9 @@ const MaterialSchema = new Schema({
         required: true,
         enum: ["Supplier A", "Supplier B", "Supplier C"], // Replace with actual supplier names
     },
+    pdfFile: {
+        type:String,
+        required:false,}
 });
 
 module.exports = mongoose.model("Material", MaterialSchema);

@@ -27,6 +27,10 @@ function MaterialsTable({ materials, setMaterials }) {
     material.MID.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPDF, setSelectedPDF] = useState(null);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "20px" }}>
       <h1 style={{ color: "#0056b3", fontSize: "2.5em", marginBottom: "20px" }}>Material Stock</h1>
@@ -59,6 +63,7 @@ function MaterialsTable({ materials, setMaterials }) {
             <th>Remarks</th>
             <th>Date</th>
             <th>Supplier</th>
+            <th>Files</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -72,6 +77,22 @@ function MaterialsTable({ materials, setMaterials }) {
                 <td>{material.Remarks}</td>
                 <td>{material.Date}</td>
                 <td>{material.Supplier}</td>
+                <td>
+                  {material.pdfFile? (
+                    <button
+                    onClick={() => {
+                      setSelectedPDF(material.pdfFile);
+                      setShowModal(true);
+                    }}
+                    style={{ color: "#007bff", textDecoration: "underline", background: "none", border: "none", cursor: "pointer" }}
+                  >
+                    View
+                  </button>
+                  
+                  ) : (
+                    <span style={{ color: "#999" }}>No file</span>
+                  )}
+                </td>
                 <td>
                   <button
                     onClick={() => navigate(`/UpdateMaterial/${material._id}`)}
@@ -110,6 +131,68 @@ function MaterialsTable({ materials, setMaterials }) {
           )}
         </tbody>
       </table>
+
+      {showModal && selectedPDF && (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0,0,0,0.7)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 1000,
+    }}
+    onClick={() => {
+      setShowModal(false);
+      setSelectedPDF(null);
+    }}
+  >
+    <div
+      style={{
+        width: "80%",
+        height: "90%",
+        backgroundColor: "#fff",
+        padding: "20px",
+        borderRadius: "10px",
+        position: "relative",
+      }}
+      onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+    >
+      <button
+        onClick={() => {
+          setShowModal(false);
+          setSelectedPDF(null);
+        }}
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          backgroundColor: "#dc3545",
+          color: "#fff",
+          border: "none",
+          padding: "6px 12px",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        Close
+      </button>
+
+      <iframe
+        src={`http://localhost:5000/materialuploads/${selectedPDF}`}
+        width="100%"
+        height="100%"
+        title="PDF Viewer"
+        style={{ border: "none" }}
+      />
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
