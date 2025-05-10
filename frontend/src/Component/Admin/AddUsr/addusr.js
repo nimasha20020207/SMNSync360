@@ -42,6 +42,7 @@ function AddUsr() {
     { value: "projectManager", label: "Project Manager", prefix: "PM" },
     { value: "quantitysurveyor", label: "Quantity Surveyor", prefix: "QS" },
     { value: "inventorymanager", label: "Inventory Manager", prefix: "IM" },
+    { value: "financeofficer", label: "Finance Officer", prefix: "FO" },
   ];
 
   useEffect(() => {

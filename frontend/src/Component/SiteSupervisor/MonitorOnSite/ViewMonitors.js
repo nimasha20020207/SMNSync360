@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { 
-  Table, 
-  Button, 
-  Container, 
-  InputGroup, 
-  Form, 
-  Alert, 
-  Spinner,
-  Row,
-  Col,
-  Badge,
-  Pagination
-} from "react-bootstrap";
-import { FaSearch, FaPlus, FaCloudSun, FaCloudRain, FaSun, FaExclamationTriangle } from 'react-icons/fa';
+  FaSearch, 
+  FaPlus, 
+  FaCloudSun, 
+  FaCloudRain, 
+  FaSun, 
+  FaExclamationTriangle 
+} from 'react-icons/fa';
 import Navbar from "../../topnav/supervisor/ss";
 import Footer from "../../bottomnav/foter";
-import { toast } from "react-toastify";
+import "./ViewMonitors.css";
+
+
 
 function ViewMonitors() {
   const [records, setRecords] = useState([]);
@@ -39,7 +38,6 @@ function ViewMonitors() {
       setError(null);
       const res = await axios.get("http://localhost:5000/Monitoring", { signal });
       
-      // Handle both response formats
       const receivedRecords = Array.isArray(res.data) 
         ? res.data 
         : (Array.isArray(res.data?.records) ? res.data.records : []);
@@ -71,7 +69,6 @@ function ViewMonitors() {
   }, [fetchData, location, navigate]);
 
   useEffect(() => {
-    // Filter records whenever searchTerm changes
     if (searchTerm.trim() === "") {
       setFilteredRecords(records);
     } else {
@@ -103,12 +100,12 @@ function ViewMonitors() {
   };
 
   const getWeatherIcon = (weather) => {
-    if (!weather) return <FaCloudSun className="text-secondary" />;
+    if (!weather) return <FaCloudSun className="weather-icon" />;
     
     switch(weather.toLowerCase()) {
-      case 'sunny': return <FaSun className="text-warning" />;
-      case 'rainy': return <FaCloudRain className="text-primary" />;
-      default: return <FaCloudSun className="text-secondary" />;
+      case 'sunny': return <FaSun className="weather-icon" />;
+      case 'rainy': return <FaCloudRain className="weather-icon" />;
+      default: return <FaCloudSun className="weather-icon" />;
     }
   };
 
@@ -127,6 +124,41 @@ function ViewMonitors() {
     }
   };
 
+  const generatePDF = (record) => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Monitoring Report", 14, 22);
+
+  doc.setFontSize(12);
+  const details = [
+    ["Project ID", record.Project_ID || "N/A"],
+    ["Project Name", record.Project_Name || "N/A"],
+    ["Location", record.Location || "N/A"],
+    ["Date", formatDate(record.Monitoring_Date)],
+    ["Issues Found", record.Issues_Found || "No issues reported"],
+    ["Weather Conditions", record.Weather_Conditions || "Unknown"],
+    ["Workers Present", record.Workers_Present || 0]
+  ];
+
+  let startY = 30;
+  const lineHeight = 10;
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Field", 14, startY);
+  doc.text("Value", 100, startY);
+
+  doc.setFont("helvetica", "normal");
+  details.forEach(([label, value], index) => {
+    const y = startY + (index + 1) * lineHeight;
+    doc.text(String(label), 14, y);
+    doc.text(String(value), 100, y);
+  });
+
+  doc.save(`Monitoring_Report_${record.Project_ID || "Unknown"}.pdf`);
+};
+
+
   // Pagination logic
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -137,74 +169,70 @@ function ViewMonitors() {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: "50vh" }}>
-        <Spinner animation="border" variant="primary" />
-        <span className="ms-3">Loading records...</span>
+      <div className="users-page-wrapper">
+        <div className="loading-spinner">Loading records...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <Container className="my-5">
-        <Alert variant="danger" className="d-flex align-items-center">
-          <FaExclamationTriangle className="me-2" />
+      <div className="users-page-wrapper">
+        <div className="error-alert">
+          <FaExclamationTriangle className="error-icon" />
           <div>
             <h5>Error Loading Data</h5>
             <p>{error}</p>
-            <Button variant="outline-danger" onClick={fetchData}>
+            <button className="retry-button" onClick={fetchData}>
               Retry
-            </Button>
+            </button>
           </div>
-        </Alert>
-      </Container>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div>
+    <div className="users-page-wrapper">
       <Navbar />
-      <Container className="py-4">
-        <h1 className="text-center mb-4 text-primary">On-Site Monitoring</h1>
-        
-        <Row className="mb-4 g-3 align-items-center">
-          <Col md={8} lg={9}>
-            <InputGroup>
-              <Form.Control
-                placeholder="Search projects by name, location, issues found, or ID..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                aria-label="Search monitoring records"
-              />
-              <Button variant="outline-secondary" disabled={loading}>
-                <FaSearch />
-              </Button>
-            </InputGroup>
-          </Col>
-          <Col md={4} lg={3} className="d-flex justify-content-end">
-            <Button 
-              variant="primary" 
+      <div className="users-container">
+        <div className="users-header">
+          <div className="users-controls">
+            <input
+              type="text"
+              placeholder="Search projects by name, location, issues found, or ID..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <button className="search-button" disabled={loading}>
+              <FaSearch />
+            </button>
+          </div>
+          <h1 className="users-title">On-Site Monitoring</h1>
+          <div className="users-buttons">
+            <button 
+              className="add-user-button"
               onClick={() => navigate("/site-supervisor/monitor/create")}
-              className="px-4"
               disabled={loading}
             >
-              <FaPlus className="me-2" />
+              <FaPlus className="button-icon" />
               New Record
-            </Button>
-          </Col>
-        </Row>
+            </button>
+          </div>
+        </div>
 
         {filteredRecords.length === 0 ? (
-          <Alert variant="info" className="text-center">
+          <div className="no-records">
             {records.length === 0 
               ? "No monitoring records found. Create your first record!" 
               : "No records match your search criteria"}
-          </Alert>
+          </div>
         ) : (
           <>
-            <div className="table-responsive">
-              <Table striped bordered hover className="mt-3">
-                <thead className="table-secondary">
+            <div className="users-table-container">
+              <table className="users-table">
+                <thead>
                   <tr>
                     <th>Project ID</th>
                     <th>Project Name</th>
@@ -221,83 +249,87 @@ function ViewMonitors() {
                   {currentRecords.map((record) => (
                     <tr key={record._id}>
                       <td>{record.Project_ID || "N/A"}</td>
-                      <td className="fw-bold">{record.Project_Name || "N/A"}</td>
+                      <td>{record.Project_Name || "N/A"}</td>
                       <td>{record.Location || "N/A"}</td>
                       <td>{formatDate(record.Monitoring_Date)}</td>
-                      <td className="text-muted">
-                        {record.Issues_Found || "No issues reported"}
-                      </td>
+                      <td>{record.Issues_Found || "No issues reported"}</td>
                       <td>
-                        <Badge bg="light" text="dark" className="d-flex align-items-center gap-2">
+                        <div className="weather-cell">
                           {getWeatherIcon(record.Weather_Conditions)}
-                          <span className="text-capitalize">
-                            {record.Weather_Conditions || "unknown"}
-                          </span>
-                        </Badge>
+                          <span>{record.Weather_Conditions || "unknown"}</span>
+                        </div>
                       </td>
                       <td>
-                        <Badge bg="info" className="fs-6">
+                        <div className="workers-badge">
                           {record.Workers_Present || 0}
-                        </Badge>
+                        </div>
                       </td>
-                      <td style={{ whiteSpace: "nowrap" }}>  {/* Prevents wrapping */}
-  <Button 
-    variant="success" 
-    size="sm"
-    className="me-2 !important"  // Force the margin
-    onClick={() => navigate(`/site-supervisor/monitor/update/${record._id}`)}
-  >
-    Update
-  </Button>
-  <Button 
-    variant="danger" 
-    size="sm"
-    onClick={() => handleDelete(record._id)}
-  >
-    Delete
-  </Button>
-  
-</td>
-<td><Link 
-    to={`/site-supervisor/site-images/${record._id}`}  
-    className="btn btn-primary"
-    size="sm"
-    // onClick={}
-  >
-    View Photos
-  </Link></td>
+                      <td>
+          <div className="action-buttons-container">
+            <button 
+         className="action-button update"
+         onClick={() => navigate(`/site-supervisor/monitor/update/${record._id}`)}
+      >
+          Update
+        </button>
+         <button 
+        className="action-button delete"
+        onClick={() => handleDelete(record._id)}
+         >
+          Delete
+        </button>
+         <button 
+      className="action-button pdf"
+      onClick={() => generatePDF(record)}
+    >
+      Download PDF
+    </button>
+       </div>
+         </td>
+          <td>
+      <Link 
+        to={`/site-supervisor/site-images/${record._id}`}  
+        className="photos-button"
+     >
+       View Photos
+     </Link>
+       </td>
                     </tr>
                   ))}
                 </tbody>
-              </Table>
+              </table>
             </div>
 
             {totalPages > 1 && (
-              <div className="d-flex justify-content-center mt-4">
-                <Pagination>
-                  <Pagination.Prev 
-                    onClick={() => paginate(Math.max(1, currentPage - 1))} 
-                    disabled={currentPage === 1}
-                  />
-                  {[...Array(totalPages).keys()].map(number => (
-                    <Pagination.Item
-                      key={number + 1}
-                      active={number + 1 === currentPage}
-                      onClick={() => paginate(number + 1)}
-                    >
-                      {number + 1}
-                    </Pagination.Item>
-                  ))}
-                  <Pagination.Next 
-                    onClick={() => paginate(Math.min(totalPages, currentPage + 1))} 
-                    disabled={currentPage === totalPages}
-                  />
-                </Pagination>
+              <div className="pagination">
+                <button 
+                  className="page-button prev"
+                  onClick={() => paginate(Math.max(1, currentPage - 1))} 
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                {[...Array(totalPages).keys()].map(number => (
+                  <button
+                    key={number + 1}
+                    className={`page-button ${number + 1 === currentPage ? 'active' : ''}`}
+                    onClick={() => paginate(number + 1)}
+                  >
+                    {number + 1}
+                  </button>
+                ))}
+                <button 
+                  className="page-button next"
+                  onClick={() => paginate(Math.min(totalPages, currentPage + 1))} 
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
               </div>
             )}
           </>
         )}
-      </Container>
+      </div>
       <Footer />
     </div>
   );

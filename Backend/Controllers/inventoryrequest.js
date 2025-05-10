@@ -1,4 +1,4 @@
-const Inventory = require('../model/inventoryrequest'); // Adjust path as needed
+const Inventory = require('../Model/inventoryrequest'); // Adjust path as needed
 
 class InventoryController {
   // Get all inventory items

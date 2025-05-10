@@ -17,14 +17,34 @@ function UpdateUser() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [passwordError, setPasswordError] = useState({});
     const navigate = useNavigate();
     const { id } = useParams();
+
+    // Password validation function
+    const validatePassword = (password) => {
+        const errors = {};
+        if (password && password.length < 8) {
+            errors.password = "Password must be at least 8 characters long";
+        } else if (password && !/[A-Z]/.test(password)) {
+            errors.password = "Password must contain at least one uppercase letter";
+        } else if (password && !/[a-z]/.test(password)) {
+            errors.password = "Password must contain at least one lowercase letter";
+        } else if (password && !/[0-9]/.test(password)) {
+            errors.password = "Password must contain at least one number";
+        } else if (password && !/[^A-Za-z0-9]/.test(password)) {
+            errors.password = "Password must contain at least one special character";
+        }
+        return errors;
+    };
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/users/${id}`);
-                setInputs(response.data.users);
+                // Exclude password from initial state (it's hashed and sensitive)
+                const { password, ...userData } = response.data.users;
+                setInputs({ ...userData, password: '' });
             } catch (err) {
                 setError('Failed to load user data');
                 console.error(err);
@@ -37,8 +57,21 @@ function UpdateUser() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Validate password if provided
+        if (inputs.password) {
+            const passwordValidation = validatePassword(inputs.password);
+            if (Object.keys(passwordValidation).length > 0) {
+                setPasswordError(passwordValidation);
+                return;
+            }
+        }
         try {
-            await axios.put(`http://localhost:5000/users/${id}`, inputs);
+            // Send only necessary fields, exclude password if empty
+            const updateData = { ...inputs };
+            if (!updateData.password) {
+                delete updateData.password;
+            }
+            await axios.put(`http://localhost:5000/users/${id}`, updateData);
             navigate("/userdetails");
         } catch (err) {
             setError('Failed to update user');
@@ -49,6 +82,9 @@ function UpdateUser() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setInputs(prev => ({ ...prev, [name]: value }));
+        if (name === 'password') {
+            setPasswordError(validatePassword(value));
+        }
     };
 
     if (isLoading) return <div className="loading">Loading user data...</div>;
@@ -82,26 +118,33 @@ function UpdateUser() {
                                     <option value="sitesupervisor">Site Supervisor</option>
                                     <option value="quantitysurveyor">Quantity Surveyor</option>
                                     <option value="inventorymanager">Inventory Manager</option>
+                                    <option value="financeofficer">Finance Officer</option>
+                                    <option value="supplier">Supplier</option>
                                 </select>
                             </div>
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="userid">User ID</label>
-                            <input
-                                type="text"
-                                id="userid"
-                                name="userid"
-                                value={inputs.userid}
-                                onChange={handleChange}
-                                disabled
-                            />
+                            <div className="input-with-icon">
+                                <FiUser className="input-icon" />
+                                <input
+                                    type="text"
+                                    id="userid"
+                                    name="userid"
+                                    value={inputs.userid}
+                                    onChange={handleChange}
+                                    disabled
+                                />
+                            </div>
                         </div>
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="name">Full Name</label>
+                            <div className="input-with-icon">
+                                <FiUser className="input-icon" />
                                 <input
                                     type="text"
                                     id="name"
@@ -110,11 +153,13 @@ function UpdateUser() {
                                     onChange={handleChange}
                                     required
                                 />
-                            
+                            </div>
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="email">Email Address</label>
+                            <div className="input-with-icon">
+                                <FiMail className="input-icon" />
                                 <input
                                     type="email"
                                     id="email"
@@ -123,13 +168,15 @@ function UpdateUser() {
                                     onChange={handleChange}
                                     required
                                 />
-                            
+                            </div>
                         </div>
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="age">Age</label>
+                            <div className="input-with-icon">
+                                <FiCalendar className="input-icon" />
                                 <input
                                     type="number"
                                     id="age"
@@ -139,11 +186,13 @@ function UpdateUser() {
                                     min="18"
                                     max="100"
                                 />
-                            
+                            </div>
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="address">Address</label>
+                            <div className="input-with-icon">
+                                <FiHome className="input-icon" />
                                 <input
                                     type="text"
                                     id="address"
@@ -151,12 +200,14 @@ function UpdateUser() {
                                     value={inputs.address}
                                     onChange={handleChange}
                                 />
+                            </div>
                         </div>
                     </div>
 
                     <div className="form-group password-group">
-                        <label htmlFor="password">Password</label>
-                        
+                        <label htmlFor="password">Password (leave blank to keep current)</label>
+                        <div className="input-with-icon">
+                            <FiKey className="input-icon" />
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
@@ -171,7 +222,8 @@ function UpdateUser() {
                             >
                                 {showPassword ? <FiEyeOff /> : <FiEye />}
                             </button>
-                        
+                        </div>
+                        {passwordError.password && <div className="error-message">{passwordError.password}</div>}
                     </div>
 
                     {error && <div className="error-message">{error}</div>}
