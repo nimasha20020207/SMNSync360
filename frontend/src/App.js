@@ -84,6 +84,8 @@ import UpdateMonitor from "./Component/SiteSupervisor/MonitorOnSite/UpdateMonito
 import Imguploder from "./Component/SiteSupervisor/Imguploder/Imguploder";
 import SiteImages from "./Component/SiteSupervisor/SiteImages";
 import SupervisorTasks from "./Component/SiteSupervisor/SupervisorTasks";
+import Monitoring from "./Component/Monitoring/Monitoring";
+import ViewSitePhotos from "./Component/Monitoring/ViewSitePhotos";
 
 function App() {
   const navigate = useNavigate();
@@ -276,6 +278,10 @@ function App() {
         <Route path="/addinven" element={<Inventorycreate />} />
         <Route path="/Inventory" element={<Inventory />} />
         <Route path="/Inventoryup/:_id" element={<Inventoryupdate />} />
+
+        {/* project manager view monitoring */}
+        <Route path="/Monitoring" element={<Monitoring />} />
+        <Route path="/viewSitePhotos/:id" element={<ViewSitePhotos />} />
 
         <Route path="/Progress" element={<Progressrea />} />  
         <Route path="/viewprogress" element={<ReadPro />} /> 
