@@ -60,6 +60,9 @@ function HeadNav() {
             <Nav.Link href="/Inventory" className="he-users">
               Inventory
             </Nav.Link>
+            <Nav.Link href="/Monitoring" className="he-users">
+              Monitoring
+            </Nav.Link>
           </Nav>
 
           <Nav className="ms-auto">
