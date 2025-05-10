@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const twilio = require("twilio");
-require("dotenv").config(); // Ensure .env is loaded
+require("dotenv").config();
 
 const {
   TWILIO_ACCOUNT_SID,
@@ -16,22 +16,26 @@ router.post("/send-whatsapp-message", async (req, res) => {
   const { phoneNumber, templateData } = req.body;
 
   console.log(`Received phone number: ${phoneNumber}`);
-  console.log(`Received message: ${templateData}`);
+  console.log(`Received template data:`, templateData);
 
   try {
     if (!phoneNumber || !templateData) {
-      return res
-        .status(400)
-        .json({ success: false, templateData: "Missing phone number or data" });
+      return res.status(400).json({ 
+        success: false, 
+        message: "Missing phone number or template data" 
+      });
     }
 
-    const contentVariables =({
-      pid: templateData.P_ID,
-      expenses: templateData.totalExpenses,
-      budget: templateData.budgetAmount,
+    // Create contentVariables as a JSON string
+    const contentVariables = JSON.stringify({
+      pid: templateData.pid.toString(),
+      expenses: templateData.expenses.toString(),
+      budget: templateData.budget.toString()
     });
 
     console.log("Content Variables:", contentVariables);
+    console.log("Using Template SID:", TWILIO_TEMPLATE_SID);
+
     // Send the message using Twilio API
     const response = await client.messages.create({
       from: TWILIO_WHATSAPP_NUMBER,
@@ -41,14 +45,18 @@ router.post("/send-whatsapp-message", async (req, res) => {
     });
 
     console.log("WhatsApp message sent successfully:", response.sid);
-    res
-      .status(200)
-      .send({ success: true, message: "WhatsApp message sent successfully" });
+    res.status(200).json({ 
+      success: true, 
+      message: "WhatsApp message sent successfully",
+      sid: response.sid
+    });
   } catch (error) {
     console.error("Error sending WhatsApp message:", error);
-    res
-      .status(500)
-      .send({ success: false, message: "Failed to send WhatsApp message" });
+    res.status(500).json({ 
+      success: false, 
+      message: "Failed to send WhatsApp message",
+      error: error.message
+    });
   }
 });
 

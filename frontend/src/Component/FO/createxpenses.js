@@ -75,12 +75,12 @@ function Expenses() {
         // Hardcoded phone number
         const phoneNumber = "+94757189312";
         const templateData = {
-          P_ID: input.P_ID,
-          totalExpenses,
-          budgetAmount,
+          pid: input.P_ID,
+          expenses:totalExpenses,
+          budget:budgetAmount,
         };
         // Check if templateData has all required values
-if (!templateData.P_ID || !templateData.totalExpenses || !templateData.budgetAmount) {
+if (!templateData.pid || !templateData.expenses || !templateData.budget) {
   console.error('Missing data for templateData');
 } else 
 
