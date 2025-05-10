@@ -320,6 +320,7 @@ function App() {
         {/* Site Supervisor Routes */}
         <Route path="/site-supervisor" element={<SiteSupervisorDashboard />} />
         <Route path="/site-supervisor/monitor/create/:id" element={<CreateMonitor />} />
+        <Route path="/site-supervisor/monitor/create" element={<CreateMonitor />} />
         <Route path="/site-supervisor/monitor/view" element={<ViewMonitors />} />
         <Route path="/site-supervisor/monitor/update/:id" element={<UpdateMonitor />} />
         <Route path="/site-supervisor/Imguploder/Img" element={<Imguploder />} />

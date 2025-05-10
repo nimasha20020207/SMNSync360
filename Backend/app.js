@@ -196,7 +196,6 @@ app.get("/getImage/:id", async (req, res) => {
         const id = req.params.id;
         const images = await Img.find({ProjectId: id}).sort({ createdAt: -1 });
         
-        console.log("hello")
         res.json({ 
             status: "ok", 
             data: images.map(img => ({
@@ -313,7 +312,6 @@ db
         
        
         mongoose.connection.db.collection('tasks').indexes()
-            .then(indexes => console.log("Current indexes:", indexes))
             .catch(err => console.error("Error checking indexes:", err));
 
         const PORT = process.env.PORT || 5000;

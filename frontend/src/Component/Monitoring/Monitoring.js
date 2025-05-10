@@ -277,14 +277,14 @@ function Monitoring() {
                                             </td>
                                             <td>
                                                 <div className="action-buttons-container">
-                                                    <button
+                                                    <Button
                                                         className="action-button pdf"
                                                         onClick={() =>
                                                             generatePDF(record)
                                                         }
                                                     >
                                                         Download PDF
-                                                    </button>
+                                                    </Button>
                                                 </div>
                                             </td>
                                             <td>
