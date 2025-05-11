@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import PasswordResets from '../PasswordReset/PasswordResets';
 import './Passwords.css';
+import AdNav from "../NavAdmin/NavAdmin";
 
 const URL = "http://localhost:5000/Password";
 
@@ -59,6 +60,7 @@ function Passwords() {
 
   return (
     <div className="passwords-page">
+      <AdNav/>
       <div className="passwords-container">
         <h1 className="passwords-heading">Password Reset Requests</h1>
         {loading ? (

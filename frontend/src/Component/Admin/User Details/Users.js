@@ -33,6 +33,8 @@ function Users() {
     { value: 'projectManager', label: 'Project Manager' },
     { value: 'quantitysurveyor', label: 'Quantity Surveyor' },
     { value: 'inventorymanager', label: 'Inventory Manager' },
+    { value: 'financeofficer', label: 'Finance Officer' },
+    { value: 'supplier', label: 'Supplier' },
   ];
 
   useEffect(() => {

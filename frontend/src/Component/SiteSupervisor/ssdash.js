@@ -37,6 +37,7 @@ function Dashboard() {
     issues: 0
   });
   const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([
@@ -74,15 +75,37 @@ function Dashboard() {
       setLoading(false);
     }
   };
+  // Fetch notifications from backend
+const fetchNotifications = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/Notification");
+    console.log("Notifications API Response:", response.data);
+    const notificationData = response.data.notification || response.data || [];
+    const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+    setNotifications(notificationArray);
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    setNotifications([]);
+  }
+};
 
-  useEffect(() => {
-    fetchCounts();
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([fetchCounts(), fetchNotifications()]);
+      } catch (err) {
+        console.error("Failed to fetch data:", err);
+        setError("Failed to load dashboard data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   const handleNavigate = (newDate) => {
     setCurrentDate(newDate);
   };
-
   const dashboardCards = [
     {
       title: "Active Projects",
@@ -258,30 +281,31 @@ function Dashboard() {
 
         {/* Side by side section - Announcements and Calendar */}
         <Row className="mt-3">
-          {/* Announcements - Left Side */}
-          <Col md={6} className="mb-4">
-            <Card className="h-100" style={{ borderRadius: "15px" }}>
-              <Card.Header as="h5" className="bg-primary text-white py-3" style={{ borderRadius: "15px 15px 0 0" }}>📢 Announcements</Card.Header>
-              <Card.Body className="p-4">
-                <Card.Text className="mb-3">
-       <strong>05/02/2024:</strong> Daily site inspections will be conducted at 8 AM.
-        </Card.Text>
-       <Card.Text className="mb-3">
-        <strong>05/04/2024:</strong> System downtime scheduled for maintenance from 12 PM to 3 PM.
-        </Card.Text>
-        <Card.Text className="mb-3">
-        <strong>05/06/2024:</strong> Weekly security audits starting at 10 AM every Monday.
-        </Card.Text>
-        <Card.Text className="mb-3">
-        <strong>05/08/2024:</strong> Scheduled update for site monitoring tools, please expect brief outages.
-        </Card.Text>
-        <Card.Text className="mb-0">
-       <strong>05/09/2024:</strong> Emergency alert testing will take place at 2 PM.
-       </Card.Text>
-
-              </Card.Body>
-            </Card>
-          </Col>
+{/* Announcements - Left Side */}
+<Col md={6} className="mb-4">
+  <Card className="h-100" style={{ borderRadius: "15px" }}>
+    <Card.Header as="h5" className="bg-primary text-white py-3" style={{ borderRadius: "15px 15px 0 0" }}>📢 Announcements</Card.Header>
+    <Card.Body className="p-4">
+      {loading ? (
+        <Card.Text>Loading notifications...</Card.Text>
+      ) : notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <Card.Text key={index} className="mb-3">
+            <strong>
+              {notification.Date
+                ? new Date(notification.Date).toLocaleDateString()
+                : "No Date"}
+              :
+            </strong>{" "}
+            {notification.message || "No message available"}
+          </Card.Text>
+        ))
+      ) : (
+        <Card.Text>No announcements available.</Card.Text>
+      )}
+    </Card.Body>
+  </Card>
+</Col>
           
 
          {/* Calendar - Right Side */}
