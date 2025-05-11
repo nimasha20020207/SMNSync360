@@ -16,6 +16,8 @@ const ConfirmSchema = new Schema({
         required: true,
         default: Date.now, // Default to the current date
     },
+    imagePaths: [String],
+    
     OStatus:{
         type: String,
         required: true,

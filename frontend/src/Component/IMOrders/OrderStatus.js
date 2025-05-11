@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-//import { useNavigate } from "react-router-dom";
-import {  FaExclamationTriangle } from "react-icons/fa"; // Icons for edit and no records
+import Header from "../topnav/IM/Header";
+import Footer from "../bottomnav/IM/Footer";
+import { useNavigate } from "react-router-dom";
+import { FaEdit, FaExclamationTriangle,FaWallet } from "react-icons/fa"; // Import the wallet icon
+ 
 
 const URL = "http://localhost:5000/ConfirmedOrders"; // API Endpoint
 
 function ReadOrders() {
   const [orders, setOrders] = useState([]);
- // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Fetch Data
   useEffect(() => {
@@ -21,10 +24,10 @@ function ReadOrders() {
   }, []);
 
   return (
+    <div>
+      <Header/>
     <div className="container my-5">
-      <h2 className="text-center mb-4" style={{ color: "#0056b3" }}>
-        Order Records
-      </h2>
+      
 
       <div className="card shadow-lg p-4">
         <table className="table table-striped table-bordered table-hover">
@@ -32,8 +35,10 @@ function ReadOrders() {
             <tr>
               <th>Order ID</th>
               <th>Details</th>
-              <th>Confirmed Date</th>
+              <th>Date</th>
+              <th>Images</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -43,7 +48,40 @@ function ReadOrders() {
                   <td>{order.OrderID}</td>
                   <td>{order.ODetails}</td>
                   <td>{new Date(order.Date).toLocaleDateString()}</td>
+                  <td>
+                    {order.imagePaths && order.imagePaths.length > 0 ? (
+                      <div className="d-flex flex-wrap gap-2">
+                        {order.imagePaths.map((imgPath, index) => (
+                          <img
+                            key={index}
+                            src={`http://localhost:5000${imgPath}`} // Make sure this path matches how you're serving images
+                            alt={`order-${order._id}-${index}`}
+                            style={{
+                              height: "60px",
+                              width: "60px",
+                              objectFit: "cover",
+                              borderRadius: "5px",
+                              border: "1px solid #ccc",
+                              cursor: "pointer"
+                            }}
+                            onClick={() => window.open(`http://localhost:5000${imgPath}`, "_blank")} // Open full image on click
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-muted">No images</span>
+                    )}
+                  </td>
+
                   <td>{order.OStatus}</td>
+                  <td>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => navigate(`/UpdateStatus/${order._id}`)}
+                    >
+                      <FaWallet/> Pay
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -57,6 +95,9 @@ function ReadOrders() {
           </tbody>
         </table>
       </div>
+      
+    </div>
+    <Footer/>
     </div>
   );
 }

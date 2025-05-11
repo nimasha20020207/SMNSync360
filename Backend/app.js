@@ -133,6 +133,7 @@ if (!fs.existsSync(uploadDir)) {
     console.log("Created upload directory:", uploadDir);
 }
 
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, uploadDir);
@@ -142,6 +143,8 @@ const storage = multer.diskStorage({
         cb(null, uniqueSuffix + path.extname(file.originalname));
     }
 });
+
+
 
 const upload = multer({
     storage: storage,
@@ -157,6 +160,7 @@ const upload = multer({
         cb(new Error('Only image files are allowed!'));
     }
 });
+
 
 app.post("/uploadImg", upload.single("image"), async (req, res) => {
     try {
@@ -189,6 +193,7 @@ app.post("/uploadImg", upload.single("image"), async (req, res) => {
         });
     }
 });
+
 
 // Display Images  
 app.get("/getImage/:id", async (req, res) => {
@@ -294,6 +299,8 @@ app.use((err, req, res, next) => {
 
 // Serve static files from uploads directory-InventoryManager
 app.use('/materialuploads', express.static(path.join(__dirname, 'materialuploads')));
+//serve static file-bill images 
+app.use("/billuploads", express.static(path.join(__dirname, "billuploads")));
 
 
 // Handle 404

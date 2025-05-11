@@ -13,16 +13,27 @@ function Form() {
     OrderID:"",
     ODetails:"",
     Date:"",
+    imageFiles: [],
     OStatus:"",
 
   });
 
-  const handleChange=(e)=>{
-    setInputs((prevState)=>({
+  const handleChange = (e) => {
+  const { name, value, files } = e.target;
+
+  if (name === "imageFiles") {
+    setInputs((prevState) => ({
       ...prevState,
-      [e.target.name]:e.target.value,
+      imageFiles: Array.from(files), // store selected images as array
     }));
-  };
+  } else {
+    setInputs((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }
+};
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,15 +44,30 @@ function Form() {
   };
   
 
-  const sendRequest=async()=>{
-    await axios.post("http://localhost:5000/ConfirmedOrders",{
-      OrderID:String(inputs.OrderID),
-      ODetails:String(inputs.ODetails),
-      Date: inputs.Date instanceof Date ? inputs.Date.toISOString() : new Date(inputs.Date).toISOString(),
-      OStatus: typeof inputs.OStatus === "string" ? inputs.OStatus : inputs.OStatus?.value || "Unknown",
+  const sendRequest = async () => {
+  const formData = new FormData();
+  formData.append("OrderID", inputs.OrderID);
+  formData.append("ODetails", inputs.ODetails);
+  formData.append("Date", new Date(inputs.Date).toISOString());
+  formData.append("OStatus", inputs.OStatus);
 
-    }).then(res => res.data);
+  inputs.imageFiles.forEach((file) => {
+    formData.append("images", file); // 'images' must match backend field name
+  });
+
+  try {
+    const res = await axios.post("http://localhost:5000/ConfirmedOrders", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Image upload failed", error);
+    alert("Error uploading images");
   }
+};
+
 
   return (
     <div>
@@ -92,6 +118,35 @@ function Form() {
               className="form-control"
             />
           </div>
+
+                      {/* Image Upload */}
+            <div className="mb-3">
+              <label htmlFor="imageFiles" className="form-label">Attach Images (JPG, PNG)</label>
+              <input
+                type="file"
+                id="imageFiles"
+                name="imageFiles"
+                accept="image/jpeg, image/png"
+                multiple
+                onChange={handleChange}
+                className="form-control"
+              />
+            </div>
+
+            {/* Optional Preview */}
+            {inputs.imageFiles.length > 0 && (
+              <div className="mt-2 d-flex flex-wrap gap-2">
+                {inputs.imageFiles.map((file, idx) => (
+                  <img
+                    key={idx}
+                    src={URL.createObjectURL(file)}
+                    alt={`preview-${idx}`}
+                    style={{ height: '80px', borderRadius: '5px' }}
+                  />
+                ))}
+              </div>
+            )}
+
 
           {/* Supplier */}
           <div className="mb-3">
