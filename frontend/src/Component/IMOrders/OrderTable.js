@@ -5,41 +5,26 @@ import axios from "axios";
 function OrderTable({ orders = [], setOrders }) {
   const navigate = useNavigate();
 
-  // Function to handle delete request
   const handleDelete = async (orderId) => {
     try {
-      // Send DELETE request to backend
       const response = await axios.delete(`http://localhost:5000/Orders/${orderId}`);
-      console.log(response.data.message); // Log success message
-
-      // Update the orders list by filtering out the deleted order
+      console.log(response.data.message);
       setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
-      
-      // Show success alert
       window.alert("Item deleted successfully!");
     } catch (error) {
       console.error("Error deleting order:", error);
-      // Show error alert (optional)
       window.alert("Failed to delete the item. Please try again.");
     }
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "20px" }}>
-      <h1 style={{ color: "#0056b3", fontSize: "2.5em", marginBottom: "20px" }}>Orders</h1>
-      <p>You can edit or cancel your order within 30 minutes after placing it. If time has exceeded, please contact the supplier.</p>
-
-      <table
-        border="1"
-        cellPadding="10"
-        cellSpacing="0"
-        style={{ width: "80%", borderCollapse: "collapse", border: "2px solid #0056b3" }}
-      >
-        <thead>
-          <tr style={{ backgroundColor: "#0056b3", color: "white" }}>
+    <div className="table-responsive" style={{ padding: "10px" }}>
+      <table className="table table-striped table-hover table-bordered align-middle text-center" style={{ margin: "0 auto", width: "100%" }}>
+        <thead className="table-primary">
+          <tr>
             <th>Order Item</th>
             <th>Quantity</th>
-            <th>Order type</th>
+            <th>Order Type</th>
             <th>Remarks</th>
             <th>Date</th>
             <th>Supplier</th>
@@ -59,38 +44,22 @@ function OrderTable({ orders = [], setOrders }) {
                 <td>
                   <button
                     onClick={() => navigate(`/UpdateOrder/${order._id}`)}
-                    style={{
-                      backgroundColor: "#28a745", // Success green
-                      color: "white",
-                      padding: "6px 10px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginRight: "5px",
-                    }}
+                    className="btn btn-success btn-sm me-2 shadow-sm"
                   >
-                    Update
+                    <i className="bi bi-pencil-square"></i> Update
                   </button>
                   <button
-                    onClick={() => handleDelete(order._id)} // Delete button click
-                    style={{
-                      backgroundColor: "#dc3545", // Danger red
-                      color: "white",
-                      padding: "6px 10px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginRight: "5px",
-                    }}
+                    onClick={() => handleDelete(order._id)}
+                    className="btn btn-danger btn-sm shadow-sm"
                   >
-                    Delete
+                    <i className="bi bi-trash"></i> Delete
                   </button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="7">No materials found</td>
+              <td colSpan="7">No orders found</td>
             </tr>
           )}
         </tbody>

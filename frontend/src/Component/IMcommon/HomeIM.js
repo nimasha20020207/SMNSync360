@@ -5,8 +5,8 @@ import Footer from '../bottomnav/IM/Footer';
 import { Card, Row, Col, Container, Button, ProgressBar, ListGroup, Carousel } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import inventoryImg from '../pictures/inventory2.jpg';
-import materialImg from '../pictures/material.jpg';
-import stockImg from '../pictures/stock2.jpg';
+import materialImg from '../pictures/tools.jpg';
+import stockImg from '../pictures/stock.jpg';
 import SupplierMap from './SupplierMap'; // adjust the path as needed
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -76,7 +76,7 @@ useEffect(() => {
           <Carousel.Item>
             <div style={{
               height: "300px",
-              backgroundImage: `url(${inventoryImg})`,
+              backgroundImage: `url(${stockImg})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               display: "flex",
@@ -122,7 +122,7 @@ useEffect(() => {
           <Carousel.Item>
             <div style={{
               height: "300px",
-              backgroundImage: `url(${stockImg})`,
+              backgroundImage: `url(${inventoryImg})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               display: "flex",

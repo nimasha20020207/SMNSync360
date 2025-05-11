@@ -4,7 +4,7 @@ import Header from "../topnav/IM/Header";
 import Footer from "../bottomnav/IM/Footer";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaExclamationTriangle,FaWallet } from "react-icons/fa"; // Import the wallet icon
- 
+ import background from '../pictures/stock.jpg';
 
 const URL = "http://localhost:5000/ConfirmedOrders"; // API Endpoint
 
@@ -26,11 +26,18 @@ function ReadOrders() {
   }, []);
 
   return (
-    <div>
+    <div 
+    >
       <Header/>
-    <div className="container my-5">
-      
-
+      <div style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            minHeight: "100vh",
+            paddingTop: "20px",
+            paddingBottom: "30px"
+          }}>
+    <div className="container my-5" >
       <div className="card shadow-lg p-4">
         <table className="table table-striped table-bordered table-hover">
           <thead className="table-primary">
@@ -101,6 +108,7 @@ function ReadOrders() {
         </table>
       </div>
       
+    </div>
     </div>
     <Footer/>
     </div>
