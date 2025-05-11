@@ -195,7 +195,7 @@ function ViewMonitors() {
   return (
     <div className="users-page-wrapper">
       <Navbar />
-      <div className="users-container">
+      <div className="users-container"style={{ width: '75%', maxWidth: 'none' }}>
         <div className="users-header">
           <div className="users-controls">
             <input
