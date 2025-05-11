@@ -11,6 +11,8 @@ const URL = "http://localhost:5000/ConfirmedOrders"; // API Endpoint
 function ReadOrders() {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+ 
+
 
   // Fetch Data
   useEffect(() => {
@@ -75,12 +77,15 @@ function ReadOrders() {
 
                   <td>{order.OStatus}</td>
                   <td>
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => navigate(`/UpdateStatus/${order._id}`)}
-                    >
-                      <FaWallet/> Pay
-                    </button>
+                    
+                  <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => navigate("/AmountEntryForm", { state: { order } })}
+                >
+                  <FaWallet /> Pay
+                </button>
+
+
                   </td>
                 </tr>
               ))
