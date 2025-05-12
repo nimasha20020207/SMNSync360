@@ -38,9 +38,9 @@ function PasswordResets(props) {
       <td className="password-resets-cell">{reason || "N/A"}</td>
       <td className="password-resets-cell">{getCurrentDate()}</td>
       <td className="password-resets-actions">
-        <Link to={`/updatepassword/${_id}`} className="password-resets-update-link">
+        {/* <Link to={`/updatepassword/${_id}`} className="password-resets-update-link"> 
           Update
-        </Link>
+        </Link>*/}
         <button
           onClick={() => props.deletePasswordReset(_id)}
           className="password-resets-action-button delete"

@@ -45,6 +45,7 @@ function Home() {
   const [budgets, setBudgets] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
   const [selectedBudgetId, setSelectedBudgetId] = useState(null);
 
   //for calendar
@@ -68,6 +69,20 @@ function Home() {
     }
   };
 
+  // Fetch notifications from backend
+const fetchNotifications = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/Notification");
+    console.log("Notifications API Response:", response.data);
+    const notificationData = response.data.notification || response.data || [];
+    const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+    setNotifications(notificationArray);
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    setNotifications([]);
+  }
+};
+
   // Fetch expenses from backend
   const fetchExpenses = async () => {
     try {
@@ -85,7 +100,7 @@ function Home() {
   // Fetch data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchBudgets(), fetchExpenses()]);
+      await Promise.all([fetchBudgets(), fetchExpenses(), fetchNotifications()]);
       setLoading(false);
     };
     fetchData();
@@ -408,26 +423,33 @@ function Home() {
   </Col>
 </Row>
 
-        {/* Bottom: Announcements */}
-        <Row className="mt-4">
-          <Col>
-            <Card>
-              <Card.Header as="h5" className="bg-primary text-white">
-                📢 Announcements
-              </Card.Header>
-              <Card.Body>
-                <Card.Text>
-                  <strong>03/25/2025:</strong> Budget review meeting scheduled
-                  for next week.
-                </Card.Text>
-                <Card.Text>
-                  <strong>03/20/2025:</strong> Project A deadline extended to
-                  April 10th.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+       {/* Bottom: Announcements */}
+<Row className="mt-4">
+  <Col>
+    <Card>
+      <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+      <Card.Body>
+        {loading ? (
+          <Card.Text>Loading notifications...</Card.Text>
+        ) : notifications.length > 0 ? (
+          notifications.map((notification, index) => (
+            <Card.Text key={index}>
+              <strong>
+                {notification.Date
+                  ? new Date(notification.Date).toLocaleDateString()
+                  : "No Date"}
+                :
+              </strong>{" "}
+              {notification.message || "No message available"}
+            </Card.Text>
+          ))
+        ) : (
+          <Card.Text>No announcements available.</Card.Text>
+        )}
+      </Card.Body>
+    </Card>
+  </Col>
+</Row>
       </Container>
       <Fot />
     </div>

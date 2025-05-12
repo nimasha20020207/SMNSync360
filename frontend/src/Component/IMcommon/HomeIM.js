@@ -24,46 +24,65 @@ function App() {
 
 
   const [statusPercentages, setStatusPercentages] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 useEffect(() => {
-  axios
-    .get("http://localhost:5000/ConfirmedOrders")
-    .then((res) => {
-      const orders = res.data.records || [];
+    const fetchData = async () => {
+      try {
+        // Fetch Confirmed Orders
+        const ordersResponse = await axios.get("http://localhost:5000/ConfirmedOrders");
+        const orders = ordersResponse.data.records || [];
 
-      const statusCount = {
-        confirmed: 0,
-        processing: 0,
-        shipped: 0,
-        delivered: 0,
-      };
+        const statusCount = {
+          confirmed: 0,
+          processing: 0,
+          shipped: 0,
+          delivered: 0,
+        };
 
-      orders.forEach((order) => {
-        const status = order.OStatus?.toLowerCase();
-        if (statusCount[status] !== undefined) {
-          statusCount[status]++;
-        }
-      });
+        orders.forEach((order) => {
+          const status = order.OStatus?.toLowerCase();
+          if (statusCount[status] !== undefined) {
+            statusCount[status]++;
+          }
+        });
 
-      const total = Object.values(statusCount).reduce((sum, val) => sum + val, 0);
-      const statusPercent = Object.keys(statusCount).map((key) => ({
-        label: key.charAt(0).toUpperCase() + key.slice(1),
-        value: total > 0 ? Math.round((statusCount[key] / total) * 100) : 0,
-        color: {
-          confirmed: "#007bff", // Blue – primary
-          processing: "#fd7e14", // Orange – attention/delay
-          shipped: "#20c997", // Teal – in transit
-          delivered: "#28a745", // Green – success
-        }[key],
-      }));
+        const total = Object.values(statusCount).reduce((sum, val) => sum + val, 0);
+        const statusPercent = Object.keys(statusCount).map((key) => ({
+          label: key.charAt(0).toUpperCase() + key.slice(1),
+          value: total > 0 ? Math.round((statusCount[key] / total) * 100) : 0,
+          color: {
+              confirmed: "#007bff", // Blue – primary
+              processing: "#fd7e14", // Orange – attention/delay
+              shipped: "#20c997", // Teal – in transit
+              delivered: "#28a745", // Green – success
 
-      setStatusPercentages(statusPercent);
-    })
-    .catch((err) => console.error("Error fetching order data:", err));
-}, []);
+          }[key],
+        }));
 
+        setStatusPercentages(statusPercent);
 
+        // Fetch Notifications
+        const notificationsResponse = await axios.get("http://localhost:5000/Notification");
+        console.log("Notifications API Response:", notificationsResponse.data);
+        const notificationData = notificationsResponse.data.notification || notificationsResponse.data || [];
+        const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+        setNotifications(notificationArray);
 
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setStatusPercentages([]);
+        setNotifications([]);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+        
   const navigate = useNavigate();
 
   return (
@@ -234,17 +253,30 @@ useEffect(() => {
             </ListGroup>
           </Col>
 
-          <Col md={6}>
-            <Card>
-              <Card.Header as="h5">📢 Announcements</Card.Header>
-              <Card.Body>
-                <Card.Text><strong>03/25/2025:</strong> Budget review meeting scheduled for next week.</Card.Text>
-                <Card.Text><strong>03/20/2025:</strong> Project A deadline extended to April 10th.</Card.Text>
-                <Card.Text><strong>03/20/2025:</strong> Project B deadline extended to May 10th.</Card.Text>
-                <Card.Text><strong>03/20/2025:</strong> Order 005 has been delivered successfully.</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
+<Col md={6}>
+  <Card>
+    <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+    <Card.Body>
+      {loading ? (
+        <Card.Text>Loading notifications...</Card.Text>
+      ) : notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <Card.Text key={index}>
+            <strong>
+              {notification.Date
+                ? new Date(notification.Date).toLocaleDateString()
+                : "No Date"}
+              :
+            </strong>{" "}
+            {notification.message || "No message available"}
+          </Card.Text>
+        ))
+      ) : (
+        <Card.Text>No announcements available.</Card.Text>
+      )}
+    </Card.Body>
+  </Card>
+</Col>
 
           
 

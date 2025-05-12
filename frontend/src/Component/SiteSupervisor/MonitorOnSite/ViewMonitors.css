@@ -230,7 +230,7 @@
 .photos-button {
     display: inline-block;
     padding: 0.5rem 1rem;
-    background-color: rgba(255, 193, 7, 0.8); /* Semi-transparent yellow */
+    background-color: rgba(250, 196, 32, 0.8); /* Semi-transparent yellow */
     color: #000;
     border: none;
     border-radius: 4px;
@@ -241,7 +241,7 @@
   }
   
   .photos-button:hover {
-    background-color: rgba(255, 160, 0, 0.9); /* Darker semi-transparent yellow */
+    background-color: rgba(250, 196, 32, 0.8); /* Darker semi-transparent yellow */
     color: #000;
     text-decoration: none;
   }

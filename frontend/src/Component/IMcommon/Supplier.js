@@ -17,23 +17,22 @@ import SupplierMap from './SupplierMap';
 function Supplier() {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
-    
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        axios.get("http://localhost:5000/orders")
-            .then((response) => {
-                if (Array.isArray(response.data.orders)) {
-                    setOrders(response.data.orders);
-                } else {
-                    console.error("Error: Expected array but got", typeof response.data);
-                    setOrders([]);
-                }
-            })
-            .catch((error) => {
-                console.error("Error fetching orders:", error);
-                setOrders([]);
-            });
-    }, []);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // Fetch orders
+      const ordersResponse = await axios.get("http://localhost:5000/orders");
+      if (Array.isArray(ordersResponse.data.orders)) {
+        setOrders(ordersResponse.data.orders);
+      } else {
+        console.error("Error: Expected array but got", typeof ordersResponse.data);
+        setOrders([]);
+      }
+
 
     const [statusPercentages, setStatusPercentages] = useState([]);
 
@@ -74,6 +73,25 @@ useEffect(() => {
     .catch((err) => console.error("Error fetching order data:", err));
 }, []);
 
+
+      // Fetch notifications
+      const notificationsResponse = await axios.get("http://localhost:5000/Notification");
+      console.log("Notifications API Response:", notificationsResponse.data);
+      const notificationData = notificationsResponse.data.notification || notificationsResponse.data || [];
+      const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+      setNotifications(notificationArray);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setOrders([]);
+      setNotifications([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+  
     const emergencyOrders = orders.filter(order => order.Otype === "Emergency");
 
     return (
@@ -296,6 +314,29 @@ useEffect(() => {
 </Card>
 
 
+=======
+<Card>
+  <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+  <Card.Body>
+    {loading ? (
+      <Card.Text>Loading announcements...</Card.Text>
+    ) : notifications.length > 0 ? (
+      notifications.map((notification, index) => (
+        <Card.Text key={index}>
+          <strong>
+            {notification.Date
+              ? new Date(notification.Date).toLocaleDateString()
+              : "No Date"}
+            :
+          </strong>{" "}
+          {notification.message || "No message available"}
+        </Card.Text>
+      ))
+    ) : (
+      <Card.Text>No announcements available.</Card.Text>
+    )}
+  </Card.Body>
+</Card>
                 </Row>
             </Container>
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiUser, FiMail, FiHome, FiKey, FiCalendar, FiSave, FiEye, FiEyeOff } from 'react-icons/fi';
 import './UpdateUser.css';
+import AdNav from "../NavAdmin/NavAdmin";
 
 function UpdateUser() {
     const [inputs, setInputs] = useState({
@@ -92,6 +93,7 @@ function UpdateUser() {
 
     return (
         <div className="update-user-container">
+            <AdNav/>
             <div className="update-user-card">
                 <h1 className="form-title">
                     <FiUser className="title-icon" />
