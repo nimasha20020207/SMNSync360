@@ -54,8 +54,8 @@ function HeadNav() {
             <Nav.Link href="/UserTableView" className="he-users">
               Progress
             </Nav.Link>
-            <Nav.Link href="/Users" className="he-users">
-              Requiment
+            <Nav.Link href="/RequirementsTableView" className="he-users">
+              Requirement
             </Nav.Link>
             <Nav.Link href="/Inventory" className="he-users">
               Inventory

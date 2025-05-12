@@ -9,7 +9,7 @@ const progressController = require("../Controllers/Progresscontrol");
 // Multer storage configuration for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');  // Directory for uploaded files
+    cb(null, 'progressuploads/');  // Directory for uploaded files
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); // e.g., 1685054324234.png

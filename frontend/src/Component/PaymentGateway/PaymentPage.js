@@ -40,19 +40,6 @@ if (error) {
     alert("Payment failed");
     return; // Exit early if payment fails
   }
-
-  // 2. Send SMS (await to ensure it completes)
-  try {
-    await axios.post("http://localhost:5000/api/send-sms", {
-      to: "+94764703413",
-      message: `Payment of Rs. ${amount} was successful!`,
-    });
-    console.log("SMS sent successfully!");
-  } catch (smsError) {
-    console.error("SMS failed:", smsError);
-  }
-
-  // 3. Navigate ONLY after SMS is sent
   navigate("/PaymentSuccess");
 };
 

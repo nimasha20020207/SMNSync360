@@ -84,7 +84,7 @@ app.use("/Password", routerPassword);
 app.use("/users",progressrouter);
 app.use("/requiments",routerRequiment);
 app.use("/feedback",routerfeedback);
-app.use('/uploads', express.static('uploads'));
+app.use('/progressuploads', express.static('progressuploads'));
 
 
 //ajtdQYIXjaiZbNli
