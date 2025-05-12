@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { jsPDF } from "jspdf";
+import axios from "axios";
 
 function PaymentSuccess() {
   const [order, setOrder] = useState(null);
@@ -16,17 +17,32 @@ function PaymentSuccess() {
     }
   }, []);
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Payment Successful Report", 20, 20);
-    doc.setFontSize(12);
-    doc.text(`Order ID: ${order?.OrderID}`, 20, 30);
-    doc.text(`Order Details: ${order?.ODetails}`, 20, 40);
-    doc.text(`Amount Paid (LKR): ${amount}`, 20, 50);
-    doc.text(`Payment Date: ${paymentDate}`, 20, 60);
-    doc.save("payment_report.pdf");
-  };
+  const generatePDF = async () => {
+  try {
+    // Send SMS first
+    await axios.post("http://localhost:5000/api/send-sms", {
+      to: "+94764703413",
+      message: `Payment of Rs. ${amount} for Order ID ${order?.OrderID} was successful!`,
+    });
+    console.log("SMS sent successfully!");
+  } catch (smsError) {
+    console.error("SMS failed:", smsError);
+    alert("Failed to send SMS. Please try again later.");
+    return;
+  }
+
+  // Generate PDF
+  const doc = new jsPDF();
+  doc.setFontSize(16);
+  doc.text("Payment Successful Report", 20, 20);
+  doc.setFontSize(12);
+  doc.text(`Order ID: ${order?.OrderID}`, 20, 30);
+  doc.text(`Order Details: ${order?.ODetails}`, 20, 40);
+  doc.text(`Amount Paid (LKR): ${amount}`, 20, 50);
+  doc.text(`Payment Date: ${paymentDate}`, 20, 60);
+  doc.save("payment_report.pdf");
+};
+
 
   return (
     <div style={styles.page}>

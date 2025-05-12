@@ -11,6 +11,7 @@ const db = require("./util/db");
 const stripe = require("stripe")("sk_test_51R8NoCSBlInf359dPI3W3e8CBI04Ghwqs6dNzWaAZJFqtW8tazkKFAXVYjLDWvDYdM4goGijNdqRDKgKzcpp09Ou00tVxe7GfL");
 require("dotenv").config();
 
+
 const router2 = require("./Router/MaterialRoute"); // import materials route
 const orderrouter = require("./Router/OrderRoute"); // import order route
 const equipmentrouter = require("./Router/EquipmentRoute"); // import Equipment route
@@ -31,6 +32,12 @@ const routerNotification = require("./Router/NotificationRoute");
 const routerPassword = require("./Router/Passwordroute");
 
 const whatsappRoute = require("./Router/whatsapp.js");
+
+//progress routes
+const progressrouter =require("./Router/Progressroter");
+const routerRequiment=require("./Router/requimentRoute");
+const  routerfeedback=require("./Router/feedbackRoute");
+
 
 // Clear model cache
 delete mongoose.connection.models['Task'];
@@ -74,7 +81,10 @@ app.use('/api', whatsappRoute);
 app.use("/Notification", routerNotification);
 app.use("/Password", routerPassword);
 
-
+app.use("/users",progressrouter);
+app.use("/requiments",routerRequiment);
+app.use("/feedback",routerfeedback);
+app.use('/progressuploads', express.static('progressuploads'));
 
 
 //ajtdQYIXjaiZbNli
@@ -308,7 +318,8 @@ app.post("/api/payments/create-payment-intent", async (req, res) => {
 
 // Serve static files
 app.use("/files", express.static(uploadDir));
-
+//sms payment
+app.use("/api", require("./Router/send-sms"));
 
 
 

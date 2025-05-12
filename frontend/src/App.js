@@ -92,6 +92,7 @@ import UPpro from "./Component/Progress/UpdateProgress";
 import Passwords from "./Component/Admin/PasswordResetDetails/Passwords";
 import ProfileUser from "./Component/ProfileUser/ProfileUser";
 
+
 // Site Supervisor Components
 import SiteSupervisorDashboard from "./Component/SiteSupervisor/ssdash";
 import CreateMonitor from "./Component/SiteSupervisor/MonitorOnSite/CreateMonitor";
@@ -102,6 +103,19 @@ import SiteImages from "./Component/SiteSupervisor/SiteImages";
 import SupervisorTasks from "./Component/SiteSupervisor/SupervisorTasks";
 import Monitoring from "./Component/Monitoring/Monitoring";
 import ViewSitePhotos from "./Component/Monitoring/ViewSitePhotos";
+
+
+//client and project progress
+import Feedbacks from './Component/FeedbackClient/Feedbacks';
+import FeedbcackTableView from './Component/FeedbackClient/FeedcackTableView'
+import FeedbackUpdateForm from './Component/FeedbackClient/FeedbackUpdateForm';
+import UpdateRequirementForm from "./Component/RequirementsClient/UpdateRequirementForm"
+import RequirementsTableView from './Component/RequirementsClient/RequirementsTableView';
+import Requirements from './Component/RequirementsClient/Requirements';
+import Client from './Component/ClientCommon/Client';
+import ClientProgress from './Component/ClientCommon/ClientProgress';
+import Homepage from './Component/Home/Home';
+import UserTableView from './Component/Progress/UserTableView'
 
 
 function App() {
@@ -219,7 +233,7 @@ function App() {
             path="/clientdash"
             element={
               <PrivateRoute allowedRoles={["client"]}>
-                <Clientdashboard />
+                <Client />
               </PrivateRoute>
             }
           />
@@ -346,6 +360,19 @@ function App() {
         <Route path="/site-supervisor/Imguploder/Img" element={<Imguploder />} />
         <Route path="/site-supervisor/site-images/:id" element={<SiteImages />} />
         <Route path="/site-supervisor/tasks/view" element={<SupervisorTasks />} /> 
+
+
+        {/*client,project progress*/}
+        <Route path="/Feedbacks" element={<Feedbacks/>}/>
+        <Route path="/FeedcackTableView" element={<FeedbcackTableView/>}/>
+        <Route path="/update-feedback/:id" element={<FeedbackUpdateForm />} />
+        <Route path='/Requirements' element={<Requirements />} />
+        <Route path='/RequirementsTableView' element={<RequirementsTableView />} />
+        <Route path="/update-requirement/:id" element={<UpdateRequirementForm />} />
+        <Route path='/Client' element={<Client />} />
+        <Route path='/ClientProgress' element={<ClientProgress />} />
+        <Route path='/Homepage' element={<Homepage />} />
+        <Route path='/UserTableView' element={<UserTableView />} />
         </Routes>
       </React.Fragment>
     </div>

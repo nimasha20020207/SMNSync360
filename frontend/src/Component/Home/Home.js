@@ -2,113 +2,163 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import Header from '../topnav/Header';
-import axios from 'axios';
 import Footer from '../bottomnav/foter';
-import { Container, Row, Col, Card, Form } from 'react-bootstrap';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, BarElement, Tooltip, Legend, CategoryScale, LinearScale } from 'chart.js';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Carousel,
+  ProgressBar,
+  Button,
+  Spinner,
+} from 'react-bootstrap';
+import { CurrencyDollar, Wallet2, PiggyBank } from 'react-bootstrap-icons';
 
-// Register ChartJS components
-ChartJS.register(BarElement, Tooltip, Legend, CategoryScale, LinearScale);
 
-function Home() {
+import axios from 'axios';
+
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+import pic4 from '../pictures/pic4.jpg';
+import pic2 from '../pictures/pic2.jpg';
+import pic3 from '../pictures/pic3.jpg';
+
+// Fix default marker icons
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+
+// Project Locations
+const projectLocations = [
+  {
+    name: 'Kandy General Hospital',
+    position: [7.2919, 80.6360],
+    description: 'Healthcare project site - Kandy Hospital',
+  },
+  {
+    name: 'SLIIT Kandy Campus',
+    position: [7.2534, 80.5911],
+    description: 'Education project site - SLIIT Kandy',
+  },
+  {
+    name: 'Kurunegala Bus Stand',
+    position: [7.4863, 80.3625],
+    description: 'Transportation hub - Kurunegala',
+  },
+  {
+    name: 'Nallur Kovil, Jaffna',
+    position: [9.6758, 80.0255],
+    description: 'Cultural project site - Nallur Kovil',
+  },
+];
+
+function App() {
   const [selectedProject, setSelectedProject] = useState('project1');
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); 
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [loadingFeedbacks, setLoadingFeedbacks] = useState(true);
+  const navigate = useNavigate();
 
   const projectData = {
     project1: {
-      progress: {
-        completed: 75,
-        inProgress: 20,
-        notStarted: 5
-      },
-      budget: {
-        total: 100000,
-        spent: 65000,
-        remaining: 35000
-      }
+      progress: { completed: 75, inProgress: 20, notStarted: 5 },
+      budget: { total: 100000, spent: 65000, remaining: 35000 },
     },
     project2: {
-      progress: {
-        completed: 45,
-        inProgress: 35,
-        notStarted: 20
-      },
-      budget: {
-        total: 150000,
-        spent: 90000,
-        remaining: 60000
-      }
-    }
-  };
-
-  const barChartData = {
-    labels: ['Completed', 'In Progress', 'Not Started'],
-    datasets: [{
-      label: 'Project Progress (%)',
-      data: [
-        projectData[selectedProject].progress.completed,
-        projectData[selectedProject].progress.inProgress,
-        projectData[selectedProject].progress.notStarted
-      ],
-      backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
-      borderColor: ['#388E3C', '#F57C00', '#D32F2F'],
-      borderWidth: 1
-    }]
-  };
-
-  const barChartOptions = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100,
-        ticks: {
-          stepSize: 20
-        }
-      }
+      progress: { completed: 45, inProgress: 35, notStarted: 20 },
+      budget: { total: 150000, spent: 90000, remaining: 60000 },
     },
-    plugins: {
-      legend: {
-        position: 'top'
-      }
-    }
-  };
-  // Fetch notifications from backend
-  const fetchNotifications = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/Notification");
-      console.log("Notifications API Response:", response.data);
-      const notificationData = response.data.notification || response.data || [];
-      const notificationArray = Array.isArray(notificationData) ? notificationData : [];
-      setNotifications(notificationArray);
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-      setNotifications([]);
-    } finally {
-      setLoading(false);
-    }
   };
 
-  // Fetch notifications on component mount
   useEffect(() => {
-    fetchNotifications();
+    const fetchFeedbacks = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/feedback');
+        if (response.data.feedbackusers) {
+          setFeedbacks(response.data.feedbackusers);
+        } else {
+          console.error('Invalid response format');
+        }
+      } catch (error) {
+        console.error('Error fetching feedbacks:', error);
+      } finally {
+        setLoadingFeedbacks(false);
+      }
+    };
+
+    fetchFeedbacks();
   }, []);
 
   const handleProjectChange = (event) => {
     setSelectedProject(event.target.value);
   };
 
+  const { completed, inProgress, notStarted } = projectData[selectedProject].progress;
+
   return (
     <div>
       <Header />
 
-      <Container className="mt-4">
+      {/* Carousel */}
+      <Carousel className="mb-5" fade>
+        {[pic4, pic2, pic3].map((pic, idx) => (
+          <Carousel.Item key={idx}>
+            <img
+              className="d-block w-100"
+              src={pic}
+              alt={`Slide ${idx + 1}`}
+              style={{ height: '300px', objectFit: 'cover' }}
+            />
+            <Carousel.Caption>
+              <h5>
+                {idx === 0 && 'Seamlessly track and manage materials and equipment.'}
+                {idx === 1 && 'Assign the right materials and equipment to the right projects – effortlessly.'}
+                {idx === 2 && 'Automated order placement when materials run low – never pause a project again.'}
+              </h5>
+              <p>
+                {idx === 0 && 'Real-time visibility into stock levels ensures the right resources are always available.'}
+                {idx === 1 && 'Strategic allocation ensures smooth project execution and resource optimization.'}
+                {idx === 2 && 'Proactive inventory intelligence helps keep every site running efficiently.'}
+              </p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        ))}
+      </Carousel>
+
+      {/* Budget Overview Cards */}
+      <Container className="mb-5">
+        <Row className="justify-content-center">
+          {['Total Budget', 'Spent', 'Remaining'].map((label, idx) => {
+            const value = ['total', 'spent', 'remaining'][idx];
+            const icon = [<CurrencyDollar />, <Wallet2 />, <PiggyBank />][idx];
+            const color = ['primary', 'info', 'secondary'][idx];
+            return (
+              <Col md={4} className="mb-3" key={label}>
+                <Card className={`text-white bg-${color} h-100 shadow`}>
+                  <Card.Body className="text-center">
+                    {React.cloneElement(icon, { size: 40, className: 'mb-2' })}
+                    <Card.Title>{label}</Card.Title>
+                    <Card.Text style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                      ${projectData[selectedProject].budget[value].toLocaleString()}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
+
+      {/* Project Progress and Announcements */}
+      <Container>
         <Row>
-          {/* Left Column - Project Progress */}
-          <Col md={6} lg={4}>
+          <Col md={8}>
             <Card className="shadow-sm mb-4">
               <Card.Header as="h5" className="bg-primary text-white text-center">
                 📊 Project Progress
@@ -116,109 +166,108 @@ function Home() {
               <Card.Body>
                 <Form.Group className="mb-3">
                   <Form.Label>Select Project</Form.Label>
-                  <Form.Select 
-                    value={selectedProject} 
-                    onChange={handleProjectChange}
-                  >
-                    <option value="project1">Project 1</option>
-                    <option value="project2">Project 2</option>
+                  <Form.Select value={selectedProject} onChange={handleProjectChange}>
+                    <option value="project1">P001</option>
+                    <option value="project2">P002</option>
                   </Form.Select>
                 </Form.Group>
-                <div style={{ position: 'relative', height: '300px' }}>
-                  <Bar data={barChartData} options={barChartOptions} />
+                <div>
+                  <p>Completed</p>
+                  <ProgressBar now={completed} label={`${completed}%`} variant="success" className="mb-3" />
+                  <p>In Progress</p>
+                  <ProgressBar now={inProgress} label={`${inProgress}%`} variant="warning" className="mb-3" />
+                  <p>Not Started</p>
+                  <ProgressBar now={notStarted} label={`${notStarted}%`} variant="danger" className="mb-3" />
                 </div>
               </Card.Body>
             </Card>
           </Col>
 
-          {/* Middle Column - Budget Details */}
-          <Col md={6} lg={4}>
-            <div className="d-flex flex-column gap-3 mb-4">
-              <Card className="shadow" style={{ background: '#1976D2', color: 'white' }}>
-                <Card.Body className="text-center">
-                  <Card.Title>Total Budget</Card.Title>
-                  <Card.Text style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-                    ${projectData[selectedProject].budget.total.toLocaleString()}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
+          <Col md={4}>
+            <Card className="shadow-sm mb-4">
+              <Card.Header as="h5" className="bg-primary text-white text-center">
+                📢 Announcements
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  <strong>03/25/2025:</strong> Budget review meeting next week.
+                </Card.Text>
+                <Card.Text>
+                  <strong>03/20/2025:</strong> Project A deadline extended to April 10.
+                </Card.Text>
+                <Card.Text>
+                  <strong>03/15/2025:</strong> Progress review for all teams.
+                </Card.Text>
+              </Card.Body>
+            </Card>
 
-              <Card className="shadow" style={{ background: '#D32F2F', color: 'white' }}>
-                <Card.Body className="text-center">
-                  <Card.Title>Spent</Card.Title>
-                  <Card.Text style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-                    ${projectData[selectedProject].budget.spent.toLocaleString()}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-
-              <Card className="shadow" style={{ background: '#388E3C', color: 'white' }}>
-                <Card.Body className="text-center">
-                  <Card.Title>Remaining</Card.Title>
-                  <Card.Text style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-                    ${projectData[selectedProject].budget.remaining.toLocaleString()}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </div>
+            <Card className="shadow-sm mb-4">
+              <Card.Header as="h5" className="bg-info text-white text-center">
+                💬 Feedback Carousel
+              </Card.Header>
+              <Card.Body>
+                {loadingFeedbacks ? (
+                  <div className="d-flex justify-content-center">
+                    <Spinner animation="border" variant="info" />
+                  </div>
+                ) : feedbacks.length > 0 ? (
+                  <Carousel interval={null} indicators={false}>
+                    {feedbacks.slice(0, 3).map((feedback) => (
+                      <Carousel.Item key={feedback._id}>
+                        <Card className="text-center bg-secondary text-white shadow">
+                          <Card.Body>
+                            <Card.Title>{new Date(feedback.Date).toLocaleDateString()}</Card.Title>
+                            <Card.Text>{feedback.feedback}</Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Carousel.Item>
+                    ))}
+                  </Carousel>
+                ) : (
+                  <Card.Text>No feedbacks available.</Card.Text>
+                )}
+              </Card.Body>
+              <Card.Footer className="bg-transparent border-top-0">
+                <div className="d-flex justify-content-end">
+                  <Button onClick={() => navigate('/FeedcackTableView')} variant="primary">
+                    Read More
+                  </Button>
+                </div>
+              </Card.Footer>
+            </Card>
           </Col>
-
-          {/* Right Column - Announcements */}
-          <Col md={6} lg={4}>
-  <Card className="shadow-sm">
-    <Card.Header as="h5" className="bg-primary text-white text-center">📢 Announcements</Card.Header>
-    <Card.Body>
-      {loading ? (
-        <Card.Text>Loading announcements...</Card.Text>
-      ) : notifications.length > 0 ? (
-        notifications.map((notification, index) => (
-          <Card.Text key={index}>
-            <strong>
-              {notification.Date
-                ? new Date(notification.Date).toLocaleDateString()
-                : "No Date"}
-              :
-            </strong>{" "}
-            {notification.message || "No message available"}
-          </Card.Text>
-        ))
-      ) : (
-        <Card.Text>No announcements available.</Card.Text>
-      )}
-    </Card.Body>
-  </Card>
-</Col>
         </Row>
       </Container>
 
-      <div style={{
-  display: 'flex',
-  justifyContent: 'flex-end',
-  marginTop: '20px',
-  paddingRight: '20px'
-}}>
-  <button  
-    onClick={() => navigate('/Client')}  // Navigates to Client page
-    style={{
-      backgroundColor: '#007BFF',
-      color: 'white',
-      padding: '12px 20px',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '16px',
-      transition: '0.3s',
-    }}
-    onMouseOver={(e) => (e.target.style.backgroundColor = '#0056b3')}
-    onMouseOut={(e) => (e.target.style.backgroundColor = '#007BFF')}
-  >
-    User
-  </button>
-</div>
+      {/* 🌍 Project Location Map with Multiple Markers */}
+      <Container className="my-5">
+        <Card className="shadow">
+          <Card.Header className="bg-success text-white text-center">
+            🌍 Project Location Map
+          </Card.Header>
+          <Card.Body>
+            <MapContainer center={[7.8731, 80.7718]} zoom={7.5} style={{ height: '400px', width: '100%' }}>
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {projectLocations.map((loc, idx) => (
+                <Marker key={idx} position={loc.position}>
+                  <Popup>
+                    <strong>{loc.name}</strong>
+                    <br />
+                    {loc.description}
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </Card.Body>
+        </Card>
+      </Container>
 
       <Footer />
     </div>
   );
 }
 
-export default Home;
+export default App;
