@@ -335,6 +335,7 @@ app.use('/materialuploads', express.static(path.join(__dirname, 'materialuploads
 app.use("/billuploads", express.static(path.join(__dirname, "billuploads")));
 
 
+
 // Handle 404
 app.use((req, res) => {
     res.status(404).json({

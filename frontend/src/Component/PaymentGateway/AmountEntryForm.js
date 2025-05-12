@@ -11,17 +11,21 @@ function AmountEntryForm() {
   e.preventDefault();
   if (!amount || isNaN(amount)) return alert("Enter a valid amount");
 
-  // Save payment details in localStorage before navigating to PaymentSuccess
+  // ✅ Save payment details
   localStorage.setItem(
     "paymentDetails",
     JSON.stringify({
-      order: order,  // order details object
-      amount: amount, // amount entered
+      order: order,
+      amount: amount,
     })
   );
 
+  // ✅ Mark this specific order as paid
+  localStorage.setItem("paidOrder_" + order._id, "true");
+
   navigate(`/pay/${amount}`);
 };
+
 
   return (
     <div style={styles.container}>

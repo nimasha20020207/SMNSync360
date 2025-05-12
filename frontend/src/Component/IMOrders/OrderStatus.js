@@ -12,16 +12,32 @@ function ReadOrders() {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
+  const [paidOrders, setPaidOrders] = useState([]);
+
+  const handlePayClick = (order) => {
+  setPaidOrders((prev) => [...prev, order._id]); // Mark order as paid
+  navigate("/AmountEntryForm", { state: { order } }); // Still navigate to payment form
+};
+
+
   // Fetch Data
   useEffect(() => {
-    axios
-      .get(URL)
-      .then((response) => {
-        console.log("Fetched Data:", response.data); // Debugging
-        setOrders(response.data.records); // Fix: Use response.data.records
-      })
-      .catch((error) => console.error("Error fetching orders:", error));
-  }, []);
+  axios
+    .get(URL)
+    .then((response) => {
+      const records = response.data.records;
+
+      // Check localStorage for each order's paid status
+      const paid = records
+        .filter(order => localStorage.getItem("paidOrder_" + order._id) === "true")
+        .map(order => order._id);
+
+      setOrders(records);
+      setPaidOrders(paid);
+    })
+    .catch((error) => console.error("Error fetching orders:", error));
+}, []);
+
 
   return (
     <div>
@@ -55,7 +71,7 @@ function ReadOrders() {
                 <th>Order ID</th>
                 <th>Details</th>
                 <th>Date</th>
-                <th>Images</th>
+                <th>Bill</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -96,25 +112,32 @@ function ReadOrders() {
                     </td>
                     <td>{order.OStatus}</td>
                     <td>
-                      <button
-                        className="btn btn-primary btn-sm"
-                        onClick={() => navigate("/AmountEntryForm", { state: { order } })}
-                        style={{
-                          backgroundColor: "#007bff", // Primary blue color for the button
-                          border: "none",
-                          borderRadius: "5px",
-                          padding: "8px 16px",
-                          fontSize: "14px",
-                          color: "white",
-                          fontWeight: "bold",
-                          transition: "background-color 0.3s ease",
-                        }}
-                        onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-                        onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
-                      >
-                        <FaWallet /> Pay
-                      </button>
-                    </td>
+  {paidOrders.includes(order._id) ? (
+    <span className="badge bg-success" style={{ fontSize: "0.9rem", padding: "0.5em 1em" }}>
+      ✅ Paid
+    </span>
+  ) : (
+    <button
+      className="btn btn-primary btn-sm"
+      onClick={() => handlePayClick(order)}
+      style={{
+        backgroundColor: "#007bff",
+        border: "none",
+        borderRadius: "5px",
+        padding: "8px 16px",
+        fontSize: "14px",
+        color: "white",
+        fontWeight: "bold",
+        transition: "background-color 0.3s ease",
+      }}
+      onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+      onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+    >
+      <FaWallet /> Pay
+    </button>
+  )}
+</td>
+
                   </tr>
                 ))
               ) : (

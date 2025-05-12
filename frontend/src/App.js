@@ -58,6 +58,7 @@ import OrderStatus from "./Component/IMOrders/OrderStatus";
 import AmountEntryForm from "./Component/PaymentGateway/AmountEntryForm";
 import PaymentPage from "./Component/PaymentGateway/PaymentPage";
 import PaymentSuccess from "./Component/PaymentGateway/PaymentSuccess";
+import PNotifications from "./Component/PaymentGateway/Notifications";
 
 //map
 import "leaflet/dist/leaflet.css";
@@ -333,6 +334,7 @@ function App() {
           </Elements>
         } />
         <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+        <Route path="/PNotifications" element={<PNotifications />} />
 
 
         {/* Site Supervisor Routes */}
