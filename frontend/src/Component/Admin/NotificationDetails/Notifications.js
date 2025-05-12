@@ -50,7 +50,7 @@ function Notifications() {
         <AdNav/>
     <div className="notifications-page">
       <div className="notifications-header">
-        <h1>Notification Display</h1>
+        <h1>System Announcements</h1>
         <Link to="/addnotification" className="add-notify-button">
           Add Notification
         </Link>

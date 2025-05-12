@@ -17,10 +17,12 @@ function AddUser(props) {
         const response = await axios.delete(`http://localhost:5000/users/${_id}`);
         
         if (response.data.success) {
+          alert(response.data.message || "User deleted successfully");
           props.onUserDelete && props.onUserDelete(_id);
+          // Auto-refresh the page after successful deletion
           setTimeout(() => {
             window.location.reload();
-          }, 5);
+          }, 500); // Added a slight delay for better UX
         } else {
           alert(response.data.message || "Failed to delete user");
         }

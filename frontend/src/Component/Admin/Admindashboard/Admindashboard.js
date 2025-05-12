@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import './Admindashboard.css';
 import {
@@ -26,9 +27,92 @@ const barData = [
   { name: 'Jun', users: 700, projects: 400 },
 ];
 
+// Utility function to calculate time ago
+const getTimeAgo = (date) => {
+  const createdAt = new Date(date);
+  if (isNaN(createdAt.getTime())) {
+    return 'Unknown time'; // Fallback if date is invalid
+  }
+
+  const now = new Date();
+  const diffMs = now - createdAt;
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffDays > 0) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  if (diffHours > 0) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+  if (diffMinutes > 0) return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+  return `${diffSeconds} second${diffSeconds !== 1 ? 's' : ''} ago`;
+};
+
+// Utility function to get timestamp from MongoDB ObjectID
+const getTimestampFromObjectId = (objectId) => {
+  return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
+};
+
 function AdminDashboard() {
   const navigate = useNavigate();
-  const loggedInUserId = localStorage.getItem('userId'); // Replace with your auth mechanism
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [pendingRequests, setPendingRequests] = useState(0);
+  const [recentUsers, setRecentUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/users');
+      const users = response.data.users || [];
+      console.log('Fetched users:', users); // Debug: Log the fetched users
+
+      setTotalUsers(users.length);
+
+      // Filter users with valid createdAt, then sort by createdAt in descending order
+      const validUsers = users.filter(user => user.createdAt && !isNaN(new Date(user.createdAt).getTime()));
+      console.log('Users with valid createdAt:', validUsers); // Debug: Log users with valid createdAt
+
+      let sortedUsers;
+      if (validUsers.length > 0) {
+        // If there are users with valid createdAt, sort by createdAt
+        sortedUsers = validUsers
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 1);
+      } else {
+        // Fallback: Sort by _id timestamp if createdAt is unavailable or invalid
+        console.warn('Falling back to sorting by _id timestamp');
+        sortedUsers = users
+          .sort((a, b) => getTimestampFromObjectId(b._id) - getTimestampFromObjectId(a._id))
+          .slice(0, 1);
+      }
+
+      console.log('Most recent user:', sortedUsers); // Debug: Log the most recent user
+      setRecentUsers(sortedUsers);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setTotalUsers(0);
+      setRecentUsers([]);
+    }
+  };
+
+  const fetchPendingRequests = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/Password');
+      const passwords = response.data.passwords || [];
+      setPendingRequests(passwords.length);
+    } catch (error) {
+      console.error('Error fetching password reset requests:', error);
+      setPendingRequests(0);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([fetchUsers(), fetchPendingRequests()]);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -48,8 +132,8 @@ function AdminDashboard() {
         </div>
         <div className="ad-header-right">
           <div className="ad-notification-badge">
-          <Link to="/notificationdetails">
-            <FaBell className="ad-icon ad-notification-icon" />
+            <Link to="/notificationdetails">
+              <FaBell className="ad-icon ad-notification-icon" />
             </Link>
             <span className="ad-badge">3</span>
           </div>
@@ -57,7 +141,6 @@ function AdminDashboard() {
             <FaUserCircle className="ad-profile-icon" />
             <span className="ad-username">Admin</span>
             <div className="ad-dropdown-menu">
-            <Link to={`/profile/${loggedInUserId}`}>My Profile</Link>
               <button onClick={handleLogout}>Logout</button>
             </div>
           </div>
@@ -89,13 +172,7 @@ function AdminDashboard() {
             <li>
               <Link to="/notificationdetails">
                 <FaBell className="ad-icon" />
-                <span>Notifications</span>
-              </Link>
-            </li>
-            <li>
-            <Link to="/issues">
-              <FaExclamationCircle className="ad-icon" />
-              <span>Issues</span>
+                <span>Annoucements</span>
               </Link>
             </li>
             <li>
@@ -121,7 +198,7 @@ function AdminDashboard() {
           <section className="ad-stats-section">
             <div className="ad-stat-card blue">
               <h3>Total Users</h3>
-              <p>1,250</p>
+              <p>{loading ? 'Loading...' : totalUsers}</p>
               <FaUserCircle className="ad-stat-icon" />
             </div>
             <div className="ad-stat-card green">
@@ -131,7 +208,7 @@ function AdminDashboard() {
             </div>
             <div className="ad-stat-card orange">
               <h3>Pending Requests</h3>
-              <p>12</p>
+              <p>{loading ? 'Loading...' : pendingRequests}</p>
               <FaHandshake className="ad-stat-icon" />
             </div>
             <div className="ad-stat-card red">
@@ -185,15 +262,23 @@ function AdminDashboard() {
           <section className="ad-recent-activity">
             <h3>Recent Activities</h3>
             <div className="ad-activity-list">
-              <div className="ad-activity-item">
-                <div className="ad-activity-icon">
-                  <FaUserCircle />
-                </div>
-                <div className="ad-activity-details">
-                  <p>New user registered - John Doe</p>
-                  <small>2 hours ago</small>
-                </div>
-              </div>
+              {loading ? (
+                <p>Loading recent activities...</p>
+              ) : recentUsers.length > 0 ? (
+                recentUsers.map((user, index) => (
+                  <div key={index} className="ad-activity-item">
+                    <div className="ad-activity-icon">
+                      <FaUserCircle />
+                    </div>
+                    <div className="ad-activity-details">
+                      <p>New user registered - {user.name}</p>
+                      <small>{getTimeAgo(user.createdAt)}</small>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No recent user activities found.</p>
+              )}
             </div>
           </section>
         </main>
