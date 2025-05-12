@@ -26,7 +26,7 @@ function NavAdmin() {
           </Link>
         </li>
         <li className="navadmin-item">
-          <Link to="/passReset" className="navadmin-link">
+          <Link to="/passworddetails" className="navadmin-link">
             Request
           </Link>
         </li>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './UpdateNotification.css'; // Import the unique CSS file
+import AdNav from "../NavAdmin/NavAdmin";
 
 function UpdateNotification() {
   const [inputs, setInputs] = useState({
@@ -147,7 +148,9 @@ function UpdateNotification() {
   }
 
   return (
-    <div className="un-update-notification">
+    <div>
+      <AdNav/>
+      <div className="un-update-notification">
       <h1 className="un-title">Update Notification</h1>
       <form className="un-form" onSubmit={handleSubmit}>
         <div className="un-form-group">
@@ -233,6 +236,9 @@ function UpdateNotification() {
         <button type="submit" className="un-submit-button">Update Notification</button>
       </form>
     </div>
+
+    </div>
+    
   );
 }
 

@@ -27,11 +27,11 @@ function Expenses() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       await sendRequest(); // Add the expense
       alert("Expense added successfully!");
-  
+
       // Fetch budget and expenses
       const budgetData = await axios.get(
         `http://localhost:5000/Budgets/P_ID/${input.P_ID}`
@@ -39,58 +39,73 @@ function Expenses() {
       const expensesData = await axios.get(
         `http://localhost:5000/Expenses/P_IDs/${input.P_ID}`
       );
-  
+
       console.log("Budget Data:", budgetData.data);
       console.log("Expenses Data:", expensesData.data);
-  
+
       // Get budget amount
       const budgetAmount = budgetData.data.Budgets?.amount || 0;
-  
+
       // Normalize expense data
       let expensesList = expensesData.data.expenses;
-  
+
       // Convert to array if it's a single object
       if (!Array.isArray(expensesList)) {
         expensesList = [expensesList];
       }
-  
+
       // Calculate total expenses
       const totalExpenses = expensesList.reduce(
         (sum, exp) => sum + (exp.amount || 0),
         0
       );
-  
+
       const budgetThreshold = budgetAmount * 0.8;
-  
+
       console.log("Budget Amount:", budgetAmount);
       console.log("Total Expenses:", totalExpenses);
       console.log("Budget Threshold (80%):", budgetThreshold);
-  
+
       // Show warning if budget exceeded
       if (totalExpenses >= budgetThreshold) {
-        alert("Warning: Total expenses have now exceeded 80% of the allocated budget!");
-  
+        alert(
+          "Warning: Total expenses have now exceeded 80% of the allocated budget!"
+        );
+
         // Hardcoded phone number
-        const phoneNumber = '+94757189312';
-        const message =
-          "Budget Alert (PID: " + input.P_ID + ")\nYour total expenses RS."+ totalExpenses+" have exceeded 80% of the allocated budget Rs."+ budgetAmount +" Please review your expenses!";
-  
+        const phoneNumber = "+94757189312";
+        const templateData = {
+          pid: input.P_ID,
+          expenses:totalExpenses,
+          budget:budgetAmount,
+        };
+        // Check if templateData has all required values
+if (!templateData.pid || !templateData.expenses || !templateData.budget) {
+  console.error('Missing data for templateData');
+} else 
+
         try {
           const response = await axios.post(
-            'http://localhost:5000/api/send-whatsapp-message',
-            { phoneNumber, message }
+            "http://localhost:5000/api/send-whatsapp-message",
+            {
+              phoneNumber: phoneNumber,
+              templateData:templateData,
+            }
           );
-  
+
           if (response.data.success) {
-            console.log('WhatsApp message sent successfully!');
+            console.log("WhatsApp message sent successfully!");
           } else {
-            console.error('Failed to send WhatsApp message:', response.data.message);
+            console.error(
+              "Failed to send WhatsApp message:",
+              response.data.message
+            );
           }
         } catch (error) {
-          console.error('Error sending WhatsApp message:', error);
+          console.error("Error sending WhatsApp message:", error);
         }
       }
-  
+
       navigate("/Expenses");
     } catch (error) {
       console.error(
@@ -103,9 +118,6 @@ function Expenses() {
       );
     }
   };
-  
-  
-  
 
   const sendRequest = async () => {
     const response = await axios.post("http://localhost:5000/Expenses", {

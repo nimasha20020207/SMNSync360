@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import Header from '../topnav/Header';
+import axios from 'axios';
 import Footer from '../bottomnav/foter';
 import { Container, Row, Col, Card, Form } from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
@@ -12,6 +13,8 @@ ChartJS.register(BarElement, Tooltip, Legend, CategoryScale, LinearScale);
 
 function Home() {
   const [selectedProject, setSelectedProject] = useState('project1');
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate(); 
 
   const projectData = {
@@ -73,6 +76,26 @@ function Home() {
       }
     }
   };
+  // Fetch notifications from backend
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/Notification");
+      console.log("Notifications API Response:", response.data);
+      const notificationData = response.data.notification || response.data || [];
+      const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+      setNotifications(notificationArray);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setNotifications([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch notifications on component mount
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   const handleProjectChange = (event) => {
     setSelectedProject(event.target.value);
@@ -142,21 +165,29 @@ function Home() {
 
           {/* Right Column - Announcements */}
           <Col md={6} lg={4}>
-            <Card className="shadow-sm">
-              <Card.Header as="h5" className="bg-primary text-white text-center">📢 Announcements</Card.Header>
-              <Card.Body>
-                <Card.Text>
-                  <strong>03/25/2025:</strong> Budget review meeting scheduled for next week.
-                </Card.Text>
-                <Card.Text>
-                  <strong>03/20/2025:</strong> Project A deadline extended to April 10th.
-                </Card.Text>
-                <Card.Text>
-                  <strong>03/15/2025:</strong> Budget review meeting scheduled for next week.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
+  <Card className="shadow-sm">
+    <Card.Header as="h5" className="bg-primary text-white text-center">📢 Announcements</Card.Header>
+    <Card.Body>
+      {loading ? (
+        <Card.Text>Loading announcements...</Card.Text>
+      ) : notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <Card.Text key={index}>
+            <strong>
+              {notification.Date
+                ? new Date(notification.Date).toLocaleDateString()
+                : "No Date"}
+              :
+            </strong>{" "}
+            {notification.message || "No message available"}
+          </Card.Text>
+        ))
+      ) : (
+        <Card.Text>No announcements available.</Card.Text>
+      )}
+    </Card.Body>
+  </Card>
+</Col>
         </Row>
       </Container>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Nav from "../../topnav/mainnav/nav";
 import "./adduser.css";
 import { useNavigate } from "react-router-dom";
+import AdNav from "../NavAdmin/NavAdmin";
 import axios from "axios";
 import {
   Paper,
@@ -30,6 +31,14 @@ function AddUsr() {
     userrole: "",
     password: "",
   });
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    age: "",
+    address: "",
+    userrole: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -42,6 +51,8 @@ function AddUsr() {
     { value: "projectManager", label: "Project Manager", prefix: "PM" },
     { value: "quantitysurveyor", label: "Quantity Surveyor", prefix: "QS" },
     { value: "inventorymanager", label: "Inventory Manager", prefix: "IM" },
+    { value: "financeofficer", label: "Finance Officer", prefix: "FO" },
+    { value: "supplier", label: "Supplier", prefix: "SP" }
   ];
 
   useEffect(() => {
@@ -58,13 +69,80 @@ function AddUsr() {
   }, [inputs.userrole]);
 
   const handleChange = (e) => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInputs({ ...inputs, [name]: value });
+
+    // Clear error for the field being edited
+    setErrors(prev => ({ ...prev, [name]: "" }));
+  };
+
+  const validateInputs = () => {
+    const newErrors = {
+      name: "",
+      email: "",
+      age: "",
+      address: "",
+      userrole: "",
+      password: "",
+    };
+    let isValid = true;
+
+    // Name validation: letters and spaces only, 2-50 characters
+    if (!inputs.name.match(/^[a-zA-Z\s]{2,50}$/)) {
+      newErrors.name = "Name must be 2-50 characters and contain only letters and spaces.";
+      isValid = false;
+    }
+
+    // Email validation: valid email format
+    if (!inputs.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      newErrors.email = "Please enter a valid email address.";
+      isValid = false;
+    }
+
+    // Age validation: number between 18 and 100
+    const ageNum = Number(inputs.age);
+    if (!inputs.age || isNaN(ageNum) || ageNum < 18 || ageNum > 100) {
+      newErrors.age = "Age must be a number between 18 and 100.";
+      isValid = false;
+    }
+
+    // Address validation: 5-100 characters
+    if (!inputs.address || inputs.address.length < 5 || inputs.address.length > 100) {
+      newErrors.address = "Address must be 5-100 characters long.";
+      isValid = false;
+    }
+
+    // User Role validation: must be selected
+    if (!inputs.userrole) {
+      newErrors.userrole = "Please select a user role.";
+      isValid = false;
+    }
+
+    // Password validation: 8+ characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
+    if (
+      !inputs.password.match(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+      )
+    ) {
+      newErrors.password =
+        "Password must be at least 8 characters, including uppercases, lowercases, numbers, and special characters.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+
+    // Validate inputs before submission
+    if (!validateInputs()) {
+      return;
+    }
+
+    setLoading(true);
     try {
       await axios.post("http://localhost:5000/users", {
         ...inputs,
@@ -83,7 +161,9 @@ function AddUsr() {
   };
 
   return (
-    <div className="add-user-form">
+    <div>
+      <AdNav />
+      <div className="add-user-form">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
         <Paper elevation={6} className="form-container">
           <Typography variant="h5" className="form-title">
@@ -93,7 +173,7 @@ function AddUsr() {
           <form onSubmit={handleSubmit} className="user-form">
             <div className="form-row">
               <div className="form-group">
-                <FormControl fullWidth className="input-field">
+                <FormControl fullWidth className="input-field" error={!!errors.userrole}>
                   <InputLabel>User Role *</InputLabel>
                   <Select
                     name="userrole"
@@ -107,7 +187,7 @@ function AddUsr() {
                       </MenuItem>
                     ))}
                   </Select>
-                  <FormHelperText>Select the user's role</FormHelperText>
+                  <FormHelperText>{errors.userrole || "Select the user's role"}</FormHelperText>
                 </FormControl>
               </div>
               <div className="form-group">
@@ -137,6 +217,8 @@ function AddUsr() {
                   value={inputs.name}
                   required
                   className="input-field"
+                  error={!!errors.name}
+                  helperText={errors.name}
                 />
               </div>
               <div className="form-group">
@@ -150,6 +232,8 @@ function AddUsr() {
                   value={inputs.email}
                   required
                   className="input-field"
+                  error={!!errors.email}
+                  helperText={errors.email}
                 />
               </div>
             </div>
@@ -167,6 +251,8 @@ function AddUsr() {
                   required
                   className="input-field"
                   inputProps={{ min: 18, max: 100 }}
+                  error={!!errors.age}
+                  helperText={errors.age}
                 />
               </div>
               <div className="form-group">
@@ -179,6 +265,8 @@ function AddUsr() {
                   value={inputs.address}
                   required
                   className="input-field"
+                  error={!!errors.address}
+                  helperText={errors.address}
                 />
               </div>
             </div>
@@ -193,6 +281,8 @@ function AddUsr() {
               value={inputs.password}
               required
               className="input-field"
+              error={!!errors.password}
+              helperText={errors.password}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -210,10 +300,10 @@ function AddUsr() {
             />
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button 
-                type="submit" 
-                variant="contained" 
-                className="submit-btn" 
+              <Button
+                type="submit"
+                variant="contained"
+                className="submit-btn"
                 disabled={loading}
               >
                 {loading ? <CircularProgress size={24} color="inherit" /> : "Submit"}
@@ -223,6 +313,9 @@ function AddUsr() {
         </Paper>
       </motion.div>
     </div>
+
+    </div>
+    
   );
 }
 

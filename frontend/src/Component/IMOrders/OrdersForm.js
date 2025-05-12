@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from 'axios';
 //import { useNavigate } from "react-router-dom";
+import jsPDF from "jspdf";
+
 
 function OrdersForm() {
   //const navigate = useNavigate();
@@ -25,6 +27,53 @@ function OrdersForm() {
     Supplier: "",
   });
 
+  const generatePDF = () => {
+    const doc = new jsPDF();
+  
+  
+    // Title
+    doc.setFontSize(18);
+    doc.setTextColor("#0A3D62");
+    doc.text("Saman Builders", 50, 20);
+    doc.setFontSize(14);
+    doc.setTextColor("#333");
+    doc.text("Order Confirmation Report", 50, 28);
+  
+    // Line divider
+    doc.setLineWidth(0.5);
+    doc.line(15, 35, 195, 35);
+  
+    // Order details
+    doc.setFontSize(12);
+    doc.setTextColor("#000");
+    const yStart = 45;
+    const lineHeight = 10;
+  
+    const dataLines = [
+      `Item Name: ${inputs.Itemname}`,
+      `Quantity: ${inputs.Quantity}`,
+      `Order Type: ${inputs.Otype}`,
+      `Remarks: ${inputs.Remarks}`,
+      `Date: ${inputs.Date}`,
+      `Supplier: ${inputs.Supplier}`,
+      `Generated: ${new Date().toLocaleString()}`
+    ];
+  
+    dataLines.forEach((line, i) => {
+      doc.text(line, 20, yStart + i * lineHeight);
+    });
+  
+    // Footer
+    doc.setFontSize(10);
+    doc.setTextColor("#888");
+    doc.text("Thank you for using Saman Builders", 20, 280);
+  
+    // Save the file
+    doc.save(`Order_${inputs.Itemname}_${Date.now()}.pdf`);
+  };
+  
+
+  
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
@@ -35,10 +84,16 @@ function OrdersForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     sendRequest().then(() => {
-      alert('Order successfully placed!');
+      alert('✅ Order successfully placed!');
+      
+      // Ask user if they want to download the report
+      const shouldDownload = window.confirm("Do you want to download the order report as a PDF?");
+      if (shouldDownload) {
+        generatePDF(); // Only generate/download if user agrees
+      }
     });
   };
-
+  
   const sendRequest = async () => {
     await axios.post("http://localhost:5000/Orders", {
       Itemname: typeof inputs.Itemname === "string" ? inputs.Itemname : inputs.Itemname?.value || "unknown",
@@ -60,17 +115,7 @@ function OrdersForm() {
       {/* View Placed Orders Button container with Flexbox */}
   
 
-      <div
-        style={{
-          maxWidth: "450px",
-          margin: "30px auto",
-          padding: "20px",
-          backgroundColor: "#f8f9fa",
-          borderRadius: "8px",
-          border: "1px solid #ddd",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
-        }}
-      >
+      
         <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#0056b3" }}>Place New Order</h2>
 
         <form onSubmit={handleSubmit}>
@@ -225,7 +270,7 @@ function OrdersForm() {
             Confirm
           </button>
         </form>
-      </div>
+      
       <p style={{textAlign:"center",color:"#0056b3"}}>You can edit or cancel your order within 30 minutes after placing it. If time has exceeded, please contact the supplier.</p>
     </div>
   );

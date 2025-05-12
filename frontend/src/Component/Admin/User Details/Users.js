@@ -30,9 +30,11 @@ function Users() {
     { value: 'admin', label: 'Admin' },
     { value: 'client', label: 'Client' },
     { value: 'sitesupervisor', label: 'Site Supervisor' },
-    { value: 'projectmanager', label: 'Project Manager' },
+    { value: 'projectManager', label: 'Project Manager' },
     { value: 'quantitysurveyor', label: 'Quantity Surveyor' },
     { value: 'inventorymanager', label: 'Inventory Manager' },
+    { value: 'financeofficer', label: 'Finance Officer' },
+    { value: 'supplier', label: 'Supplier' },
   ];
 
   useEffect(() => {
@@ -75,22 +77,22 @@ function Users() {
   console.log('Filtered users:', filteredUsers);
 
   return (
-    <div className="users-page-wrapper">
+    <div className="userdetails-page-wrapper">
       <AdNav />
-      <div className="users-container">
-        <div className="users-header">
-          <div className="users-controls">
+      <div className="userdetails-container">
+        <div className="userdetails-header">
+          <div className="userdetails-controls">
             <input
               type="text"
               placeholder="Search by Name or User ID"
               value={searchTerm}
               onChange={handleSearchChange}
-              className="search-input"
+              className="userdetails-search-input"
             />
             <select
               value={selectedRole}
               onChange={handleRoleChange}
-              className="role-filter"
+              className="userdetails-role-filter"
             >
               {userRoles.map((role) => (
                 <option key={role.value} value={role.value}>
@@ -99,27 +101,27 @@ function Users() {
               ))}
             </select>
           </div>
-          <h1 className="users-title">User Management</h1>
-          <div className="users-buttons">
-            <Link to="/addusr" className="add-user-button">
-              <FiUserPlus className="button-icon" />
+          <h1 className="userdetails-title">User Management</h1>
+          <div className="userdetails-buttons">
+            <Link to="/addusr" className="userdetails-add-user-button">
+              <FiUserPlus className="userdetails-button-icon" />
               Add New User
             </Link>
             <button
-              className="profile-view-button"
+              className="userdetails-profile-view-button"
               onClick={() => setViewMode(viewMode === 'table' ? 'grid' : 'table')}
             >
-              <FiUsers className="button-icon" />
+              <FiUsers className="userdetails-button-icon" />
               {viewMode === 'table' ? 'Profile View' : 'Table View'}
             </button>
           </div>
         </div>
 
         {isLoading ? (
-          <div className="loading-spinner">Loading users...</div>
+          <div className="userdetails-loading-spinner">Loading users...</div>
         ) : viewMode === 'table' ? (
-          <div className="users-table-container">
-            <table className="users-table">
+          <div className="userdetails-table-container">
+            <table className="userdetails-table">
               <thead>
                 <tr>
                   <th>User ID</th>
@@ -142,7 +144,7 @@ function Users() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="no-users">
+                    <td colSpan="7" className="userdetails-no-users">
                       No users found
                     </td>
                   </tr>

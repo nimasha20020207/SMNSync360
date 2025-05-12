@@ -85,19 +85,6 @@ function OrderTable({ orders = [], setOrders }) {
                   >
                     Delete
                   </button>
-                  <button
-                    onClick={() => console.log("Pay Advance clicked for order:", order._id)} // Placeholder action
-                    style={{
-                      backgroundColor: "#ffc107", // Warning yellow
-                      color: "black",
-                      padding: "6px 10px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Make Payment
-                  </button>
                 </td>
               </tr>
             ))

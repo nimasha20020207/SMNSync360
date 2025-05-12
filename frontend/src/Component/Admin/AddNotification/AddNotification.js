@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AddNotification.css';
+import AdNav from "../NavAdmin/NavAdmin";
 
 function AddNotification() {
   const navigate = useNavigate();
@@ -116,6 +117,7 @@ function AddNotification() {
 
   return (
     <div className="add-notification-container">
+      <AdNav/>
       <h1 className="add-notification-heading">Add Notification</h1>
       <form className="add-notification-form" onSubmit={handleSubmit}>
         <div className="add-notification-field">

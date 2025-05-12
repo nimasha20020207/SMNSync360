@@ -1,84 +1,182 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HeaderSup from "../topnav/Supplier/HeaderSup";
-import { ProgressBar } from "react-bootstrap";
+import { ProgressBar, Carousel, Card, Row, Col, Container, Button, Table } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Footer from '../bottomnav/IM/Footer';
-import { Card, Row, Col, Container, Button, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import orderImg from '../pictures/7.jpg';
+import cartImg from '../pictures/8.jpg';
+import warehouseImg from '../pictures/9.jpg';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import './Supplier.css';
 
 function Supplier() {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // Fetch orders from backend
-    useEffect(() => {
-        axios.get("http://localhost:5000/orders")
-            .then((response) => {
-                if (Array.isArray(response.data.orders)) {
-                    setOrders(response.data.orders); // Use `response.data.orders` instead
-                } else {
-                    console.error("Error: Expected array but got", typeof response.data);
-                    setOrders([]); // Fallback to empty array
-                }
-            })
-            .catch((error) => {
-                console.error("Error fetching orders:", error);
-                setOrders([]); // Fallback to empty array
-            });
-    }, []);
-    
-    // Filter emergency orders
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // Fetch orders
+      const ordersResponse = await axios.get("http://localhost:5000/orders");
+      if (Array.isArray(ordersResponse.data.orders)) {
+        setOrders(ordersResponse.data.orders);
+      } else {
+        console.error("Error: Expected array but got", typeof ordersResponse.data);
+        setOrders([]);
+      }
+
+      // Fetch notifications
+      const notificationsResponse = await axios.get("http://localhost:5000/Notification");
+      console.log("Notifications API Response:", notificationsResponse.data);
+      const notificationData = notificationsResponse.data.notification || notificationsResponse.data || [];
+      const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+      setNotifications(notificationArray);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setOrders([]);
+      setNotifications([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
     const emergencyOrders = orders.filter(order => order.Otype === "Emergency");
 
     return (
         <div>
             <HeaderSup />
+
+            {/* Carousel Section */}
+            <div style={{ width: "100%", height: "300px", overflow: "hidden", marginBottom: "20px" }}>
+                <Carousel style={{ height: "100%" }}>
+                    <Carousel.Item>
+                        <div
+                            style={{
+                                height: "300px",
+                                backgroundImage: `url(${orderImg})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                position: "relative",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <div style={{
+                                backgroundColor: "rgba(0,0,0,0.4)",
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                color: "white",
+                                textAlign: "center"
+                            }}>
+                                <h5>Seamlessly track and manage materials and equipment.</h5>
+                                <p>Real-time visibility into stock levels ensures the right resources are always available</p>
+                            </div>
+                        </div>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <div
+                            style={{
+                                height: "300px",
+                                backgroundImage: `url(${cartImg})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <div style={{
+                                backgroundColor: "rgba(0,0,0,0.4)",
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                color: "white",
+                                textAlign: "center"
+                            }}>
+                                <h5>Assign the right materials and equipment to the right projects – effortlessly.</h5>
+                                <p>Strategic allocation ensures smooth project execution and resource optimization.</p>
+                            </div>
+                        </div>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <div
+                            style={{
+                                height: "300px",
+                                backgroundImage: `url(${warehouseImg})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <div style={{
+                                backgroundColor: "rgba(0,0,0,0.4)",
+                                padding: "10px 20px",
+                                borderRadius: "10px",
+                                color: "white",
+                                textAlign: "center"
+                            }}>
+                                <h5>Automated order placement when materials run low – never pause a project again</h5>
+                                <p>Proactive inventory intelligence helps keep every site running efficiently</p>
+                            </div>
+                        </div>
+                    </Carousel.Item>
+                </Carousel>
+            </div>
+
+            {/* Page Content */}
             <Container className="mt-4">
-                
-                {/* Page Title */}
-                <h1 style={{ textAlign: "center", color: "#0056b3", fontWeight: "bold", marginBottom: "20px" }}>
-                    Welcome to Saman Constructions
-                </h1>
 
-                {/* Quick Order Summary Cards */}
-                <Row className="mb-4">
-                    <Col md={3}>
-                        <Card className="text-center shadow" style={{ background: 'linear-gradient(to bottom right, #7da7d9, #3a5684)' }}>
-                            <Card.Body>
-                                <h6>Total Orders</h6>
-                                <h4>{orders.length}</h4>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={3}>
-                        <Card className="text-center shadow" style={{ background: 'linear-gradient(to bottom right,rgb(235, 235, 109),rgb(232, 237, 168))' }}>
-                            <Card.Body>
-                                <h6>Pending Orders</h6>
-                                <h4>{orders.filter(order => order.Status === "Pending").length}</h4>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={3}>
-                        <Card className="text-center shadow" style={{ background: 'linear-gradient(to bottom right, #f09d9d, #ec5252)' }}>
-                            <Card.Body>
-                                <h6>Emergency Orders</h6>
-                                <h4>{emergencyOrders.length}</h4>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={3}>
-                        <Card className="text-center shadow" style={{ background: 'linear-gradient(to bottom right, #6dcebb, #3a8e7a)' }}>
-                            <Card.Body>
-                                <h6>Delivered Orders</h6>
-                                <h4>{orders.filter(order => order.Status === "Delivered").length}</h4>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
+            <Row className="mb-4">
+    <Col md={3}>
+        <Card className="text-center shadow card-hover" style={{ backgroundColor: "#0056b3", color: "white" }}>
+            <Card.Body>
+                <i className="fas fa-clipboard-list fa-2x mb-2"></i>
+                <h6>Total Orders</h6>
+                <h4>{orders.length}</h4>
+            </Card.Body>
+        </Card>
+    </Col>
+    <Col md={3}>
+        <Card className="text-center shadow card-hover" style={{ backgroundColor: "#007bff", color: "white" }}>
+            <Card.Body>
+                <i className="fas fa-hourglass-half fa-2x mb-2"></i>
+                <h6>Pending Orders</h6>
+                <h4>{orders.filter(order => order.Status === "Pending").length}</h4>
+            </Card.Body>
+        </Card>
+    </Col>
+    <Col md={3}>
+        <Card className="text-center shadow card-hover" style={{ backgroundColor: "#3399ff", color: "white" }}>
+            <Card.Body>
+                <i className="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                <h6>Emergency Orders</h6>
+                <h4>{emergencyOrders.length}</h4>
+            </Card.Body>
+        </Card>
+    </Col>
+    <Col md={3}>
+        <Card className="text-center shadow card-hover" style={{ backgroundColor: "#66b3ff", color: "white" }}>
+            <Card.Body>
+                <i className="fas fa-check-circle fa-2x mb-2"></i>
+                <h6>Delivered Orders</h6>
+                <h4>{orders.filter(order => order.Status === "Delivered").length}</h4>
+            </Card.Body>
+        </Card>
+    </Col>
+</Row>
 
-                {/* Emergency Orders Table */}
+
+                {/* Emergency Orders Table and Progress Bars */}
                 <Row className="mt-4">
                     <Col md={5}>
                         <h5 className="text-danger">🚨 Emergency Orders</h5>
@@ -86,7 +184,7 @@ function Supplier() {
                             <Table striped bordered hover size="sm">
                                 <thead>
                                     <tr>
-                                        <th>Order Item</th>  {/* Updated Column Name */}
+                                        <th>Order Item</th>
                                         <th>Placed Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -94,7 +192,7 @@ function Supplier() {
                                 <tbody>
                                     {emergencyOrders.map(order => (
                                         <tr key={order._id}>
-                                            <td>{order.Itemname}</td>  {/* Displaying Order Item instead of Order ID */}
+                                            <td>{order.Itemname}</td>
                                             <td>{order.Date}</td>
                                             <td>
                                                 <Button variant="danger" size="sm" onClick={() => navigate('/SupplierViewOrder')}>
@@ -108,8 +206,6 @@ function Supplier() {
                         ) : (
                             <p>No emergency orders available.</p>
                         )}
-
-                        {/* Contact Inventory Manager Button */}
                         <div className="mt-3 text-center">
                             <p>Got issues? Contact Inventory Manager</p>
                             <Button style={{ backgroundColor: "#0056b3", borderColor: "#0056b3" }}>
@@ -118,21 +214,51 @@ function Supplier() {
                         </div>
                     </Col>
 
-                    {/* Right Side - Order Status Graph */}
-                    <Col md={6}>
-                        <h5>Orders</h5>
-                        <p><strong>Pending:</strong></p>
-                        <ProgressBar variant="danger" now={25} label="25%" />
+                    <Col md={4}>
+    <h5>Orders</h5>
+    <p><strong>Pending:</strong></p>
+    <ProgressBar variant="danger" now={25} label="25%" />
 
-                        <p className="mt-2"><strong>Confirmed:</strong></p>
-                        <ProgressBar variant="warning" now={50} label="50%" />
+    <p className="mt-2"><strong>Confirmed:</strong></p>
+    <ProgressBar variant="warning" now={50} label="50%" />
 
-                        <p className="mt-2"><strong>Shipped:</strong></p>
-                        <ProgressBar variant="primary" now={75} label="75%" />
+    <p className="mt-2"><strong>Shipped:</strong></p>
+    <ProgressBar variant="primary" now={75} label="75%" />
 
-                        <p className="mt-2"><strong>Delivered:</strong></p>
-                        <ProgressBar variant="success" now={100} label="100%" />
-                    </Col>
+    <p className="mt-2"><strong>Delivered:</strong></p>
+    <ProgressBar variant="success" now={100} label="100%" />
+</Col>
+
+<Col md={3}>
+    <Card className="shadow">
+        <Card.Body>
+            <Calendar className="custom-calendar" />
+        </Card.Body>
+    </Card>
+</Col>
+
+<Card>
+  <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+  <Card.Body>
+    {loading ? (
+      <Card.Text>Loading announcements...</Card.Text>
+    ) : notifications.length > 0 ? (
+      notifications.map((notification, index) => (
+        <Card.Text key={index}>
+          <strong>
+            {notification.Date
+              ? new Date(notification.Date).toLocaleDateString()
+              : "No Date"}
+            :
+          </strong>{" "}
+          {notification.message || "No message available"}
+        </Card.Text>
+      ))
+    ) : (
+      <Card.Text>No announcements available.</Card.Text>
+    )}
+  </Card.Body>
+</Card>
                 </Row>
             </Container>
 

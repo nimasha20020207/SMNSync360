@@ -29,6 +29,7 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  background: #28a745;
 }
 
 .add-user-button-delete {
@@ -39,18 +40,26 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-}
-
-.add-user-button-update {
-  background: #28a745;
-}
-
-.add-user-button-delete {
   background: #dc3545;
+}
+
+.add-user-button-download {
+  padding: 6px 15px;
+  color: white;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  background: #0c81fd;
+  margin-left: 10px;
 }
 
 .add-user-button-delete:hover {
   background: #c82333;
+}
+
+.add-user-button-download:hover {
+  background: #0c81fd;
 }
 
 .add-user-button:disabled {

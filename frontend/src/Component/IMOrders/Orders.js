@@ -3,145 +3,124 @@ import OrdersForm from "./OrdersForm";
 import Header from "../topnav/IM/Header";
 import Footer from "../bottomnav/IM/Footer";
 import { useNavigate } from "react-router-dom";
+import background from "../pictures/inventory2.jpg"
+import { MdAssignment, MdLocalShipping, MdHistory } from 'react-icons/md';
 
 function Orders() {
   const navigate = useNavigate();
 
   const handleViewOrders = () => {
-    navigate('/OrderView'); // Adjust route as needed
+    navigate('/OrderView');
   };
 
   const handleViewOrder2 = () => {
-    navigate('/OrderStatus'); // Adjust route as needed
+    navigate('/OrderStatus');
   };
+
   const handleViewOrder3 = () => {
-    navigate('/History'); // Adjust route as needed
+    navigate('/History');
   };
 
+  const cardStyle = {
+    backgroundColor: "#e3f2fd",
+    borderRadius: '10px',
+    padding: '30px 20px',
+    textAlign: 'center',
+    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+    width: '220px',
+    cursor: 'pointer',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+  };
+  
   return (
-    <div>
-      <div className="bg-light min-vh-100 d-flex flex-column">
-        <Header />
-        <main className="flex-grow-1 container my-4">
-          <div className="bg-white shadow-lg rounded-lg p-4 border border-light">
-            <div
-              style={{
-                display: 'flex', 
-                justifyContent: 'space-around', // Used space-around for better spacing
-                maxWidth: '1000px', // Increased max-width for better alignment on larger screens
-                margin: '0 auto', 
-                marginBottom: '30px',
-                flexWrap: 'wrap', // Ensures responsiveness on smaller screens
-                gap: '20px', // Adds space between the cards
-              }}
-            >
-              {/* Card 1: View placed orders */}
-              <div 
-                style={{
-                  backgroundColor: "#e3f2fd", // Light blue background
-                  borderRadius: '8px',
-                  padding: '20px',
-                  textAlign: 'center',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                  width: '250px',
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s, box-shadow 0.3s',
-                }}
-                onClick={handleViewOrders}
-                onMouseOver={(e) => e.target.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'}
-                onMouseOut={(e) => e.target.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)'}
-              >
-                <p style={{ color: "#1976d2", fontWeight: 'bold' }}>Cancel or Update an Order?</p>
-                <p style={{ color: "#0288d1", fontSize: '16px' }}>Want to make a payment?</p>
-                <button
-                  style={{
-                    backgroundColor: "#0056b3", // Darker blue for the button
-                    color: "white",
-                    padding: "10px 20px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "14px",
-                    width: '100%',
-                  }}
-                >
-                  View placed Orders
-                </button>
-              </div>
+    <div
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+    >
+      <Header />
+      <main className="flex-grow-1 container my-4">
+  {/* Flex container: Form on left, Cards on right */}
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      gap: '40px',
+      flexWrap: 'wrap',
+    }}
+  >
+    {/* Form Container */}
+    <div
+      style={{
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: '12px',
+        padding: '30px',
+        maxWidth: '600px',
+        flex: '1 1 600px',
+        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+        border: '1px solid #e0e0e0',
+      }}
+    >
+      <OrdersForm />
+    </div>
 
-              {/* Card 2: Order Status */}
-              <div 
-                style={{
-                  backgroundColor: "#ffe0b2", // Light orange background
-                  borderRadius: '8px',
-                  padding: '20px',
-                  textAlign: 'center',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                  width: '250px',
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s, box-shadow 0.3s',
-                }}
-                onClick={handleViewOrder2}
-                onMouseOver={(e) => e.target.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'}
-                onMouseOut={(e) => e.target.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)'}
-              >
-                <p style={{ color: "#ff6f00", fontWeight: 'bold' }}>Want to check the status of your orders?</p>
-                <button
-                  style={{
-                    backgroundColor: "#ff5722", // Darker orange for the button
-                    color: "white",
-                    padding: "10px 20px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "14px",
-                    width: '100%',
-                  }}
-                >
-                  Order Status
-                </button>
-              </div>
-
-              {/* Card 3: Order History */}
-              <div 
-                style={{
-                  backgroundColor: "#f3e5f5", // Light purple background
-                  borderRadius: '8px',
-                  padding: '20px',
-                  textAlign: 'center',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                  width: '250px',
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s, box-shadow 0.3s',
-                }}
-                onClick={handleViewOrder3}
-                onMouseOver={(e) => e.target.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'}
-                onMouseOut={(e) => e.target.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)'}
-              >
-                <p style={{ color: "#9c27b0", fontWeight: 'bold' }}>View your order history</p>
-                <button
-                  style={{
-                    backgroundColor: "#6a1b9a", // Darker purple for the button
-                    color: "white",
-                    padding: "10px 20px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "14px",
-                    width: '100%',
-                  }}
-                >
-                  Order History
-                </button>
-              </div>
-            </div>
-
-            {/* Orders Form */}
-            <OrdersForm />
-          </div>
-        </main>
-        <Footer />
+    {/* Card Container */}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        minWidth: '250px',
+      }}
+    >
+      {/* Card 1 */}
+      <div
+        onClick={handleViewOrders}
+        style={cardStyle}
+        onMouseOver={(e) => e.currentTarget.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)'}
+        onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1)'}
+      >
+        <MdAssignment size={48} color="#1976d2" />
+        <h5 style={{ color: '#1976d2', marginTop: '15px' }}>Manage Orders</h5>
+        <p style={{ color: '#0d47a1' }}>Cancel or update your order</p>
       </div>
+
+      {/* Card 2 */}
+      <div
+        onClick={handleViewOrder2}
+        style={cardStyle}
+        onMouseOver={(e) => e.currentTarget.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)'}
+        onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1)'}
+      >
+        <MdLocalShipping size={48} color="#0288d1" />
+        <h5 style={{ color: '#0288d1', marginTop: '15px' }}>Track Orders</h5>
+        <p style={{ color: '#01579b' }}>View current order status</p>
+      </div>
+
+      {/* Card 3 */}
+      <div
+        onClick={handleViewOrder3}
+        style={cardStyle}
+        onMouseOver={(e) => e.currentTarget.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)'}
+        onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1)'}
+      >
+        <MdHistory size={48} color="#3f51b5" />
+        <h5 style={{ color: '#3f51b5', marginTop: '15px' }}>Order History</h5>
+        <p style={{ color: '#1a237e' }}>Past orders in one place</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+      <Footer />
     </div>
   );
 }

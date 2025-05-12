@@ -16,6 +16,7 @@ const requestinRouter = require("./Router/inventoryrequest");
 const progressRouter = require("./Router/Progressroter");
 const router = require("./Router/Budgetroute");
 const router1 = require("./Router/Expensesroute");
+const bcrypt = require("bcrypt");
 
 const monitoringRouter = require("./Router/MonitoringRoutes");
 const multer = require("multer");
@@ -91,15 +92,22 @@ app.post("/login", async (req, res) => {
         if (!user) {
             return res.json({ err: "User not found" });
         }
-        if (user.password === password) {
+        // Verify password using bcrypt
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (isPasswordValid) {
             return res.json({ 
                 status: "ok", 
-                userrole: user.userrole ,// Return the user's role
-                userId: user.userid, // Return userid from UserSchema
+
+                userrole: user.userrole,
+                userIds: user.userid, // Return the user's role
+                username: user.name, // Include username for frontend
+                userId: user._id,
                 username: user.email
+
+
             });
         } else {
-            return res.json({ err: "incorrect password" });
+            return res.json({ err: "Incorrect password" });
         }
     } catch (err) {
         console.error(err);
@@ -188,7 +196,6 @@ app.get("/getImage/:id", async (req, res) => {
         const id = req.params.id;
         const images = await Img.find({ProjectId: id}).sort({ createdAt: -1 });
         
-        console.log("hello")
         res.json({ 
             status: "ok", 
             data: images.map(img => ({
@@ -285,6 +292,10 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Serve static files from uploads directory-InventoryManager
+app.use('/materialuploads', express.static(path.join(__dirname, 'materialuploads')));
+
+
 // Handle 404
 app.use((req, res) => {
     res.status(404).json({
@@ -301,7 +312,6 @@ db
         
        
         mongoose.connection.db.collection('tasks').indexes()
-            .then(indexes => console.log("Current indexes:", indexes))
             .catch(err => console.error("Error checking indexes:", err));
 
         const PORT = process.env.PORT || 5000;
@@ -313,5 +323,3 @@ db
         console.error("MongoDB connection error:", err);
         process.exit(1);
     });
-
-    
