@@ -233,7 +233,7 @@ function App() {
             path="/clientdash"
             element={
               <PrivateRoute allowedRoles={["client"]}>
-                <Clientdashboard />
+                <Client />
               </PrivateRoute>
             }
           />
