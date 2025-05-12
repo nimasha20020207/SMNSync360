@@ -6,7 +6,7 @@ function UsersTable({ Progressusers, setProgressusers }) {
   const navigate = useNavigate();
 
   const handleUpdate = (id) => {
-    navigate(`/update/${id}`); // Navigate to update form with user ID
+    navigate(`/update/${id}`);
   };
 
   const handleDelete = async (id) => {
@@ -14,7 +14,7 @@ function UsersTable({ Progressusers, setProgressusers }) {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/progress/${id}`);
+      await axios.delete(`http://localhost:5000/users/${id}`);
       setProgressusers((prevUsers) => prevUsers.filter((user) => user._id !== id));
       alert("Progress record deleted successfully!");
     } catch (error) {
@@ -34,6 +34,8 @@ function UsersTable({ Progressusers, setProgressusers }) {
             <th style={{ padding: "10px", borderBottom: "2px solid #ddd" }}>Duration</th>
             <th style={{ padding: "10px", borderBottom: "2px solid #ddd" }}>Date</th>
             <th style={{ padding: "10px", borderBottom: "2px solid #ddd" }}>Status</th>
+            <th style={{ padding: "10px", borderBottom: "2px solid #ddd" }}>Completion %</th>
+            <th style={{ padding: "10px", borderBottom: "2px solid #ddd" }}>Image</th>
             <th style={{ padding: "10px", borderBottom: "2px solid #ddd" }}>Actions</th>
           </tr>
         </thead>
@@ -48,6 +50,37 @@ function UsersTable({ Progressusers, setProgressusers }) {
                 <td style={{ padding: "10px" }}>{Progressuser.Date}</td>
                 <td style={{ padding: "10px" }}>{Progressuser.Status}</td>
                 <td style={{ padding: "10px" }}>
+                  <div style={{ backgroundColor: "#e0e0e0", borderRadius: "6px", height: "20px", width: "100%" }}>
+                    <div
+                      style={{
+                        width: `${Progressuser.Completion_Percentage || 0}%`,
+                        backgroundColor: "#4caf50",
+                        height: "100%",
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        color: "white",
+                        fontSize: "12px",
+                        lineHeight: "20px",
+                      }}
+                    >
+                      {Progressuser.Completion_Percentage || 0}%
+                    </div>
+                  </div>
+                </td>
+
+                <td style={{ padding: "10px" }}>
+                  {Progressuser.Image ? (
+                    <img
+                      src={`http://localhost:5000/uploads/${Progressuser.Image}`}
+                      alt="Progress"
+                      width="100"
+                      style={{ borderRadius: "6px", objectFit: "cover" }}
+                    />
+                  ) : (
+                    "No Image"
+                  )}
+                </td>
+                <td style={{ padding: "10px" }}>
                   <button 
                     style={{ backgroundColor: "#64b5f6", color: "white", border: "none", padding: "5px 10px", borderRadius: "5px", marginRight: "5px", cursor: "pointer" }} 
                     onClick={() => handleUpdate(Progressuser._id)}>Update
@@ -61,7 +94,7 @@ function UsersTable({ Progressusers, setProgressusers }) {
             ))
           ) : (
             <tr>
-              <td colSpan="7" style={{ padding: "10px", textAlign: "center", color: "#777" }}>No Progress Users found</td>
+              <td colSpan="8" style={{ padding: "10px", textAlign: "center", color: "#777" }}>No Progress Users found</td>
             </tr>
           )}
         </tbody>

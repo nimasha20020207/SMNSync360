@@ -2,6 +2,7 @@
 const userModel=require("../Model/Progress");//improting model
 
 
+
 const getAllProgressUsers=async(req,res,next)=>{
 
     let Progressusers;
@@ -25,12 +26,13 @@ const getAllProgressUsers=async(req,res,next)=>{
 
 //data insert part
 const addProgressUsers = async (req, res, next) => {
-    const { Project_ID, Project_Name, Description, Duration, Date, Status } = req.body;
-
+    const { Project_ID, Project_Name, Description, Duration, Date, Status} = req.body;
+   
     let Progressusers;
 
     try {
-        Progressusers = new userModel({ Project_ID, Project_Name, Description, Duration, Date, Status });
+        Progressusers = new userModel({ Project_ID, Project_Name, Description, Duration, Date, Status,Completion_Percentage, // New field
+            Image: image, });
         await Progressusers.save();
     } catch (err) {
         console.error("Error during data insertion:", err); // Detailed error log
@@ -63,7 +65,7 @@ const getById = async(req,res,next)=>{
 //update user details
 const updateProgressUser = async(req,res,next)=>{
     const id =req.params.id;
-    const {Project_ID, Project_Name, Description,Duration,Date,Status}=req.body;
+    const {Project_ID, Project_Name, Description,Duration,Date,Status,}=req.body;
 
     let Progressusers;
 

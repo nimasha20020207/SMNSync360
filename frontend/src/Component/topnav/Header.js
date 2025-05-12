@@ -51,11 +51,11 @@ function HeadNav() {
             <Nav.Link href="/AssignedTasks" className="he-home">
               task
             </Nav.Link>
-            <Nav.Link href="/Progress" className="he-users">
+            <Nav.Link href="/UserTableView" className="he-users">
               Progress
             </Nav.Link>
-            <Nav.Link href="/Users" className="he-users">
-              Requiment
+            <Nav.Link href="/RequirementsTableView" className="he-users">
+              Requirement
             </Nav.Link>
             <Nav.Link href="/Inventory" className="he-users">
               Inventory
