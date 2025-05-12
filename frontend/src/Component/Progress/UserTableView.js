@@ -6,7 +6,7 @@ import Header from "../topnav/Header";
 import Footer from "../bottomnav/foter";
 import pic4 from "../pictures/pic4.jpg";
 
-const URL = "http://localhost:5000/users";
+const URL = "http://localhost:5000/progress";
 
 const fetchHandler = async () => {
   try {

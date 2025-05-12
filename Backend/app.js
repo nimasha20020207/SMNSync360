@@ -81,7 +81,6 @@ app.use('/api', whatsappRoute);
 app.use("/Notification", routerNotification);
 app.use("/Password", routerPassword);
 
-app.use("/users",progressrouter);
 app.use("/requiments",routerRequiment);
 app.use("/feedback",routerfeedback);
 app.use('/progressuploads', express.static('progressuploads'));

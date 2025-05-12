@@ -26,7 +26,7 @@ const getAllProgressUsers=async(req,res,next)=>{
 
 //data insert part
 const addProgressUsers = async (req, res, next) => {
-    const { Project_ID, Project_Name, Description, Duration, Date, Status} = req.body;
+    const { Project_ID, Project_Name, Description, Duration, Date, Status,Completion_Percentage,Image: image} = req.body;
    
     let Progressusers;
 

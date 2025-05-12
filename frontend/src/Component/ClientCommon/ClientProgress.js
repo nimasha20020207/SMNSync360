@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import pic5 from "../pictures/pic5.jpg";
 
-const URL = "http://localhost:5000/users";
+const URL = "http://localhost:5000/progress";
 
 const fetchHandler = async () => {
   try {

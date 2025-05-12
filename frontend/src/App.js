@@ -32,7 +32,6 @@ import UpdatePasswordRequest from "./Component/Admin/UpdatePasswordRequest/Updat
 import HelpCenter from "./Component/Admin/HelpCenter/HelpCenter";
 import PrivateRoute from "./Component/Admin/PrivateRoute/PrivateRoute";
 import Appservices from "./Component/Appservices/service";
-import Clientdashboard from "./Component/Admin/Clientdasboard/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import HomeIM from "./Component/IMcommon/HomeIM";

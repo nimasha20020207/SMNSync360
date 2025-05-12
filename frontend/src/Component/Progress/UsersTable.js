@@ -14,7 +14,7 @@ function UsersTable({ Progressusers, setProgressusers }) {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/users/${id}`);
+      await axios.delete(`http://localhost:5000/progress/${id}`);
       setProgressusers((prevUsers) => prevUsers.filter((user) => user._id !== id));
       alert("Progress record deleted successfully!");
     } catch (error) {

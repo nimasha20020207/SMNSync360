@@ -23,7 +23,7 @@ function UpdateProgress() {
   useEffect(() => {
     const fetchProgressData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        const response = await axios.get(`http://localhost:5000/progress/${id}`);
         const data = response.data.user;
         setInputs({
           Project_ID: data.Project_ID,
@@ -71,13 +71,13 @@ function UpdateProgress() {
     }
 
     try {
-      await axios.put(`http://localhost:5000/users/${id}`, formData, {
+      await axios.put(`http://localhost:5000/progress/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       alert("Progress record successfully updated!");
-      navigate("/Users");
+      navigate("/UserTableView");
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("Failed to update progress record.");

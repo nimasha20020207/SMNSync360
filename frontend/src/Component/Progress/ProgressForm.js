@@ -40,7 +40,7 @@ function ProgressForm() {
       formData.append("Image", imageFile);
     }
 
-    await axios.post("http://localhost:5000/users/users", formData, {
+    await axios.post("http://localhost:5000/progress", formData, {
       headers: { "Content-Type": "multipart/form-data" }
     });
   };
