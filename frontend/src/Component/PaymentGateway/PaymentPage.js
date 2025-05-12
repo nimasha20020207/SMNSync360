@@ -18,31 +18,45 @@ function PaymentPage() {
   }, [amount]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const cardElement = elements.getElement(CardElement);
+  e.preventDefault();
+  const cardElement = elements.getElement(CardElement);
 
-    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: cardElement,
-        billing_details: {
-          name: "Test Customer",
-          address: {
-            line1: "123 Test Street",
-            city: "Colombo",
-            country: "LK",
-            postal_code: "10100",
-          },
+  const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+    payment_method: {
+      card: cardElement,
+      billing_details: {
+        name: "Test Customer",
+        address: {
+          line1: "123 Test Street",
+          city: "Colombo",
+          country: "LK",
+          postal_code: "10100",
         },
       },
-    });
+    },
+  });
+if (error) {
+    console.error(error);
+    alert("Payment failed");
+    return; // Exit early if payment fails
+  }
 
-    if (error) {
-      console.error(error);
-      alert("Payment failed");
-    } else {
-      navigate("/PaymentSuccess");
-    }
-  };
+  // 2. Send SMS (await to ensure it completes)
+  try {
+    await axios.post("http://localhost:5000/api/send-sms", {
+      to: "+94764703413",
+      message: `Payment of Rs. ${amount} was successful!`,
+    });
+    console.log("SMS sent successfully!");
+  } catch (smsError) {
+    console.error("SMS failed:", smsError);
+  }
+
+  // 3. Navigate ONLY after SMS is sent
+  navigate("/PaymentSuccess");
+};
+
+
 
   return (
     <div style={styles.container}>

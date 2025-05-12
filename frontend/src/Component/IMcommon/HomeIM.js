@@ -194,28 +194,38 @@ useEffect(() => {
 
     {/* Middle Column: Two Cards Stacked Vertically */}
     <Col md={3}>
-  {/* Confirmed Orders Card */}
-  <Card className="mb-3 shadow-sm text-white bg-primary" style={{ minHeight: '100px' }}>
-    <Card.Body className="d-flex align-items-center">
-      <i className="fas fa-check-circle fa-2x me-3"></i>
-      <div>
-        <Card.Title className="mb-1">Confirmed Orders</Card.Title>
-        {/*<Card.Text>{confirmedCount} orders confirmed successfully.</Card.Text>*/}
-      </div>
-    </Card.Body>
-  </Card>
+  {/* Confirmed Orders Card - Navigate on click */}
+  <div
+    onClick={() => navigate('/OrderStatus')}
+    style={{ cursor: 'pointer' }}
+  >
+    <Card className="mb-3 shadow-sm text-white bg-primary" style={{ minHeight: '100px' }}>
+      <Card.Body className="d-flex align-items-center">
+        <i className="fas fa-check-circle fa-2x me-3"></i>
+        <div>
+          <Card.Title className="mb-1">Confirmed Orders</Card.Title>
+        </div>
+      </Card.Body>
+    </Card>
+  </div>
 
-  {/* Rejected Orders Card */}
-  <Card className="shadow-sm border-primary bg-light" style={{ minHeight: '100px' }}>
-    <Card.Body className="d-flex align-items-center">
-      <i className="fas fa-times-circle fa-2x text-primary me-3"></i>
-      <div>
-        <Card.Title className="mb-1 text-primary">Rejected Orders</Card.Title>
-        {/*<Card.Text className="text-primary">{rejectedCount} orders were rejected.</Card.Text>*/}
-      </div>
-    </Card.Body>
-  </Card>
+  {/* Your Orders Card - Navigate on click */}
+  <div
+    onClick={() => navigate('/OrderView')}
+    style={{ cursor: 'pointer' }}
+  >
+    <Card className="shadow-sm border-primary bg-light" style={{ minHeight: '100px' }}>
+  <Card.Body className="d-flex align-items-center">
+    <i className="fas fa-box-open fa-2x text-primary me-3"></i> {/* Updated icon */}
+    <div>
+      <Card.Title className="mb-1 text-primary">Your Orders</Card.Title>
+    </div>
+  </Card.Body>
+</Card>
+
+  </div>
 </Col>
+
 
 
     {/* Right Column: Map */}

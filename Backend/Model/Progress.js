@@ -31,7 +31,14 @@ const progressSchema= new mongoose.Schema({
         type:String,//data type 
         required:true,//vallidate
         
-    }
+    },
+    Completion_Percentage: { type: Number, 
+                            required: true, 
+                            min: 0, max: 100 },
+                            
+    Image: { type: String ,
+        required:false
+    } 
 
 });
 module.exports = mongoose.model(
