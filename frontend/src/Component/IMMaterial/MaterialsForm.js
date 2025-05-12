@@ -17,14 +17,12 @@ function MaterialsForm() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-  
+
     setInputs((prevState) => ({
       ...prevState,
       [name]: files && files.length > 0 ? files[0] : value,
     }));
   };
-  
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +36,7 @@ function MaterialsForm() {
         Remarks: "",
         Date: "",
         Supplier: "",
+        pdfFile: null,
       });
     });
   };
@@ -50,46 +49,35 @@ function MaterialsForm() {
     formData.append("Remarks", inputs.Remarks);
     formData.append("Date", new Date(inputs.Date).toISOString());
     formData.append("Supplier", inputs.Supplier);
-    
+
     if (inputs.pdfFile) {
       formData.append("pdfFile", inputs.pdfFile);
     }
-  
+
     await axios.post("http://localhost:5000/Materials", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
   };
-  
 
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center p-3" style={{ position: 'relative' }}>
-      {/* Background Image with Opacity */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `url(${background})`, // Your background image URL here
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.8, // Opacity of the background image
-          zIndex: -1, // Makes sure the content is on top of the background
-        }}
-      ></div>
-
       <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
         <div className="row g-4 align-items-start">
           {/* Left - Form Section */}
           <div className="col-md-8">
-            <div className="card shadow-lg border-0 rounded-4 p-4 w-100">
+            <div
+              className="card shadow-lg border-0 rounded-4 p-4 w-100"
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.85)",
+                backdropFilter: "blur(5px)",
+              }}
+            >
               <h2 className="text-center mb-4" style={{ color: '#0056b3' }}>
                 <i className="bi bi-plus-square me-2"></i> Add New Material
               </h2>
-  
+
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3 form-floating">
@@ -104,7 +92,7 @@ function MaterialsForm() {
                     />
                     <label htmlFor="itemName">Material Name</label>
                   </div>
-  
+
                   <div className="col-md-6 mb-3 form-floating">
                     <input
                       type="text"
@@ -118,7 +106,7 @@ function MaterialsForm() {
                     <label htmlFor="itemId">Material ID</label>
                   </div>
                 </div>
-  
+
                 <div className="row">
                   <div className="col-md-6 mb-3 form-floating">
                     <input
@@ -132,7 +120,7 @@ function MaterialsForm() {
                     />
                     <label htmlFor="quantity">Quantity</label>
                   </div>
-  
+
                   <div className="col-md-6 mb-3 form-floating">
                     <input
                       type="date"
@@ -146,7 +134,7 @@ function MaterialsForm() {
                     <label htmlFor="date">Date</label>
                   </div>
                 </div>
-  
+
                 <div className="mb-3">
                   <label htmlFor="remarks" className="form-label">Remarks</label>
                   <textarea
@@ -159,7 +147,7 @@ function MaterialsForm() {
                     rows={3}
                   ></textarea>
                 </div>
-  
+
                 <div className="mb-3">
                   <label htmlFor="supplier" className="form-label">Supplier</label>
                   <select
@@ -175,9 +163,9 @@ function MaterialsForm() {
                     <option value="Supplier C">Supplier C</option>
                   </select>
                 </div>
-  
+
                 <div className="mb-3">
-                  <label htmlFor="pdfFile" className="form-label">Attach PDF (Optional)</label>
+                  <label htmlFor="pdfFile" className="form-label">Attach File(optional)</label>
                   <input
                     type="file"
                     id="pdfFile"
@@ -185,6 +173,7 @@ function MaterialsForm() {
                     onChange={handleChange}
                     className="form-control"
                     accept="application/pdf"
+                    placeholder='optional(warranty cards,bills,etc)'
                   />
                 </div>
 
@@ -198,14 +187,14 @@ function MaterialsForm() {
               </form>
             </div>
           </div>
-  
+
           {/* Right - Navigation Cards */}
           <div className="col-md-4 d-flex flex-column align-items-center gap-4" style={{ marginTop: '200px' }}>
             {/* Stock Card */}
             <div
               className="card text-white text-center shadow"
               style={{
-                backgroundColor: '#003c80',
+                backgroundColor: 'rgba(0, 60, 128, 0.85)',
                 height: '100px',
                 width: '90%',
                 cursor: 'pointer',
@@ -218,14 +207,14 @@ function MaterialsForm() {
               onClick={() => window.location.href = "/MaterialView"}
             >
               <i className="bi bi-box-seam" style={{ fontSize: '2.5rem' }}></i>
-              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}>want to view added item in inventory?</h5>
+              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}> view added item in inventory?</h5>
             </div>
 
             {/* Orders Card */}
             <div
               className="card text-white text-center shadow"
               style={{
-                backgroundColor: ' #007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.85)',
                 height: '100px',
                 width: '90%',
                 cursor: 'pointer',
@@ -238,7 +227,7 @@ function MaterialsForm() {
               onClick={() => window.location.href = "/Orders"}
             >
               <i className="bi bi-receipt" style={{ fontSize: '2.5rem' }}></i>
-              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}>want to place more orders?</h5>
+              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}> place more orders?</h5>
             </div>
           </div>
         </div>

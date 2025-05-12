@@ -42,6 +42,21 @@ function UpdateStatus() {
       });
   };
 
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this order?")) {
+      axios
+        .delete(`${URL}/${id}`)
+        .then(() => {
+          alert("Order deleted successfully!");
+          navigate("/TableView"); // Redirect back to order list after deletion
+        })
+        .catch((error) => {
+          console.error("Error deleting order:", error);
+          alert("Failed to delete order");
+        });
+    }
+  };
+
   // Show loading or error message if data is still loading or error occurred
   if (loading) {
     return (
@@ -61,6 +76,7 @@ function UpdateStatus() {
   }
 
   return (
+    
     <div className="container my-5">
       <h2 className="text-center mb-4" style={{ color: "#0056b3" }}>
         Update Order Status
@@ -98,6 +114,25 @@ function UpdateStatus() {
             >
               <i className="bi bi-check-circle"></i> Update Status
             </button>
+          </div>
+
+          {/* Always show Delete button */}
+          <div className="d-flex justify-content-center mt-4">
+            <button
+              type="button"
+              className="btn btn-danger btn-lg px-5"
+              onClick={handleDelete}
+            >
+              <i className="bi bi-trash"></i> Delete Order
+            </button>
+          </div>
+
+          {/* Instruction paragraph for deleting */}
+          <div className="text-center mt-3">
+            <p className="text-muted">
+              If you wish to delete this order, please confirm by clicking the
+              "Delete Order" button. This action cannot be undone.
+            </p>
           </div>
         </form>
       </div>

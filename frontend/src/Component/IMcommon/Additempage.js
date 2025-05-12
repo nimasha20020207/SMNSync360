@@ -3,12 +3,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Footer from '../bottomnav/IM/Footer';
 import { useNavigate } from 'react-router-dom';
+import background from '../pictures/stock.jpg'
 
 function Item() {
   const navigate = useNavigate();
 
   return (
-    <div className="App">
+    <div className="App"
+    style={{
+        backgroundImage: `url(${background})`, // <-- Path to your image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh'
+      }}>
       <Header />
       <div className="container my-5">
         {/* Flex container to align cards horizontally */}
@@ -18,12 +25,12 @@ function Item() {
             onClick={() => navigate('/Materials')}
             className="card cursor-pointer"
             style={{
-              width: '250px',
-              height: '300px',
+              width: '265px',
+              height: '325px',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#007bff',
+              backgroundColor: '#0056b3',
               color: 'white',
               borderRadius: '12px',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
@@ -51,12 +58,12 @@ function Item() {
             onClick={() => navigate('/Equipment')}
             className="card cursor-pointer"
             style={{
-              width: '250px',
-              height: '300px',
+              width: '265px',
+              height: '325px',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#FF5733',
+              backgroundColor: '#010212',
               color: 'white',
               borderRadius: '12px',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',

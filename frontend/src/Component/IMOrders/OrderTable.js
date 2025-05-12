@@ -5,83 +5,73 @@ import axios from "axios";
 function OrderTable({ orders = [], setOrders }) {
   const navigate = useNavigate();
 
-  // Function to handle delete request
   const handleDelete = async (orderId) => {
-    try {
-      // Send DELETE request to backend
-      const response = await axios.delete(`http://localhost:5000/Orders/${orderId}`);
-      console.log(response.data.message); // Log success message
+  const confirmDelete = window.confirm("Are you sure you want to delete this order?");
+  if (!confirmDelete) {
+    return; // User cancelled deletion
+  }
 
-      // Update the orders list by filtering out the deleted order
-      setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
-      
-      // Show success alert
-      window.alert("Item deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting order:", error);
-      // Show error alert (optional)
-      window.alert("Failed to delete the item. Please try again.");
-    }
-  };
+  try {
+    const response = await axios.delete(`http://localhost:5000/Orders/${orderId}`);
+    console.log(response.data.message);
+    setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
+    window.alert("Item deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting order:", error);
+    window.alert("Failed to delete the item. Please try again.");
+  }
+};
+
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "20px" }}>
-      <h1 style={{ color: "#0056b3", fontSize: "2.5em", marginBottom: "20px" }}>Orders</h1>
-      <p>You can edit or cancel your order within 30 minutes after placing it. If time has exceeded, please contact the supplier.</p>
+    <div >
+      
 
-      <table
-        border="1"
-        cellPadding="10"
-        cellSpacing="0"
-        style={{ width: "80%", borderCollapse: "collapse", border: "2px solid #0056b3" }}
-      >
+      <table style={{
+        width: "100%",
+        borderCollapse: "collapse",
+        backgroundColor: "#fff",
+        borderRadius: "10px",
+        overflow: "hidden",
+        boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+      }}>
         <thead>
-          <tr style={{ backgroundColor: "#0056b3", color: "white" }}>
-            <th>Order Item</th>
-            <th>Quantity</th>
-            <th>Order type</th>
-            <th>Remarks</th>
-            <th>Date</th>
-            <th>Supplier</th>
-            <th>Actions</th>
+          <tr style={{
+            backgroundColor: "#003366",
+            color: "#fff",
+            textAlign: "left"
+          }}>
+            <th style={{ padding: "12px" }}>Order Item</th>
+            <th style={{ padding: "12px" }}>Quantity</th>
+            <th style={{ padding: "12px" }}>Order Type</th>
+            <th style={{ padding: "12px" }}>Remarks</th>
+            <th style={{ padding: "12px" }}>Date</th>
+            <th style={{ padding: "12px" }}>Supplier</th>
+            <th style={{ padding: "12px" }}>Actions</th>
           </tr>
         </thead>
         <tbody>
           {orders.length > 0 ? (
             orders.map((order, i) => (
-              <tr key={i}>
-                <td>{order.Itemname}</td>
-                <td>{order.Quantity}</td>
-                <td>{order.Otype}</td>
-                <td>{order.Remarks}</td>
-                <td>{order.Date}</td>
-                <td>{order.Supplier}</td>
-                <td>
+              <tr key={i} style={{
+                backgroundColor: i % 2 === 0 ? "#f9f9f9" : "#fff"
+              }}>
+                <td style={{ padding: "12px" }}>{order.Itemname}</td>
+                <td style={{ padding: "12px" }}>{order.Quantity}</td>
+                <td style={{ padding: "12px" }}>{order.Otype}</td>
+                <td style={{ padding: "12px" }}>{order.Remarks}</td>
+                <td style={{ padding: "12px" }}>{new Date(order.Date).toLocaleDateString()}</td>
+                <td style={{ padding: "12px" }}>{order.Supplier}</td>
+                <td style={{ padding: "12px" }}>
                   <button
                     onClick={() => navigate(`/UpdateOrder/${order._id}`)}
-                    style={{
-                      backgroundColor: "#28a745", // Success green
-                      color: "white",
-                      padding: "6px 10px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginRight: "5px",
-                    }}
+                    style={buttonStyle("#28a745")}
                   >
                     Update
                   </button>
                   <button
-                    onClick={() => handleDelete(order._id)} // Delete button click
-                    style={{
-                      backgroundColor: "#dc3545", // Danger red
-                      color: "white",
-                      padding: "6px 10px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginRight: "5px",
-                    }}
+                    onClick={() => handleDelete(order._id)}
+                    style={buttonStyle("#dc3545")}
                   >
                     Delete
                   </button>
@@ -90,13 +80,29 @@ function OrderTable({ orders = [], setOrders }) {
             ))
           ) : (
             <tr>
-              <td colSpan="7">No materials found</td>
+              <td colSpan="7" style={{ padding: "20px", textAlign: "center" }}>No orders found</td>
             </tr>
           )}
         </tbody>
       </table>
     </div>
   );
+}
+
+// Reusable button styling
+function buttonStyle(color, extra = {}) {
+  return {
+    backgroundColor: color,
+    color: "white",
+    padding: "8px 14px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginRight: "8px",
+    fontWeight: "bold",
+    transition: "background 0.3s ease",
+    ...extra
+  };
 }
 
 export default OrderTable;

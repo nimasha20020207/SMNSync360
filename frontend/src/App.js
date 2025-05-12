@@ -16,6 +16,10 @@ import ResetPassword from "./Component/Admin/ResetPassword/ResetPassword";
 import AddNotification from "./Component/Admin/AddNotification/AddNotification";
 import UpdateNotification from "./Component/Admin/UpdateNotification/UpdateNotification";
 
+//import for payment gtway
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js';
+
 //inventory bootstrap components
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -51,6 +55,10 @@ import TableView from "./Component/IMConfirmedOrders/TableView";
 import UpdateStatus from "./Component/IMConfirmedOrders/UpdateStatus";
 import History from "./Component/IMConfirmedOrders/History";
 import OrderStatus from "./Component/IMOrders/OrderStatus";
+import AmountEntryForm from "./Component/PaymentGateway/AmountEntryForm";
+import PaymentPage from "./Component/PaymentGateway/PaymentPage";
+import PaymentSuccess from "./Component/PaymentGateway/PaymentSuccess";
+import PNotifications from "./Component/PaymentGateway/Notifications";
 
 //map
 import "leaflet/dist/leaflet.css";
@@ -95,6 +103,7 @@ import SupervisorTasks from "./Component/SiteSupervisor/SupervisorTasks";
 import Monitoring from "./Component/Monitoring/Monitoring";
 import ViewSitePhotos from "./Component/Monitoring/ViewSitePhotos";
 
+
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -110,6 +119,9 @@ function App() {
     "/ssdash",
     "/sitesupervisor"
   ];
+
+  //payment gtway
+  const stripePromise = loadStripe("pk_test_51R8NoCSBlInf359dsUzjsTVOx5Sk64cP9ioDVGIXtMmx5lCW6eTgGpLgEObCs5mpnsMPpxWowCZCXnwKdzZp7sCq00DXXsi0Wg");
 
   const isProtectedRoute = protectedRoutes.some((route) =>
     location.pathname.startsWith(route.split(":")[0])
@@ -314,8 +326,16 @@ function App() {
         <Route path='/UpdateStatus/:id' element={<UpdateStatus/>}/>
         <Route path='/History' element={<History/>}/>
         <Route path='/OrderStatus' element={<OrderStatus/>}/>
-
         <Route path='/Supplier' element={<Supplier/>}/>
+        <Route path="/AmountEntryForm" element={<AmountEntryForm />} />
+        <Route path="/pay/:amount" element={
+          <Elements stripe={stripePromise}>
+            <PaymentPage />
+          </Elements>
+        } />
+        <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+        <Route path="/PNotifications" element={<PNotifications />} />
+
 
         {/* Site Supervisor Routes */}
         <Route path="/site-supervisor" element={<SiteSupervisorDashboard />} />

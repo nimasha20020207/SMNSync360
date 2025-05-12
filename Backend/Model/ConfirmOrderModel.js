@@ -16,11 +16,15 @@ const ConfirmSchema = new Schema({
         required: true,
         default: Date.now, // Default to the current date
     },
+    imagePaths: [String],
+    
     OStatus:{
         type: String,
         required: true,
         enum: ["confirmed", "processing", "shipped","delivered"], // Replace with actual supplier names
     },
+
+    
 });
 
 module.exports = mongoose.model("ConfirmOrder", ConfirmSchema);

@@ -3,7 +3,8 @@ import axios from "axios";
 import MaterialsTable from "./MaterialsTable";
 import Header from "../topnav/IM/Header";
 import Footer from "../bottomnav/IM/Footer";
-import background from "../pictures/inventory2.jpg"; // Import the background
+import background from '../pictures/stock.jpg'
+
 
 const URL = "http://localhost:5000/Materials";
 
@@ -28,36 +29,15 @@ function MaterialView() {
   return (
     <div>
       <Header />
-
-      {/* Background wrapper for content only */}
-      <div
-        className="py-4"
-        style={{
-          position: "relative",
-          minHeight: "calc(100vh - 160px)", // leave space for header/footer
-        }}
-      >
-        {/* Background image */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: `url(${background})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.8,
-            zIndex: -1,
-          }}
-        ></div>
-
-        <div className="container">
-          <MaterialsTable materials={materials} setMaterials={setMaterials} />
-        </div>
-      </div>
-
+            <div style={{
+              backgroundImage: `url(${background})`, // <-- Path to your image
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              minHeight: '100vh'
+            }}>
+            <MaterialsTable materials={materials} setMaterials={setMaterials} />
+       
+            </div>
       <Footer />
     </div>
   );

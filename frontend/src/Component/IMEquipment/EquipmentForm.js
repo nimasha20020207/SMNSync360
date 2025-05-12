@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import background from '../pictures/inventory2.jpg';
+
 
 function EquipmentForm() {
   const [inputs, setInputs] = useState({
@@ -50,18 +50,6 @@ function EquipmentForm() {
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center p-3" style={{ position: 'relative' }}>
       {/* Background Image */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: `url(${background})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.8,
-          zIndex: -1,
-        }}
-      ></div>
-
       <div className="container" style={{ maxWidth: '900px' }}>
         <div className="row g-4 align-items-start">
           {/* Form Section */}
@@ -185,7 +173,7 @@ function EquipmentForm() {
               onClick={() => window.location.href = "/EquipmentView"}
             >
               <i className="bi bi-wrench-adjustable" style={{ fontSize: '2.5rem' }}></i>
-              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}>want to view added equipment in inventory?</h5>
+              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}> view added equipment in inventory?</h5>
             </div>
 
             <div
@@ -204,7 +192,7 @@ function EquipmentForm() {
               onClick={() => window.location.href = "/Orders"}
             >
               <i className="bi bi-truck" style={{ fontSize: '2.5rem' }}></i>
-              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}>want to place more orders?</h5>
+              <h5 className="mt-2" style={{ fontSize: '0.9rem' }}> place more orders?</h5>
             </div>
           </div>
         </div>
