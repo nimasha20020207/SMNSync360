@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "../topnav/IM/Header";
 import Footer from "../bottomnav/IM/Footer";
 import EquipmentTable from "./EquipmentTable";
+import background from '../pictures/stock.jpg'
 
 const URL = "http://localhost:5000/Equipments";
 
@@ -27,7 +28,14 @@ function EquipmentView() {
   return (
     <div>
       <Header />
+      <div style={{
+                    backgroundImage: `url(${background})`, // <-- Path to your image
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    minHeight: '100vh'
+                  }}>
       <EquipmentTable equipments={equipments} setEquipments={setEquipments} />
+      </div>
       <Footer />
     </div>
   );

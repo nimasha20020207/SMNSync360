@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from "../topnav/IM/Header";
+import Footer from "../bottomnav/IM/Footer";
+import background from "../pictures/stock.jpg";
 
-const URL = "http://localhost:5000/Materials";
+const URL = "http://localhost:5000/Equipments";
 
-function UpdateMaterial() {
+function UpdateEquipment() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [material, setMaterial] = useState({
-    Mname: "",
-    MID: "",
+  const [equipment, setEquipment] = useState({
+    Ename: "",
+    EType: "",
     Qty: "",
     Remarks: "",
     Date: "",
@@ -20,35 +23,35 @@ function UpdateMaterial() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMaterial = async () => {
+    const fetchEquipment = async () => {
       try {
         const response = await axios.get(`${URL}/${id}`);
-        if (response.data && response.data.material) {
-          setMaterial(response.data.material);
+        if (response.data && response.data.equipment) {
+          setEquipment(response.data.equipment);
         } else {
-          throw new Error("Material not found");
+          throw new Error("Equipment not found");
         }
       } catch (err) {
-        setError("Failed to fetch material");
+        setError("Failed to fetch equipment");
       } finally {
         setLoading(false);
       }
     };
-    fetchMaterial();
+    fetchEquipment();
   }, [id]);
 
   const handleChange = (e) => {
-    setMaterial({ ...material, [e.target.name]: e.target.value });
+    setEquipment({ ...equipment, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${URL}/${id}`, material);
-      alert("Material updated successfully!");
-      navigate("/MaterialView");
+      await axios.put(`${URL}/${id}`, equipment);
+      alert("Equipment updated successfully!");
+      navigate("/EquipmentView");
     } catch (err) {
-      alert("Error updating material: " + err.message);
+      alert("Error updating equipment: " + err.message);
     }
   };
 
@@ -56,40 +59,168 @@ function UpdateMaterial() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-      <div style={{ width: "400px", padding: "20px", border: "1px solid #ccc", borderRadius: "8px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
-        <h1 style={{ textAlign: "center", marginBottom: "20px", color: "#28a745" }}>Update Material</h1> {/* Heading color changed to success green */}
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
-          <label style={{ marginBottom: "8px" }}>Material Name:</label>
-          <input type="text" name="Mname" value={material.Mname || ""} onChange={handleChange} required style={{ padding: "8px", marginBottom: "12px", borderRadius: "4px", border: "1px solid #ccc" }} />
+    <div>
+      <Header />
+      <div
+        style={{
+          backgroundImage: `url(${background})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+          }}
+        >
+          <div
+            style={{
+              width: "500px",
+              padding: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.8)",
+              backgroundColor: "white",
+            }}
+          >
+            <h1
+              style={{
+                textAlign: "center",
+                marginBottom: "20px",
+                color: "#003366",
+              }}
+            >
+              Update Equipment
+            </h1>
+            <form
+              onSubmit={handleSubmit}
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <label style={{ marginBottom: "8px" }}>Equipment Name:</label>
+              <input
+                type="text"
+                name="Ename"
+                value={equipment.Ename}
+                onChange={handleChange}
+                required
+                placeholder="Enter equipment name"
+                style={{
+                  padding: "8px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              />
 
-          <label style={{ marginBottom: "8px" }}>Material ID:</label>
-          <input type="text" name="MID" value={material.MID || ""} onChange={handleChange} required style={{ padding: "8px", marginBottom: "12px", borderRadius: "4px", border: "1px solid #ccc" }} />
+              <label style={{ marginBottom: "8px" }}>Equipment Type:</label>
+              <select
+                name="EType"
+                value={equipment.EType}
+                onChange={handleChange}
+                required
+                style={{
+                  padding: "8px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              >
+                <option value="">Select equipment type</option>
+                <option value="vehicle">Vehicle</option>
+                <option value="machine">Machine</option>
+                <option value="other">Other</option>
+              </select>
 
-          <label style={{ marginBottom: "8px" }}>Quantity:</label>
-          <input type="text" name="Qty" value={material.Qty || ""} onChange={handleChange} required style={{ padding: "8px", marginBottom: "12px", borderRadius: "4px", border: "1px solid #ccc" }} />
+              <label style={{ marginBottom: "8px" }}>Quantity:</label>
+              <input
+                type="text"
+                name="Qty"
+                value={equipment.Qty}
+                onChange={handleChange}
+                required
+                placeholder="Enter quantity"
+                style={{
+                  padding: "8px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              />
 
-          <label style={{ marginBottom: "8px" }}>Remarks:</label>
-          <input type="text" name="Remarks" value={material.Remarks || ""} onChange={handleChange} style={{ padding: "8px", marginBottom: "12px", borderRadius: "4px", border: "1px solid #ccc" }} />
+              <label style={{ marginBottom: "8px" }}>Remarks:</label>
+              <input
+                type="text"
+                name="Remarks"
+                value={equipment.Remarks}
+                onChange={handleChange}
+                placeholder="Enter remarks"
+                style={{
+                  padding: "8px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              />
 
-          <label style={{ marginBottom: "8px" }}>Date:</label>
-          <input type="date" name="Date" value={material.Date || ""} onChange={handleChange} required style={{ padding: "8px", marginBottom: "12px", borderRadius: "4px", border: "1px solid #ccc" }} />
+              <label style={{ marginBottom: "8px" }}>Date:</label>
+              <input
+                type="date"
+                name="Date"
+                value={equipment.Date}
+                onChange={handleChange}
+                required
+                style={{
+                  padding: "8px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              />
 
-          <label style={{ marginBottom: "8px" }}>Supplier:</label>
-          <select name="Supplier" value={material.Supplier || ""} onChange={handleChange} required style={{ padding: "8px", marginBottom: "12px", borderRadius: "4px", border: "1px solid #ccc" }}>
-            <option value="">Select Supplier</option>
-            <option value="Supplier A">Supplier A</option>
-            <option value="Supplier B">Supplier B</option>
-            <option value="Supplier C">Supplier C</option>
-          </select>
+              <label style={{ marginBottom: "8px" }}>
+                Supplier (for rented equipment):
+              </label>
+              <select
+                name="Supplier"
+                value={equipment.Supplier}
+                onChange={handleChange}
+                style={{
+                  padding: "8px",
+                  marginBottom: "12px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              >
+                <option value="">Select Supplier</option>
+                <option value="Supplier A">Supplier A</option>
+                <option value="Supplier B">Supplier B</option>
+                <option value="Supplier C">Supplier C</option>
+              </select>
 
-          <button type="submit" style={{ backgroundColor: "#28a745", color: "white", padding: "10px 15px", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-            Update
-          </button>
-        </form>
+              <button
+                type="submit"
+                style={{
+                  backgroundColor: "#003366",
+                  color: "white",
+                  padding: "10px 15px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Update
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 }
 
-export default UpdateMaterial;
+export default UpdateEquipment;

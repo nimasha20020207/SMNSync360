@@ -84,7 +84,7 @@ function ReadOrders() {
                   <td>{order.OStatus}</td>
                   <td>
                     <button
-                      className="btn btn-warning btn-sm"
+                      className="btn btn-primary btn-sm"
                       onClick={() => navigate(`/UpdateStatus/${order._id}`)}
                     >
                       <FaEdit /> Update Status

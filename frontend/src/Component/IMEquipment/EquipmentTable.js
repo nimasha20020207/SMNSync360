@@ -6,34 +6,43 @@ function EquipmentTable({ equipments = [], setEquipments }) {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Handle search input change
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  // DELETE function
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/Equipments/${id}`);
-      setEquipments((prevEquipments) =>
-        prevEquipments.filter((equipment) => equipment._id !== id)
-      );
-      alert("Equipment deleted successfully!");
-    } catch (err) {
-      alert("Error deleting equipment: " + err.message);
-    }
-  };
+  const confirmDelete = window.confirm("Are you sure you want to delete this equipment?");
+  if (!confirmDelete) return; // User canceled the deletion
 
-  // Filtered equipment list based on search
+  try {
+    await axios.delete(`http://localhost:5000/Equipments/${id}`);
+    setEquipments((prev) => prev.filter((equipment) => equipment._id !== id));
+    alert("Equipment deleted successfully!");
+  } catch (err) {
+    alert("Error deleting equipment: " + err.message);
+  }
+};
+
+
   const filteredEquipments = equipments.filter((equipment) =>
     equipment.EType.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "20px" }}>
-      <h1 style={{ color: "#0056b3", fontSize: "2.5em", marginBottom: "20px" }}>Equipment Stock</h1>
-      
-      {/* Styled Search Bar */}
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      paddingTop: "20px",
+      minHeight: "100vh",
+    }}>
+      <h1 style={{
+        color: "#003366",
+        fontSize: "2.5em",
+        marginBottom: "20px",
+        fontWeight: "bold"
+      }}>Equipment Stock</h1>
+
       <input
         type="text"
         placeholder="🔍 Search by Equipment Type"
@@ -41,64 +50,62 @@ function EquipmentTable({ equipments = [], setEquipments }) {
         onChange={handleSearchChange}
         style={{
           padding: "12px",
-          width: "50%",
-          marginBottom: "20px",
+          width: "30%",
+          marginBottom: "25px",
           borderRadius: "8px",
-          border: "2px solid #0056b3",
+          border: "1px solid #ccc",
           fontSize: "16px",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow
-          transition: "0.3s",
-          outline: "none",
+          boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease",
+          outline: "none"
         }}
       />
 
-      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: "90%", borderCollapse: "collapse" }}>
+      <table style={{
+        width: "90%",
+        borderCollapse: "collapse",
+        backgroundColor: "#fff",
+        borderRadius: "10px",
+        overflow: "hidden",
+        boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+      }}>
         <thead>
-          <tr style={{ backgroundColor: "#0056b3", color: "white" }}>
-            <th>Equipment Name</th>
-            <th>Equipment Type</th>
-            <th>Quantity</th>
-            <th>Remarks</th>
-            <th>Date</th>
-            <th>Supplier</th>
-            <th>Actions</th>
+          <tr style={{
+            backgroundColor: "#003366",
+            color: "#fff",
+            textAlign: "left"
+          }}>
+            <th style={{ padding: "12px" }}>Equipment Name</th>
+            <th style={{ padding: "12px" }}>Equipment Type</th>
+            <th style={{ padding: "12px" }}>Quantity</th>
+            <th style={{ padding: "12px" }}>Remarks</th>
+            <th style={{ padding: "12px" }}>Date</th>
+            <th style={{ padding: "12px" }}>Supplier</th>
+            <th style={{ padding: "12px" }}>Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredEquipments.length > 0 ? (
             filteredEquipments.map((equipment, i) => (
-              <tr key={i}>
-                <td>{equipment.Ename}</td>
-                <td>{equipment.EType}</td>
-                <td>{equipment.Qty}</td>
-                <td>{equipment.Remarks}</td>
-                <td>{equipment.Date}</td>
-                <td>{equipment.Supplier}</td>
-                <td>
+              <tr key={equipment._id} style={{
+                backgroundColor: i % 2 === 0 ? "#f9f9f9" : "#fff"
+              }}>
+                <td style={{ padding: "12px" }}>{equipment.Ename}</td>
+                <td style={{ padding: "12px" }}>{equipment.EType}</td>
+                <td style={{ padding: "12px" }}>{equipment.Qty}</td>
+                <td style={{ padding: "12px" }}>{equipment.Remarks}</td>
+                <td style={{ padding: "12px" }}>{new Date(equipment.Date).toLocaleDateString()}</td>
+                <td style={{ padding: "12px" }}>{equipment.Supplier}</td>
+                <td style={{ padding: "12px" }}>
                   <button
                     onClick={() => navigate(`/UpdateEquipment/${equipment._id}`)}
-                    style={{
-                      backgroundColor: "#28a745",
-                      color: "white",
-                      padding: "6px 10px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginRight: "5px",
-                    }}
+                    style={buttonStyle("#28a745")}
                   >
                     Update
                   </button>
                   <button
                     onClick={() => handleDelete(equipment._id)}
-                    style={{
-                      backgroundColor: "#dc3545",
-                      color: "white",
-                      padding: "6px 10px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                    }}
+                    style={buttonStyle("#dc3545")}
                   >
                     Delete
                   </button>
@@ -107,13 +114,31 @@ function EquipmentTable({ equipments = [], setEquipments }) {
             ))
           ) : (
             <tr>
-              <td colSpan="7">No equipment found</td>
+              <td colSpan="7" style={{ padding: "20px", textAlign: "center" }}>
+                No equipment found
+              </td>
             </tr>
           )}
         </tbody>
       </table>
     </div>
   );
+}
+
+// Reusable button style function
+function buttonStyle(color, extraStyles = {}) {
+  return {
+    backgroundColor: color,
+    color: "white",
+    padding: "8px 14px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginRight: "8px",
+    fontWeight: "bold",
+    transition: "background 0.3s ease",
+    ...extraStyles
+  };
 }
 
 export default EquipmentTable;

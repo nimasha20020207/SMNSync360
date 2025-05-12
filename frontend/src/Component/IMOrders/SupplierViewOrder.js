@@ -4,6 +4,7 @@ import HeaderSup from "../topnav/Supplier/HeaderSup";
 import Footer from "../bottomnav/IM/Footer";
 import SupplierOrder from "./SupplierOrder";
 import Form from "../IMConfirmedOrders/Form";
+import background from '../pictures/stock.jpg';
 
 const URL = "http://localhost:5000/Orders";
 
@@ -28,6 +29,14 @@ function SupplierViewOrder() {
   return (
     <div>
       <HeaderSup />
+      <div style={{
+                backgroundImage: `url(${background})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                minHeight: "100vh",
+                paddingTop: "20px",
+                paddingBottom: "30px",
+              }}>
       <div style={styles.container}>
         <div style={styles.leftSection}>
           <SupplierOrder orders={orders} setOrders={setOrders} />
@@ -35,6 +44,7 @@ function SupplierViewOrder() {
         <div style={styles.rightSection}>
           <Form />
         </div>
+      </div>
       </div>
       <Footer />
     </div>

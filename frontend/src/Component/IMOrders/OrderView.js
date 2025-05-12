@@ -20,48 +20,65 @@ const fetchHandler = async () => {
 
 function OrderView() {
   const [orders, setOrders] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchHandler().then((data) => setOrders(data.orders));
   }, []);
 
+  // Filtered orders based on search
+  const filteredOrders = orders.filter(order =>
+    order.Itemname.toLowerCase().includes(search.toLowerCase()) ||
+    order.Otype.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div
-      style={{
+    <div>
+      <Header />
+
+      <div style={{
         backgroundImage: `url(${background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
         paddingTop: "20px",
         paddingBottom: "30px"
-      }}
-    >
-      <Header />
+      }}>
+        <div className="text-center mt-3 mb-2">
+          <h1 style={{ color: "#003366", fontSize: "2.2em" }}>Your placed orders</h1>
+        </div>
 
-      <div className="text-center mt-3 mb-2">
-        <h1 style={{ color: "#0056b3", fontSize: "2.2em" }}>Orders</h1>
+        <div className="text-center mb-3">
+          <p style={{ fontSize: "1em", color: "#333" }}>
+            You can edit or cancel your order within 30 minutes after placing it.
+            If time has exceeded, please contact the supplier.
+          </p>
+        </div>
+
+        {/* 🔍 Styled Search Bar */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "25px" }}>
+          <input
+            type="text"
+            placeholder="🔍 Search order"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              padding: "12px",
+              width: "30%",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              fontSize: "16px",
+              boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.3s ease",
+              outline: "none"
+            }}
+          />
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <OrderTable orders={filteredOrders} setOrders={setOrders} />
+        </div>
       </div>
-
-      <div className="text-center mb-3">
-        <p style={{ fontSize: "1em", color: "#333" }}>
-          You can edit or cancel your order within 30 minutes after placing it.
-          If time has exceeded, please contact the supplier.
-        </p>
-      </div>
-
-      <div
-        className="container-fluid px-3"
-        style={{
-          maxWidth: "95%",
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          borderRadius: "12px",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
-          padding: "15px",
-        }}
-      >
-        <OrderTable orders={orders} setOrders={setOrders} />
-      </div>
-
       <Footer />
     </div>
   );

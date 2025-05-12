@@ -121,7 +121,7 @@ function Form() {
 
                       {/* Image Upload */}
             <div className="mb-3">
-              <label htmlFor="imageFiles" className="form-label">Attach Images (JPG, PNG)</label>
+              <label htmlFor="imageFiles" className="form-label">Attach bill(png,jpg)</label>
               <input
                 type="file"
                 id="imageFiles"

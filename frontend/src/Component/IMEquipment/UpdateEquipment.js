@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from '../topnav/IM/Header';
+import Footer from '../bottomnav/IM/Footer';
+import background from '../pictures/stock.jpg'
 
 const URL = "http://localhost:5000/Equipments";
 
@@ -57,6 +60,13 @@ function UpdateEquipment() {
 
   return (
     <div>
+      <Header/>
+      <div style={{
+                    backgroundImage: `url(${background})`, // <-- Path to your image
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    minHeight: '100vh'
+                  }}>
         <div className="container my-5">
       <div className="bg-white p-4 shadow rounded-lg border border-gray-300" style={{ maxWidth: '500px', margin: '0 auto' }}>
         <h2 className="text-center text-success mb-4">update Equipment</h2>
@@ -163,6 +173,8 @@ function UpdateEquipment() {
         </form>
         </div>
       </div>
+      </div>
+      <Footer/>
     </div>
     
   );

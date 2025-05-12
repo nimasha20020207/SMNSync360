@@ -8,10 +8,20 @@ function AmountEntryForm() {
   const order = location.state?.order; // Optional chaining in case state is undefined
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!amount || isNaN(amount)) return alert("Enter a valid amount");
-    navigate(`/pay/${amount}`);
-  };
+  e.preventDefault();
+  if (!amount || isNaN(amount)) return alert("Enter a valid amount");
+
+  // Save payment details in localStorage before navigating to PaymentSuccess
+  localStorage.setItem(
+    "paymentDetails",
+    JSON.stringify({
+      order: order,  // order details object
+      amount: amount, // amount entered
+    })
+  );
+
+  navigate(`/pay/${amount}`);
+};
 
   return (
     <div style={styles.container}>

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Header from "../topnav/IM/Header";
+import Footer from "../bottomnav/IM/Footer";
 import axios from "axios";
 import {
   LineChart,
@@ -11,15 +13,18 @@ import {
   CartesianGrid,
   Legend,
   ResponsiveContainer,
+  Cell
 } from "recharts";
 import { Link } from "react-router-dom";
 
+// URL of the API
 const URL = "http://localhost:5000/ConfirmedOrders";
 
 function OrderAnalytics() {
   const [monthlyData, setMonthlyData] = useState([]);
   const [currentMonthData, setCurrentMonthData] = useState([]);
 
+  // Fetch data from the server
   useEffect(() => {
     axios
       .get(URL)
@@ -31,6 +36,7 @@ function OrderAnalytics() {
       .catch((error) => console.error("Error fetching orders:", error));
   }, []);
 
+  // Process monthly data
   const processMonthlyData = (orders) => {
     const monthlyCount = {};
     orders.forEach((order) => {
@@ -46,6 +52,7 @@ function OrderAnalytics() {
     );
   };
 
+  // Filter data for the current month
   const filterCurrentMonthData = (orders) => {
     const now = new Date();
     const currentMonth = now.getMonth();
@@ -66,96 +73,107 @@ function OrderAnalytics() {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>📊 Order Analytics</h2>
+    <div>
+      <Header />
+    
+      <div style={styles.container}>
+        
 
-      <div style={{ textAlign: "right", marginBottom: "20px" }}>
-        <Link to="/Supplier" style={styles.backButton}>
-          🔙 Back to Home
-        </Link>
-      </div>
+        <div style={styles.row}>
+          {/* Line Chart - Monthly Orders */}
+          <div style={styles.chartCard}>
+            <h4 style={styles.chartTitle}>📈 Monthly Order Overview</h4>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="orders" stroke="#007bff" strokeWidth={3} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
 
-      <div style={styles.row}>
-        {/* Line Chart - Monthly Orders */}
-        <div style={styles.chartCard}>
-          <h4 style={styles.chartTitle}>📈 Monthly Orders</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="orders" stroke="#007bff" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
+          {/* Bar Chart - Current Month Orders (Day Wise) */}
+          <div style={styles.chartCard}>
+            <h4 style={styles.chartTitle}>📊 Daily Orders ({new Date().toLocaleString('default', { month: 'long' })})</h4>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={currentMonthData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {/* Two-tone gradient bar */}
+                <Bar dataKey="orders" barSize={40}>
+                  <Cell fill="url(#gradient1)" />
+                  <Cell fill="url(#gradient2)" />
+                </Bar>
+                {/* Gradient definitions */}
+                <defs>
+                  <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#0069d9" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#007bff" stopOpacity={1} />
+                  </linearGradient>
+                  <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#007bff" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#0069d9" stopOpacity={1} />
+                  </linearGradient>
+                </defs>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-
-        {/* Bar Chart - Current Month Orders (Day Wise) */}
-        <div style={styles.chartCard}>
-          <h4 style={styles.chartTitle}>📊 Daily Orders (April)</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={currentMonthData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="orders" fill="#28a745" barSize={40} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
       </div>
+    
+      <Footer />
     </div>
   );
 }
 
+// Refined styling for professional and attractive look, consistent with blue theme
 const styles = {
   container: {
     padding: "40px",
-    background: "linear-gradient(to right, #e3f2fd, #f1f8ff)",
+    background: "#ffffff", // White background for the container
     minHeight: "100vh",
+    fontFamily: "'Roboto', sans-serif", // Modern font
   },
   title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    color: "#0056b3",
+    fontSize: "2.4rem", // Larger title for prominence
+    fontWeight: "600",
+    color: "#0056b3", // Consistent blue theme
     textAlign: "center",
-    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
-    marginBottom: "20px",
-  },
-  backButton: {
-    backgroundColor: "#007bff",
-    color: "white",
-    fontWeight: "bold",
-    borderRadius: "8px",
-    padding: "10px 15px",
-    textDecoration: "none",
-    transition: "0.3s ease-in-out",
-    display: "inline-block",
+    marginBottom: "30px",
+    textShadow: "2px 2px 6px rgba(0, 0, 0, 0.1)",
   },
   row: {
     display: "flex",
     justifyContent: "center",
-    gap: "20px",
+    gap: "30px",
     flexWrap: "wrap",
   },
   chartCard: {
-    background: "white",
-    padding: "20px",
+    background: "#f8f9fa", // Light gray background for the cards
+    padding: "25px",
     borderRadius: "12px",
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Soft shadow for depth
     transition: "0.3s ease-in-out",
     flex: "1",
     maxWidth: "600px",
     minWidth: "300px",
+    cursor: "pointer",
+    ":hover": {
+      boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.15)", // More pronounced shadow on hover
+    },
   },
   chartTitle: {
-    fontSize: "1.2rem",
-    fontWeight: "bold",
+    fontSize: "1.6rem", // Increased font size for titles
+    fontWeight: "600",
     color: "#333",
     textAlign: "center",
-    marginBottom: "15px",
+    marginBottom: "20px",
   },
 };
 

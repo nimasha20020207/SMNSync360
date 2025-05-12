@@ -13,14 +13,23 @@ function MaterialsTable({ materials, setMaterials }) {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/Materials/${id}`);
-      setMaterials((prevMaterials) => prevMaterials.filter((material) => material._id !== id));
-      alert("Material deleted successfully!");
-    } catch (err) {
-      alert("Error deleting material: " + err.message);
-    }
-  };
+  if (!id) {
+    alert("Invalid material ID.");
+    return;
+  }
+
+  const confirmDelete = window.confirm("Are you sure you want to remove this material from inventory?");
+  if (!confirmDelete) return;
+
+  try {
+    await axios.delete(`http://localhost:5000/Materials/${id}`);
+    setMaterials((prevMaterials) => prevMaterials.filter((material) => material._id !== id));
+    alert("Material deleted successfully!");
+  } catch (err) {
+    alert("Error deleting material: " + (err.response?.data?.message || err.message));
+  }
+};
+
 
   const filteredMaterials = materials.filter((material) =>
     material.MID.toLowerCase().includes(searchTerm.toLowerCase())
@@ -97,7 +106,7 @@ function MaterialsTable({ materials, setMaterials }) {
                 <td style={{ padding: "12px" }}>{material.Mname}</td>
                 <td style={{ padding: "12px" }}>{material.Qty}</td>
                 <td style={{ padding: "12px" }}>{material.Remarks}</td>
-                <td style={{ padding: "12px" }}>{material.Date}</td>
+                <td style={{ padding: "12px" }}>{new Date(material.Date).toLocaleDateString()}</td>
                 <td style={{ padding: "12px" }}>{material.Supplier}</td>
                 <td style={{ padding: "12px" }}>
                   {material.pdfFile ? (
