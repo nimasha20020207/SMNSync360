@@ -6,18 +6,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Footer from '../bottomnav/IM/Footer';
 import { useNavigate } from "react-router-dom";
-import orderImg from '../pictures/7.jpg';
-import cartImg from '../pictures/8.jpg';
-import warehouseImg from '../pictures/9.jpg';
+import orderImg from '../pictures/shoppingcart.jpg';
+import cartImg from '../pictures/stock.jpg';
+import warehouseImg from '../pictures/suppliers.jpg';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Supplier.css';
+import SupplierMap from './SupplierMap';
 
 function Supplier() {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
+
 
 useEffect(() => {
   const fetchData = async () => {
@@ -30,6 +32,47 @@ useEffect(() => {
         console.error("Error: Expected array but got", typeof ordersResponse.data);
         setOrders([]);
       }
+
+
+    const [statusPercentages, setStatusPercentages] = useState([]);
+
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/ConfirmedOrders")
+    .then((res) => {
+      const orders = res.data.records || [];
+
+      const statusCount = {
+        confirmed: 0,
+        processing: 0,
+        shipped: 0,
+        delivered: 0,
+      };
+
+      orders.forEach((order) => {
+        const status = order.OStatus?.toLowerCase();
+        if (statusCount[status] !== undefined) {
+          statusCount[status]++;
+        }
+      });
+
+      const total = Object.values(statusCount).reduce((sum, val) => sum + val, 0);
+      const statusPercent = Object.keys(statusCount).map((key) => ({
+        label: key.charAt(0).toUpperCase() + key.slice(1),
+        value: total > 0 ? Math.round((statusCount[key] / total) * 100) : 0,
+        color: {
+          confirmed: "#007bff", // Blue – primary
+          processing: "#fd7e14", // Orange – attention/delay
+          shipped: "#20c997", // Teal – in transit
+          delivered: "#28a745", // Green – success
+        }[key],
+      }));
+
+      setStatusPercentages(statusPercent);
+    })
+    .catch((err) => console.error("Error fetching order data:", err));
+}, []);
+
 
       // Fetch notifications
       const notificationsResponse = await axios.get("http://localhost:5000/Notification");
@@ -48,6 +91,7 @@ useEffect(() => {
 
   fetchData();
 }, []);
+  
     const emergencyOrders = orders.filter(order => order.Otype === "Emergency");
 
     return (
@@ -57,80 +101,81 @@ useEffect(() => {
             {/* Carousel Section */}
             <div style={{ width: "100%", height: "300px", overflow: "hidden", marginBottom: "20px" }}>
                 <Carousel style={{ height: "100%" }}>
-                    <Carousel.Item>
-                        <div
-                            style={{
-                                height: "300px",
-                                backgroundImage: `url(${orderImg})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                position: "relative",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <div style={{
-                                backgroundColor: "rgba(0,0,0,0.4)",
-                                padding: "10px 20px",
-                                borderRadius: "10px",
-                                color: "white",
-                                textAlign: "center"
-                            }}>
-                                <h5>Seamlessly track and manage materials and equipment.</h5>
-                                <p>Real-time visibility into stock levels ensures the right resources are always available</p>
-                            </div>
-                        </div>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <div
-                            style={{
-                                height: "300px",
-                                backgroundImage: `url(${cartImg})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }}
-                        >
-                            <div style={{
-                                backgroundColor: "rgba(0,0,0,0.4)",
-                                padding: "10px 20px",
-                                borderRadius: "10px",
-                                color: "white",
-                                textAlign: "center"
-                            }}>
-                                <h5>Assign the right materials and equipment to the right projects – effortlessly.</h5>
-                                <p>Strategic allocation ensures smooth project execution and resource optimization.</p>
-                            </div>
-                        </div>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <div
-                            style={{
-                                height: "300px",
-                                backgroundImage: `url(${warehouseImg})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }}
-                        >
-                            <div style={{
-                                backgroundColor: "rgba(0,0,0,0.4)",
-                                padding: "10px 20px",
-                                borderRadius: "10px",
-                                color: "white",
-                                textAlign: "center"
-                            }}>
-                                <h5>Automated order placement when materials run low – never pause a project again</h5>
-                                <p>Proactive inventory intelligence helps keep every site running efficiently</p>
-                            </div>
-                        </div>
-                    </Carousel.Item>
-                </Carousel>
+  <Carousel.Item>
+    <div
+      style={{
+        height: "300px",
+        backgroundImage: `url(${cartImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div style={{
+        backgroundColor: "rgba(0,0,0,0.4)",
+        padding: "10px 20px",
+        borderRadius: "10px",
+        color: "white",
+        textAlign: "center"
+      }}>
+        <h5>Manage Orders Efficiently</h5>
+        <p>As a supplier, you can confirm, reject, and update orders in real-time with full visibility.</p>
+      </div>
+    </div>
+  </Carousel.Item>
+  <Carousel.Item>
+    <div
+      style={{
+        height: "300px",
+        backgroundImage: `url(${orderImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}
+    >
+      <div style={{
+        backgroundColor: "rgba(0,0,0,0.4)",
+        padding: "10px 20px",
+        borderRadius: "10px",
+        color: "white",
+        textAlign: "center"
+      }}>
+        <h5>Stay Ahead with Instant Order Updates</h5>
+        <p>Quickly accept or decline orders and update delivery statuses as needed.</p>
+      </div>
+    </div>
+  </Carousel.Item>
+  <Carousel.Item>
+    <div
+      style={{
+        height: "300px",
+        backgroundImage: `url(${warehouseImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}
+    >
+      <div style={{
+        backgroundColor: "rgba(0,0,0,0.4)",
+        padding: "10px 20px",
+        borderRadius: "10px",
+        color: "white",
+        textAlign: "center"
+      }}>
+        <h5>Keep Sites Supplied Without Delay</h5>
+        <p>Monitor stock levels and fulfill urgent orders with ease to ensure continuous operations.</p>
+      </div>
+    </div>
+  </Carousel.Item>
+</Carousel>
+
             </div>
 
             {/* Page Content */}
@@ -215,28 +260,61 @@ useEffect(() => {
                     </Col>
 
                     <Col md={4}>
-    <h5>Orders</h5>
-    <p><strong>Pending:</strong></p>
-    <ProgressBar variant="danger" now={25} label="25%" />
-
-    <p className="mt-2"><strong>Confirmed:</strong></p>
-    <ProgressBar variant="warning" now={50} label="50%" />
-
-    <p className="mt-2"><strong>Shipped:</strong></p>
-    <ProgressBar variant="primary" now={75} label="75%" />
-
-    <p className="mt-2"><strong>Delivered:</strong></p>
-    <ProgressBar variant="success" now={100} label="100%" />
-</Col>
+                          <div style={{
+                            backgroundColor: "#fff",
+                            padding: "20px",
+                            borderRadius: "10px",
+                            boxShadow: "0 0 10px rgba(0,0,0,0.05)"
+                          }}>
+                            <h5 className="text-center mb-3">📦 Current Order Status</h5>
+                            {statusPercentages.map((status, index) => (
+                              <div key={index} className="mb-3">
+                                <div className="d-flex justify-content-between mb-1">
+                                  <strong>{status.label}</strong>
+                                  <span>{status.value}%</span>
+                                </div>
+                                <ProgressBar now={status.value} variant="custom" style={{ backgroundColor: "#e9ecef" }}>
+                                  <ProgressBar
+                                    now={status.value}
+                                    style={{ backgroundColor: status.color }}
+                                    animated
+                                  />
+                                </ProgressBar>
+                              </div>
+                            ))}
+                          </div>
+                        </Col>
 
 <Col md={3}>
-    <Card className="shadow">
-        <Card.Body>
-            <Calendar className="custom-calendar" />
-        </Card.Body>
-    </Card>
+    <div style={{
+        width: "100%",
+        height: "100%",
+        minHeight: "300px",
+        borderRadius: "10px",
+        overflow: "hidden",
+        boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+      }}>
+        <SupplierMap />
+      </div>
 </Col>
 
+
+
+
+<Card className="mt-4">
+  <Card.Header as="h5" style={{ backgroundColor: "#0056b3", color: "white" }}>
+    📢 Announcements
+  </Card.Header>
+  <Card.Body>
+    <Card.Text><strong>03/25/2025:</strong> Budget review meeting scheduled for next week.</Card.Text>
+    <Card.Text><strong>03/20/2025:</strong> Project A deadline extended to April 10th.</Card.Text>
+    <Card.Text><strong>03/20/2025:</strong> Project B deadline extended to May 10th.</Card.Text>
+    <Card.Text><strong>03/20/2025:</strong> Order 005 has been delivered successfully.</Card.Text>
+  </Card.Body>
+</Card>
+
+
+=======
 <Card>
   <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
   <Card.Body>

@@ -3,7 +3,7 @@ import OrdersForm from "./OrdersForm";
 import Header from "../topnav/IM/Header";
 import Footer from "../bottomnav/IM/Footer";
 import { useNavigate } from "react-router-dom";
-import background from "../pictures/inventory2.jpg"
+import background from "../pictures/stock.jpg"
 import { MdAssignment, MdLocalShipping, MdHistory } from 'react-icons/md';
 
 function Orders() {
@@ -26,7 +26,7 @@ function Orders() {
     borderRadius: '10px',
     padding: '30px 20px',
     textAlign: 'center',
-    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.5)',
     width: '220px',
     cursor: 'pointer',
     transition: 'transform 0.2s, box-shadow 0.2s',

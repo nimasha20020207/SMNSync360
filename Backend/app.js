@@ -6,6 +6,11 @@ const app = express();
 const cors = require("cors");
 const User = require("./Model/UserModel");
 const db = require("./util/db");
+
+//payment gtway
+const stripe = require("stripe")("sk_test_51R8NoCSBlInf359dPI3W3e8CBI04Ghwqs6dNzWaAZJFqtW8tazkKFAXVYjLDWvDYdM4goGijNdqRDKgKzcpp09Ou00tVxe7GfL");
+require("dotenv").config();
+
 const router2 = require("./Router/MaterialRoute"); // import materials route
 const orderrouter = require("./Router/OrderRoute"); // import order route
 const equipmentrouter = require("./Router/EquipmentRoute"); // import Equipment route
@@ -26,8 +31,6 @@ const routerNotification = require("./Router/NotificationRoute");
 const routerPassword = require("./Router/Passwordroute");
 
 const whatsappRoute = require("./Router/whatsapp.js");
-
-
 
 // Clear model cache
 delete mongoose.connection.models['Task'];
@@ -70,6 +73,10 @@ app.use('/api', whatsappRoute);
 
 app.use("/Notification", routerNotification);
 app.use("/Password", routerPassword);
+
+
+
+
 //ajtdQYIXjaiZbNli
 //mongoose.connect("mongodb+srv://janithsdissanayaka:ajtdQYIXjaiZbNli@cluster0.n2zxb.mongodb.net/")
 //mongoose.connect("mongodb://0.0.0.0:27017/CCMS")
@@ -133,6 +140,7 @@ if (!fs.existsSync(uploadDir)) {
     console.log("Created upload directory:", uploadDir);
 }
 
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, uploadDir);
@@ -142,6 +150,8 @@ const storage = multer.diskStorage({
         cb(null, uniqueSuffix + path.extname(file.originalname));
     }
 });
+
+
 
 const upload = multer({
     storage: storage,
@@ -157,6 +167,7 @@ const upload = multer({
         cb(new Error('Only image files are allowed!'));
     }
 });
+
 
 app.post("/uploadImg", upload.single("image"), async (req, res) => {
     try {
@@ -189,6 +200,7 @@ app.post("/uploadImg", upload.single("image"), async (req, res) => {
         });
     }
 });
+
 
 // Display Images  
 app.get("/getImage/:id", async (req, res) => {
@@ -272,8 +284,33 @@ app.delete("/deleteImage/:id", async (req, res) => {
     }
 });
 
+
+//paymentgtway endpoint
+app.post("/api/payments/create-payment-intent", async (req, res) => {
+  const { amount } = req.body;
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(amount * 100), // Stripe expects amount in cents
+      currency: "usd", // Use "usd" or any supported currency; LKR may be unsupported for card payments
+      description: 'Order payment for construction materials',
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    res.send({ clientSecret: paymentIntent.client_secret });
+  } catch (err) {
+    console.error("Payment Intent Error:", err.message);
+    res.status(500).send({ error: err.message });
+  }
+});
+
 // Serve static files
 app.use("/files", express.static(uploadDir));
+
+
+
 
 // Enhanced error handling middleware
 app.use((err, req, res, next) => {
@@ -294,6 +331,9 @@ app.use((err, req, res, next) => {
 
 // Serve static files from uploads directory-InventoryManager
 app.use('/materialuploads', express.static(path.join(__dirname, 'materialuploads')));
+//serve static file-bill images 
+app.use("/billuploads", express.static(path.join(__dirname, "billuploads")));
+
 
 
 // Handle 404
