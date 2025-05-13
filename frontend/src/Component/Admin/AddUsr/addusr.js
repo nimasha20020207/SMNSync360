@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Nav from "../../topnav/mainnav/nav";
 import "./adduser.css";
@@ -14,9 +15,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormHelperText,
-  InputAdornment,
-  IconButton
+  FormHelperText
 } from "@mui/material";
 import { motion } from "framer-motion";
 
@@ -164,158 +163,181 @@ function AddUsr() {
     <div>
       <AdNav />
       <div className="add-user-form">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-        <Paper elevation={6} className="form-container">
-          <Typography variant="h5" className="form-title">
-            Add New User
-          </Typography>
-          {error && <div className="error-message">{error}</div>}
-          <form onSubmit={handleSubmit} className="user-form">
-            <div className="form-row">
-              <div className="form-group">
-                <FormControl fullWidth className="input-field" error={!!errors.userrole}>
-                  <InputLabel>User Role *</InputLabel>
-                  <Select
-                    name="userrole"
-                    value={inputs.userrole}
-                    onChange={handleChange}
-                    required
-                  >
-                    {userRoles.map((role) => (
-                      <MenuItem key={role.value} value={role.value}>
-                        {role.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText>{errors.userrole || "Select the user's role"}</FormHelperText>
-                </FormControl>
-              </div>
-              <div className="form-group">
-                <TextField
-                  label="User ID"
-                  name="userid"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                  value={inputs.userid}
-                  required
-                  className="input-field"
-                  helperText={`Format: ${idPrefix}001 (e.g., AD001 for Admin)`}
-                  disabled={!!inputs.userrole}
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <TextField
-                  label="Name"
-                  name="name"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                  value={inputs.name}
-                  required
-                  className="input-field"
-                  error={!!errors.name}
-                  helperText={errors.name}
-                />
-              </div>
-              <div className="form-group">
-                <TextField
-                  label="Email"
-                  name="email"
-                  type="email"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                  value={inputs.email}
-                  required
-                  className="input-field"
-                  error={!!errors.email}
-                  helperText={errors.email}
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <TextField
-                  label="Age"
-                  name="age"
-                  type="number"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                  value={inputs.age}
-                  required
-                  className="input-field"
-                  inputProps={{ min: 18, max: 100 }}
-                  error={!!errors.age}
-                  helperText={errors.age}
-                />
-              </div>
-              <div className="form-group">
-                <TextField
-                  label="Address"
-                  name="address"
-                  variant="outlined"
-                  fullWidth
-                  onChange={handleChange}
-                  value={inputs.address}
-                  required
-                  className="input-field"
-                  error={!!errors.address}
-                  helperText={errors.address}
-                />
-              </div>
-            </div>
-
-            <TextField
-              label="Password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              variant="outlined"
-              fullWidth
-              onChange={handleChange}
-              value={inputs.password}
-              required
-              className="input-field"
-              error={!!errors.password}
-              helperText={errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={togglePasswordVisibility}
-                      edge="end"
-                      className="password-toggle"
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+          <Paper elevation={6} className="form-container">
+            <Typography variant="h5" className="form-title">
+              Add New User
+            </Typography>
+            {error && <div className="error-message">{error}</div>}
+            <form onSubmit={handleSubmit} className="user-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <FormControl fullWidth className="input-field" error={!!errors.userrole}>
+                    <InputLabel>User Role *</InputLabel>
+                    <Select
+                      name="userrole"
+                      value={inputs.userrole}
+                      onChange={handleChange}
+                      required
                     >
-                      <span className={`eye-icon ${showPassword ? "visible" : ""}`} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+                      {userRoles.map((role) => (
+                        <MenuItem key={role.value} value={role.value}>
+                          {role.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>{errors.userrole || "Select the user's role"}</FormHelperText>
+                  </FormControl>
+                </div>
+                <div className="form-group">
+                  <TextField
+                    label="User ID"
+                    name="userid"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    value={inputs.userid}
+                    required
+                    className="input-field"
+                    helperText={`Format: ${idPrefix}001 (e.g., AD001 for Admin)`}
+                    disabled={!!inputs.userrole}
+                  />
+                </div>
+              </div>
 
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                type="submit"
-                variant="contained"
-                className="submit-btn"
-                disabled={loading}
-              >
-                {loading ? <CircularProgress size={24} color="inherit" /> : "Submit"}
-              </Button>
-            </motion.div>
-          </form>
-        </Paper>
-      </motion.div>
-    </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <TextField
+                    label="Name"
+                    name="name"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    value={inputs.name}
+                    required
+                    className="input-field"
+                    error={!!errors.name}
+                    helperText={errors.name}
+                  />
+                </div>
+                <div className="form-group">
+                  <TextField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    value={inputs.email}
+                    required
+                    className="input-field"
+                    error={!!errors.email}
+                    helperText={errors.email}
+                  />
+                </div>
+              </div>
 
+              <div className="form-row">
+                <div className="form-group">
+                  <TextField
+                    label="Age"
+                    name="age"
+                    type="number"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    value={inputs.age}
+                    required
+                    className="input-field"
+                    inputProps={{ min: 18, max: 100 }}
+                    error={!!errors.age}
+                    helperText={errors.age}
+                  />
+                </div>
+                <div className="form-group">
+                  <TextField
+                    label="Address"
+                    name="address"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    value={inputs.address}
+                    required
+                    className="input-field"
+                    error={!!errors.address}
+                    helperText={errors.address}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group password-group">
+                <TextField
+                  label="Password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  value={inputs.password}
+                  required
+                  className="input-field"
+                  error={!!errors.password}
+                  helperText={errors.password}
+                />
+                <div className="password-input-container">
+                  <span
+                    className="password-toggle-icon"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#555"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#555"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                        <line x1="1" y1="1" x2="23" y2="23" />
+                      </svg>
+                    )}
+                  </span>
+                </div>
+              </div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className="submit-btn"
+                  disabled={loading}
+                >
+                  {loading ? <CircularProgress size={24} color="inherit" /> : "Submit"}
+                </Button>
+              </motion.div>
+            </form>
+          </Paper>
+        </motion.div>
+      </div>
     </div>
-    
   );
 }
 
