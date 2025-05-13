@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Topnav from "../topnav/QS/qs";
 import Fot from "../bottomnav/foter";
-import 'react-calendar/dist/Calendar.css'; // Import the default styles
-import './home.css';
+import "react-calendar/dist/Calendar.css"; // Import the default styles
+import "./home.css";
 import {
   Container,
   Row,
@@ -23,13 +23,17 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
-import inventoryImg from "../pictures/q1.jpg";
-import materialImg from "../pictures/q2.jpg";
-import stockImg from "../pictures/q3.jpg";
-import { FaMoneyBillWave, FaShoppingCart, FaPiggyBank, FaExclamationCircle } from "react-icons/fa";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-
+import inventoryImg from "../pictures/stock.jpg";
+import materialImg from "../pictures/tools.jpg";
+import stockImg from "../pictures/pic5.jpg";
+import {
+  FaMoneyBillWave,
+  FaShoppingCart,
+  FaPiggyBank,
+  FaExclamationCircle,
+} from "react-icons/fa";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 // Register ChartJS components
 ChartJS.register(
@@ -51,7 +55,6 @@ function Home() {
   //for calendar
   const [date, setDate] = useState(new Date());
 
-
   // Fetch budgets from backend
   const fetchBudgets = async () => {
     try {
@@ -70,18 +73,21 @@ function Home() {
   };
 
   // Fetch notifications from backend
-const fetchNotifications = async () => {
-  try {
-    const response = await axios.get("http://localhost:5000/Notification");
-    console.log("Notifications API Response:", response.data);
-    const notificationData = response.data.notification || response.data || [];
-    const notificationArray = Array.isArray(notificationData) ? notificationData : [];
-    setNotifications(notificationArray);
-  } catch (error) {
-    console.error("Error fetching notifications:", error);
-    setNotifications([]);
-  }
-};
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/Notification");
+      console.log("Notifications API Response:", response.data);
+      const notificationData =
+        response.data.notification || response.data || [];
+      const notificationArray = Array.isArray(notificationData)
+        ? notificationData
+        : [];
+      setNotifications(notificationArray);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setNotifications([]);
+    }
+  };
 
   // Fetch expenses from backend
   const fetchExpenses = async () => {
@@ -100,7 +106,11 @@ const fetchNotifications = async () => {
   // Fetch data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchBudgets(), fetchExpenses(), fetchNotifications()]);
+      await Promise.all([
+        fetchBudgets(),
+        fetchExpenses(),
+        fetchNotifications(),
+      ]);
       setLoading(false);
     };
     fetchData();
@@ -249,10 +259,13 @@ const fetchNotifications = async () => {
                   textAlign: "center",
                 }}
               >
-                <h5>Seamlessly track and manage materials and equipment.</h5>
+                <h5>
+                  Effortlessly monitor and control project costs and resources.
+                </h5>
                 <p>
-                  Real-time visibility into stock levels ensures the right
-                  resources are always available
+                  Real-time tracking of material usage and expenses ensures
+                  accurate budgeting and optimal resource allocation for every
+                  phase of construction.
                 </p>
               </div>
             </div>
@@ -279,13 +292,11 @@ const fetchNotifications = async () => {
                   textAlign: "center",
                 }}
               >
-                <h5>
-                  Assign the right materials and equipment to the right projects
-                  – effortlessly.
-                </h5>
+                <h5>Stay on top of every cost with precision and clarity.</h5>
                 <p>
-                  Strategic allocation ensures smooth project execution and
-                  resource optimization.
+                  Live updates on quantities and pricing empower quantity
+                  surveyors to manage budgets, reduce waste, and maximize
+                  project value.
                 </p>
               </div>
             </div>
@@ -312,13 +323,11 @@ const fetchNotifications = async () => {
                   textAlign: "center",
                 }}
               >
-                <h5>
-                  Automated order placement when materials run low – never pause
-                  a project again
-                </h5>
+                <h5>Streamline cost planning and forecasting with ease.</h5>
                 <p>
-                  Proactive inventory intelligence helps keep every site running
-                  efficiently
+                  Access up-to-date data on materials and labor to ensure
+                  accurate estimates and informed decision-making throughout the
+                  project lifecycle.
                 </p>
               </div>
             </div>
@@ -355,101 +364,124 @@ const fetchNotifications = async () => {
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
-<Col md={2} className="mb-3">
-  <Card style={{ backgroundColor: "#0056b3", color: "white", height: "100px" }}>
-    <Card.Body>
-      <Card.Title>
-        <FaMoneyBillWave /> Total Budget
-      </Card.Title>
-      <Card.Text>{getBudgetAmount()}</Card.Text>
-    </Card.Body>
-  </Card>
-</Col>
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#0056b3",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>
+                      <FaMoneyBillWave /> Total Budget
+                    </Card.Title>
+                    <Card.Text>{getBudgetAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
 
-<Col md={2} className="mb-3">
-  <Card style={{ backgroundColor: "#1E3F66", color: "white", height: "100px" }}>
-    <Card.Body>
-      <Card.Title>
-        <FaShoppingCart /> Spent
-      </Card.Title>
-      <Card.Text>{getSpentAmount()}</Card.Text>
-    </Card.Body>
-  </Card>
-</Col>
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#1E3F66",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>
+                      <FaShoppingCart /> Spent
+                    </Card.Title>
+                    <Card.Text>{getSpentAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
 
-<Col md={2} className="mb-3">
-  <Card style={{ backgroundColor: "#4B9CD3", color: "white", height: "100px" }}>
-    <Card.Body>
-      <Card.Title>
-        <FaPiggyBank /> Remaining
-      </Card.Title>
-      <Card.Text>{getRemainingAmount()}</Card.Text>
-    </Card.Body>
-  </Card>
-</Col>
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#4B9CD3",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>
+                      <FaPiggyBank /> Remaining
+                    </Card.Title>
+                    <Card.Text>{getRemainingAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
 
-<Col md={2} className="mb-3">
-  <Card style={{ backgroundColor: "#4B4B4B", color: "white", height: "100px" }}>
-    <Card.Body>
-      <Card.Title>
-        <FaExclamationCircle /> Overdue
-      </Card.Title>
-      <Card.Text>{getOverdueAmount()}</Card.Text>
-    </Card.Body>
-  </Card>
-</Col>
-
-
-
+              <Col md={2} className="mb-3">
+                <Card
+                  style={{
+                    backgroundColor: "#4B4B4B",
+                    color: "white",
+                    height: "100px",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>
+                      <FaExclamationCircle /> Overdue
+                    </Card.Title>
+                    <Card.Text>{getOverdueAmount()}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
             </Row>
           </Col>
         </Row>
 
         {/* Right: Expenses Bar Chart */}
         <Row className="mt-4">
-  <Col md={8}>
-    <Card>
-      <Card.Body>
-        <Bar data={getChartData()} options={chartOptions} />
-      </Card.Body>
-    </Card>
-  </Col>
-  <Col md={4}>
-    <Card>
-      <Card.Body>
-        <Calendar onChange={setDate} value={date} />
-      </Card.Body>
-    </Card>
-  </Col>
-</Row>
+          <Col md={8}>
+            <Card>
+              <Card.Body>
+                <Bar data={getChartData()} options={chartOptions} />
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card>
+              <Card.Body>
+                <Calendar onChange={setDate} value={date} />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
 
-       {/* Bottom: Announcements */}
-<Row className="mt-4">
-  <Col>
-    <Card>
-      <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
-      <Card.Body>
-        {loading ? (
-          <Card.Text>Loading notifications...</Card.Text>
-        ) : notifications.length > 0 ? (
-          notifications.map((notification, index) => (
-            <Card.Text key={index}>
-              <strong>
-                {notification.Date
-                  ? new Date(notification.Date).toLocaleDateString()
-                  : "No Date"}
-                :
-              </strong>{" "}
-              {notification.message || "No message available"}
-            </Card.Text>
-          ))
-        ) : (
-          <Card.Text>No announcements available.</Card.Text>
-        )}
-      </Card.Body>
-    </Card>
-  </Col>
-</Row>
+        {/* Bottom: Announcements */}
+        <Row className="mt-4">
+          <Col>
+            <Card>
+              <Card.Header as="h5" className="bg-primary text-white">
+                📢 Announcements
+              </Card.Header>
+              <Card.Body>
+                {loading ? (
+                  <Card.Text>Loading notifications...</Card.Text>
+                ) : notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <Card.Text key={index}>
+                      <strong>
+                        {notification.Date
+                          ? new Date(notification.Date).toLocaleDateString()
+                          : "No Date"}
+                        :
+                      </strong>{" "}
+                      {notification.message || "No message available"}
+                    </Card.Text>
+                  ))
+                ) : (
+                  <Card.Text>No announcements available.</Card.Text>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
       <Fot />
     </div>

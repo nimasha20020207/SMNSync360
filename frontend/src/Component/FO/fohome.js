@@ -1,13 +1,42 @@
 import React, { useState, useEffect } from "react";
 import Topnav from "../topnav/FO/fo";
 import Fot from "../bottomnav/foter";
-import { Container, Row, Col, Card, Form, Dropdown, ProgressBar } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Dropdown,
+  ProgressBar,
+  Carousel,
+} from "react-bootstrap";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import axios from "axios";
+import inventoryImg from "../pictures/fo1.jpg";
+import materialImg from "../pictures/fo2.jpg";
+import stockImg from "../pictures/pic5.jpg";
 
 // Register ChartJS components for Line chart
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function FOHome() {
   const [budgets, setBudgets] = useState([]);
@@ -52,8 +81,11 @@ function FOHome() {
     try {
       const response = await axios.get("http://localhost:5000/Notification");
       console.log("Notifications API Response:", response.data);
-      const notificationData = response.data.notification || response.data || [];
-      const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+      const notificationData =
+        response.data.notification || response.data || [];
+      const notificationArray = Array.isArray(notificationData)
+        ? notificationData
+        : [];
       setNotifications(notificationArray);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -64,7 +96,11 @@ function FOHome() {
   // Fetch all data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchBudgets(), fetchExpenses(), fetchNotifications()]);
+      await Promise.all([
+        fetchBudgets(),
+        fetchExpenses(),
+        fetchNotifications(),
+      ]);
       setLoading(false);
     };
     fetchData();
@@ -79,7 +115,9 @@ function FOHome() {
   const getBudgetAmount = () => {
     if (loading) return 0;
     if (budgets.length === 0 || !selectedBudgetId) return 0;
-    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const selectedBudget = budgets.find(
+      (budget) => budget.P_ID === selectedBudgetId
+    );
     return selectedBudget ? Number(selectedBudget.amount) : 0;
   };
 
@@ -106,7 +144,9 @@ function FOHome() {
   const getRemainingAmount = () => {
     if (loading) return "Loading...";
     if (budgets.length === 0 || !selectedBudgetId) return "Rs 0";
-    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const selectedBudget = budgets.find(
+      (budget) => budget.P_ID === selectedBudgetId
+    );
     const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
     const totalSpent = expenses
       .filter((expense) => expense.P_ID === selectedBudgetId)
@@ -119,7 +159,9 @@ function FOHome() {
   const getRemainingAmountNumber = () => {
     if (loading) return 0;
     if (budgets.length === 0 || !selectedBudgetId) return 0;
-    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    const selectedBudget = budgets.find(
+      (budget) => budget.P_ID === selectedBudgetId
+    );
     const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
     const totalSpent = expenses
       .filter((expense) => expense.P_ID === selectedBudgetId)
@@ -131,8 +173,11 @@ function FOHome() {
   // Calculate overdue amount for selected P_ID (excess over budget)
   const getOverdueAmount = () => {
     if (loading) return "Loading...";
-    if (budgets.length === 0 || !selectedBudgetId || expenses.length === 0) return "Rs 0";
-    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    if (budgets.length === 0 || !selectedBudgetId || expenses.length === 0)
+      return "Rs 0";
+    const selectedBudget = budgets.find(
+      (budget) => budget.P_ID === selectedBudgetId
+    );
     const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
     const totalSpent = expenses
       .filter((expense) => expense.P_ID === selectedBudgetId)
@@ -144,8 +189,11 @@ function FOHome() {
   // Get overdue amount as number for progress bar
   const getOverdueAmountNumber = () => {
     if (loading) return 0;
-    if (budgets.length === 0 || !selectedBudgetId || expenses.length === 0) return 0;
-    const selectedBudget = budgets.find((budget) => budget.P_ID === selectedBudgetId);
+    if (budgets.length === 0 || !selectedBudgetId || expenses.length === 0)
+      return 0;
+    const selectedBudget = budgets.find(
+      (budget) => budget.P_ID === selectedBudgetId
+    );
     const totalBudget = selectedBudget ? Number(selectedBudget.amount) : 0;
     const totalSpent = expenses
       .filter((expense) => expense.P_ID === selectedBudgetId)
@@ -172,7 +220,9 @@ function FOHome() {
       };
     }
 
-    const filteredExpenses = expenses.filter((expense) => expense.P_ID === selectedBudgetId);
+    const filteredExpenses = expenses.filter(
+      (expense) => expense.P_ID === selectedBudgetId
+    );
     const labels = filteredExpenses.map((expense) =>
       new Date(expense.createdDate).toLocaleDateString()
     );
@@ -215,6 +265,114 @@ function FOHome() {
   return (
     <div>
       <Topnav />
+      <div
+        style={{
+          width: "100%",
+          height: "300px",
+          overflow: "hidden",
+          marginBottom: "20px",
+        }}
+      >
+        <Carousel style={{ height: "100%" }}>
+          <Carousel.Item>
+            <div
+              style={{
+                height: "300px",
+                backgroundImage: `url(${inventoryImg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "rgba(0,0,0,0.4)",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                <h5>
+                  Gain full control over financial operations and reporting.
+                </h5>
+                <p>
+                  Real-time tracking of budgets, expenses, and revenues ensures
+                  transparency and smarter financial decision-making across all
+                  departments.
+                </p>
+              </div>
+            </div>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div
+              style={{
+                height: "300px",
+                backgroundImage: `url(${materialImg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "rgba(0,0,0,0.4)",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                <h5>
+                  Ensure financial stability with accurate tracking and
+                  analysis.
+                </h5>
+                <p>
+                  Monitor cash flow, manage accounts, and generate detailed
+                  reports to support strategic decision-making and financial
+                  transparency.
+                </p>
+              </div>
+            </div>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div
+              style={{
+                height: "300px",
+                backgroundImage: `url(${stockImg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "rgba(0,0,0,0.4)",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                <h5>Streamline cost planning and forecasting with ease.</h5>
+                <p>
+                  Access up-to-date data on materials and labor to ensure
+                  accurate estimates and informed decision-making throughout the
+                  project lifecycle.
+                </p>
+              </div>
+            </div>
+          </Carousel.Item>
+        </Carousel>
+      </div>
       <Container fluid className="mt-4">
         {/* Top: Budget Dropdown */}
         <Row className="mb-4">
@@ -223,7 +381,9 @@ function FOHome() {
               <Form.Label className="fw-bold">Select Budget</Form.Label>
               <Dropdown onSelect={handleBudgetSelect}>
                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                  {loading ? "Loading..." : selectedBudgetId || "Select a Budget"}
+                  {loading
+                    ? "Loading..."
+                    : selectedBudgetId || "Select a Budget"}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {budgets.map((budget) => (
@@ -293,7 +453,9 @@ function FOHome() {
         <Row className="mt-4">
           <Col>
             <Card>
-              <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+              <Card.Header as="h5" className="bg-primary text-white">
+                📢 Announcements
+              </Card.Header>
               <Card.Body>
                 {loading ? (
                   <Card.Text>Loading notifications...</Card.Text>
