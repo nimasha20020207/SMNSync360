@@ -71,7 +71,7 @@ function UsersTable({ Progressusers, setProgressusers }) {
                 <td style={{ padding: "10px" }}>
                   {Progressuser.Image ? (
                     <img
-                      src={`http://localhost:5000/uploads/${Progressuser.Image}`}
+                      src={`http://localhost:5000/progressuploads/${Progressuser.Image}`}
                       alt="Progress"
                       width="100"
                       style={{ borderRadius: "6px", objectFit: "cover" }}
