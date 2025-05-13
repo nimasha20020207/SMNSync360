@@ -166,8 +166,9 @@ function Login() {
                   <span className="error-message">{errors.email}</span>
                 )}
               </div>
+              <label htmlFor="password">Password</label>
               <div className="form-group password-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password"></label>
                 <div className="password-input-container">
                   <input
                     type={showPassword ? "text" : "password"}
