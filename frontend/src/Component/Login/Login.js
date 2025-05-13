@@ -19,6 +19,7 @@ function Login() {
     email: false,
     password: false,
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email) => {
     if (!email) return "Email is required";
@@ -38,7 +39,6 @@ function Login() {
     setUser((prevUser) => ({ ...prevUser, [name]: value }));
     setTouched((prev) => ({ ...prev, [name]: true }));
 
-    // Validate the changed field
     if (name === "email") {
       setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
     } else if (name === "password") {
@@ -50,7 +50,6 @@ function Login() {
     const { name, value } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
 
-    // Validate on blur
     if (name === "email") {
       setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
     } else if (name === "password") {
@@ -58,10 +57,13 @@ function Login() {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate all fields before submission
     const emailError = validateEmail(user.email);
     const passwordError = validatePassword(user.password);
 
@@ -75,19 +77,14 @@ function Login() {
     try {
       const response = await sendRequest();
       if (response.status === "ok") {
-        console.log(response)
         alert("Login success");
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userRole", response.userrole);
         localStorage.setItem("username", response.username || "User");
-
-        localStorage.setItem("userId", response.userIds || "User"); // Store userid from response
-
+        localStorage.setItem("userId", response.userIds || "User");
         localStorage.setItem("userid", response.userIds);
         localStorage.setItem("userids", response.userId || "userids");
 
-
-    
         const userRole = response.userrole
           ? response.userrole.toLowerCase()
           : "";
@@ -169,17 +166,54 @@ function Login() {
                   <span className="error-message">{errors.email}</span>
                 )}
               </div>
-              <div className="form-group">
+              <div className="form-group password-group">
                 <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={user.password}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  name="password"
-                  className={touched.password && errors.password ? "input-error" : ""}
-                />
+                <div className="password-input-container">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={user.password}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    name="password"
+                    className={touched.password && errors.password ? "input-error" : ""}
+                  />
+                  <span
+                    className="password-toggle-icon"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#555"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#555"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                        <line x1="1" y1="1" x2="23" y2="23" />
+                      </svg>
+                    )}
+                  </span>
+                </div>
                 {touched.password && errors.password && (
                   <span className="error-message">{errors.password}</span>
                 )}

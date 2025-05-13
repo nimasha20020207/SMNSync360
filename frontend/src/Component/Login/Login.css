@@ -90,7 +90,26 @@
   display: block;
 }
 
-/* Login button styling ­styling */
+/* Password input container */
+.login-box .right-side .password-group .password-input-container {
+  position: relative;
+}
+
+.login-box .right-side .password-group .password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.login-box .right-side .password-group .password-toggle-icon:hover svg {
+  stroke: #333;
+}
+
+/* Login button styling */
 .login-box .right-side form button {
   width: 100%;
   padding: 12px;
@@ -138,7 +157,6 @@
     overflow: hidden;
   }
   
-  /* Left side with an image */
   .login-box .left-side {
     width: 100%;
     background: #f8f9fa;
@@ -153,7 +171,6 @@
     object-fit: cover;
   }
   
-  /* Right side with form */
   .login-box .right-side {
     width: 50%;
     padding: 40px;

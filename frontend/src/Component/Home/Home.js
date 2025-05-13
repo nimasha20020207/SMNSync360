@@ -63,6 +63,8 @@ function App() {
   const [selectedProject, setSelectedProject] = useState('project1');
   const [feedbacks, setFeedbacks] = useState([]);
   const [loadingFeedbacks, setLoadingFeedbacks] = useState(true);
+  const [notifications, setNotifications] = useState([]); 
+  const [loadingNotifications, setLoadingNotifications] = useState(true);
   const navigate = useNavigate();
 
   const projectData = {
@@ -91,8 +93,22 @@ function App() {
         setLoadingFeedbacks(false);
       }
     };
+    const fetchNotifications = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/Notification');
+      const notificationData = response.data.notification || response.data || [];
+      const notificationArray = Array.isArray(notificationData) ? notificationData : [];
+      setNotifications(notificationArray);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      setNotifications([]);
+    } finally {
+      setLoadingNotifications(false);
+    }
+  };
 
     fetchFeedbacks();
+    fetchNotifications();
   }, []);
 
   const handleProjectChange = (event) => {
@@ -185,21 +201,30 @@ function App() {
 
           <Col md={4}>
             <Card className="shadow-sm mb-4">
-              <Card.Header as="h5" className="bg-primary text-white text-center">
-                📢 Announcements
-              </Card.Header>
-              <Card.Body>
-                <Card.Text>
-                  <strong>03/25/2025:</strong> Budget review meeting next week.
-                </Card.Text>
-                <Card.Text>
-                  <strong>03/20/2025:</strong> Project A deadline extended to April 10.
-                </Card.Text>
-                <Card.Text>
-                  <strong>03/15/2025:</strong> Progress review for all teams.
-                </Card.Text>
-              </Card.Body>
-            </Card>
+    <Card.Header as="h5" className="bg-primary text-white text-center">
+      📢 Announcements
+    </Card.Header>
+    <Card.Body>
+      {/* With this dynamic content */}
+      {loadingNotifications ? (
+        <Card.Text>Loading announcements...</Card.Text>
+      ) : notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <Card.Text key={index}>
+            <strong>
+              {notification.Date
+                ? new Date(notification.Date).toLocaleDateString()
+                : 'No Date'}
+              :
+            </strong>{' '}
+            {notification.message || 'No message available'}
+          </Card.Text>
+        ))
+      ) : (
+        <Card.Text>No announcements available.</Card.Text>
+      )}
+    </Card.Body>
+  </Card>
 
             <Card className="shadow-sm mb-4">
               <Card.Header as="h5" className="bg-info text-white text-center">

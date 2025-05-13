@@ -37,15 +37,17 @@ function Home() {
 
   // Background images for hero section slideshow
   const heroImages = [
+    "https://img.freepik.com/free-photo/mumbai-skyline-skyscrapers-construction_469504-21.jpg?ga=GA1.1.2059794472.1741674835&semt=ais_hybrid&w=740",
+    "https://img.freepik.com/free-photo/construction-silhouette_1150-8336.jpg?ga=GA1.1.2059794472.1741674835&semt=ais_hybrid&w=740",
     "https://thumbs.dreamstime.com/b/three-construction-workers-sitting-concrete-site-discussing-building-plans-119766226.jpg",
-    "https://img.freepik.com/free-photo/mumbai-skyline-skyscrapers-construction_469504-21.jpg?t=st=1743325424~exp=1743329024~hmac=544098a2195bc7679f04cd3f888a1a47e047669de98e167b2355b28cc3ef79ec&w=1480",
+    "https://img.freepik.com/free-photo/construction-silhouette_1127-3246.jpg?ga=GA1.1.2059794472.1741674835&semt=ais_hybrid&w=740",
     "https://img.freepik.com/free-photo/construction-works-frankfurt-downtown-germany_1268-20907.jpg?t=st=1743324328~exp=1743327928~hmac=13ba209d70263ca751fdbb41d480f733e78046c258613ece057697c003024fb2&w=1800",
-    "https://img.freepik.com/free-photo/construction-silhouette_1127-3246.jpg?t=st=1743324165~exp=1743327765~hmac=26637af84f7eb16822a0a58a59080c5b3ee6164edfbdc7e4f92fa4b1a0b0c5cb&w=1480",
+    "https://img.freepik.com/free-photo/civil-engineer-construction-worker-architects-wearing-hardhats-safety-vests-are-working-together-construction-site-building-home-cooperation-teamwork-concept_640221-172.jpg?ga=GA1.1.2059794472.1741674835&semt=ais_hybrid&w=740",
     "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
-    "https://img.freepik.com/free-photo/construction-silhouette_1150-8336.jpg?t=st=1743324277~exp=1743327877~hmac=9599809f204a4c39075312baf4cecd3c0b428708d34f92e6df60131ab31f452a&w=1480",
+    "https://img.freepik.com/free-photo/excavator-action_1112-1598.jpg?ga=GA1.1.2059794472.1741674835&semt=ais_hybrid&w=740",
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
-    "https://img.freepik.com/free-photo/power-plant-construction_1127-2891.jpg?t=st=1743325149~exp=1743328749~hmac=9a317e9bf2eed7841e90a4da2883fab3e9fde510b04f5bf47762212e5e875958&w=1480",
+    
   ];
 
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
