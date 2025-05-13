@@ -17,12 +17,14 @@ function PaymentSuccess() {
     }
   }, []);
 
+  //`Payment of Rs. ${amount} for Order ID ${order?.OrderID} was successful!`
+
   const generatePDF = async () => {
   try {
     // Send SMS first
     await axios.post("http://localhost:5000/api/send-sms", {
       to: "+94764703413",
-      message: `Payment of Rs. ${amount} for Order ID ${order?.OrderID} was successful!`,
+      message: "Test message from CCMS system",
     });
     console.log("SMS sent successfully!");
   } catch (smsError) {
