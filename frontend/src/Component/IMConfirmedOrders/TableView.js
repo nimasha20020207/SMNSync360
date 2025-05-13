@@ -47,15 +47,6 @@ function TableView() {
       {/* top navigation */}
       <HeaderSup />
 
-      {/* ---------- notifications button row ---------- */}
-      {/* sits UNDER the header, flush right */}
-      <div className="container py-3 d-flex justify-content-end" style={{ position: 'relative', zIndex: 2 }}>
-        <Link to="/PNotifications" style={notificationButtonStyle}>
-          <FaBell style={{ marginRight: '8px' }} />
-          completed payments
-        </Link>
-      </div>
-
       {/* main content */}
       <main className="container my-4">
         <RecordTable />

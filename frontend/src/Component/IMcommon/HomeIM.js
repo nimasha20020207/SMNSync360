@@ -16,11 +16,7 @@ import axios from "axios";
 
 
 function App() {
-  const pendingProjects = [
-    { id: 1, name: "Project A" },
-    { id: 2, name: "Project B" },
-    { id: 3, name: "Project C" },
-  ];
+  
 
 
   const [statusPercentages, setStatusPercentages] = useState([]);
@@ -249,48 +245,32 @@ useEffect(() => {
       <Container>
         {/* Side-by-side Pending Projects and Announcements */}
         <Row className="mt-3">
-          <Col md={6}>
-            <h5>Pending Projects</h5>
-            <ListGroup>
-              {pendingProjects.map((project) => (
-                <ListGroup.Item key={project.id} className="d-flex justify-content-between align-items-center">
-                  <span><strong>Project ID:</strong> {project.id} - {project.name}</span>
-                  <Button variant="outline-primary" onClick={() => navigate('/IMcommon/AllocateMaterial')} size="sm">
-                    Assign Materials & Equipments
-                  </Button>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Col>
+  <Col md={12}>
+    <Card className="w-100">
+      <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
+      <Card.Body>
+        {loading ? (
+          <Card.Text>Loading notifications...</Card.Text>
+        ) : notifications.length > 0 ? (
+          notifications.map((notification, index) => (
+            <Card.Text key={index}>
+              <strong>
+                {notification.Date
+                  ? new Date(notification.Date).toLocaleDateString()
+                  : "No Date"}
+                :
+              </strong>{" "}
+              {notification.message || "No message available"}
+            </Card.Text>
+          ))
+        ) : (
+          <Card.Text>No announcements available.</Card.Text>
+        )}
+      </Card.Body>
+    </Card>
+  </Col>
+</Row>
 
-<Col md={6}>
-  <Card>
-    <Card.Header as="h5" className="bg-primary text-white">📢 Announcements</Card.Header>
-    <Card.Body>
-      {loading ? (
-        <Card.Text>Loading notifications...</Card.Text>
-      ) : notifications.length > 0 ? (
-        notifications.map((notification, index) => (
-          <Card.Text key={index}>
-            <strong>
-              {notification.Date
-                ? new Date(notification.Date).toLocaleDateString()
-                : "No Date"}
-              :
-            </strong>{" "}
-            {notification.message || "No message available"}
-          </Card.Text>
-        ))
-      ) : (
-        <Card.Text>No announcements available.</Card.Text>
-      )}
-    </Card.Body>
-  </Card>
-</Col>
-
-          
-
-        </Row>
 
        
       </Container>

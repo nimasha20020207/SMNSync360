@@ -160,7 +160,7 @@ function Users() {
                 >
                   {user.Image ? (
                     <img
-                      src={`http://localhost:5000/uploads/${user.Image}`}
+                      src={`http://localhost:5000/progressuploads/${user.Image}`}
                       alt="Project"
                       style={{
                         width: "100%",
