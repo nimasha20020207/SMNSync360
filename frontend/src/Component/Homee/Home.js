@@ -47,6 +47,7 @@ function Home() {
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
     "https://img.freepik.com/free-photo/excavator-action_1112-1598.jpg?ga=GA1.1.2059794472.1741674835&semt=ais_hybrid&w=740",
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    "https://img.freepik.com/premium-photo/traffic-road-with-construction-site-background_1048944-6859679.jpg?uid=R200044510&ga=GA1.1.1424527440.1714456547&w=740"
     
   ];
 
