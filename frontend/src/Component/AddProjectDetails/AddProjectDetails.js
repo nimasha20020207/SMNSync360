@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../topnav/Header";
@@ -16,6 +16,14 @@ function AddProjectDetails() {
     Start_Date: "",
     End_Date: "",
   });
+
+  // Auto-generate Project ID when the component mounts
+  useEffect(() => {
+    setInputs(prev => ({
+      ...prev,
+      Project_Id: `P${Math.floor(100 + Math.random() * 1000)}`
+    }));
+  }, []);
 
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -39,19 +47,16 @@ function AddProjectDetails() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Check if all fields are filled
     const allFieldsFilled = Object.values(inputs).every(
       (value) => value !== ""
     );
     
     if (allFieldsFilled) {
-      // Show confirmation dialog
       const isConfirmed = window.confirm("Are you sure you want to submit this project?");
       if (isConfirmed) {
         sendRequest().then(() => history('/ScheduleProjectDetails'));
       }
     } else {
-      // If any field is empty, proceed with original submission (or you could show an alert)
       sendRequest().then(() => history('/ScheduleProjectDetails'));
     }
   };
@@ -65,18 +70,17 @@ function AddProjectDetails() {
           
           <form onSubmit={handleSubmit} className="project-form">
             <div className="form-row">
-            <div className="form-group">
+              <div className="form-group">
                 <label>Project ID</label>
                 <input
                   type="text"
-                  onChange={handleChange}
-                  placeholder="Enter Project Id"
                   name="Project_Id"
                   value={inputs.Project_Id}
-                  required
+                  readOnly // Auto-generated, cannot edit
                   className="input-field"
                 />
               </div>
+
               <div className="form-group">
                 <label>Project Name</label>
                 <input
