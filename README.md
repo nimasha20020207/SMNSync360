@@ -11,26 +11,12 @@ Additionally, the system integrates **Stripe payment gateway**, **report generat
 
 ---
 
-## 🚀 Features
-- Manage day-to-day construction company operations  
-- **Project Management:** Budget tracking & progress tracking  
-- **Staff Management (User Management):** Add, update, and manage system users & staff roles  
-- **Inventory Management:** Supplier management, order management, and budget monitoring  
-- **Frontend:** React.js, Bootstrap  
-- **Backend:** Node.js, Express  
-- **Database:** MongoDB  
-- **Payment Gateway:** Stripe (for secure online payments)  
-- **Reports Generation:** PDF & Excel exports  
-- **SMS Notification Alerts:** Twilio integration  
-- **API Testing:** Postman  
-
----
-
 ## 🛠️ Tech Stack
 - **Frontend:** React.js, Bootstrap  
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB  
-- **Payment Gateway:** Stripe  
-- **Notifications:** Twilio  
+- **Payment Gateway:** Stripe (for secure online payments)  
+- **Reports Generation:** PDF & Excel exports  
+- **SMS Notification Alerts:** Twilio integration  
 - **Testing Tools:** Postman  
 - **Code Editor:** VS Code  
